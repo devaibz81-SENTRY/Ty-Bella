@@ -116,6 +116,7 @@ Back to Invitation
 </a>
 </nav>
 <script>
+const CONVEX_URL='https://wary-lark-534.convex.site';
 const STORAGE_KEY='it_songs';
 function handleSubmit(e){
 var name=document.getElementById('name').value.trim();
@@ -123,9 +124,11 @@ var title=document.getElementById('songTitle').value.trim();
 var artist=document.getElementById('artist').value.trim();
 var reason=document.getElementById('reason').value.trim();
 if(!name||!title||!artist)return;
+var entry={name:name,song:title,artist:artist,date:new Date().toISOString()};
 var songs=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
-songs.push({name:name,title:title,artist:artist,reason:reason,date:new Date().toISOString()});
+songs.push(entry);
 localStorage.setItem(STORAGE_KEY,JSON.stringify(songs));
+fetch(CONVEX_URL+'/api/songs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,song:title,artist:artist})}).catch(function(){});
 document.getElementById('songForm').style.display='none';
 document.getElementById('successMsg').style.display='block';
 }

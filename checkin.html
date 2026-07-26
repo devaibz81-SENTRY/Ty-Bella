@@ -43,32 +43,22 @@ h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);color:v
 <div class="result" id="result"></div>
 </div>
 <script>
-const GUESTS_KEY='it_guests';
-const CHECKIN_KEY='it_checkins';
-let guests=JSON.parse(localStorage.getItem(GUESTS_KEY)||'[]');
-let checkins=JSON.parse(localStorage.getItem(CHECKIN_KEY)||'[]');
+const CONVEX_URL='https://wary-lark-534.convex.site';
 function searchGuest(){
-var query=document.getElementById('search').value.trim().toLowerCase();
+var query=document.getElementById('search').value.trim();
 var el=document.getElementById('result');
 if(!query){el.innerHTML='<div class="error">Enter a name to search</div>';el.classList.add('show');return;}
-var match=guests.find(function(g){
-var name=(g.name||g.first_name||'').toLowerCase();
-return name.includes(query);
-});
-if(!match){
-el.innerHTML='<div class="error">Guest not found. Try a different spelling.</div>';
-el.classList.add('show');
-return;
+el.innerHTML='<div style="padding:1rem;color:rgba(255,255,255,.4)">Searching...</div>';el.classList.add('show');
+fetch(CONVEX_URL+'/api/checkin/lookup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:query})}).then(function(r){if(!r.ok)throw Error();return r.json()}).then(function(matches){
+if(!matches||!matches.length){el.innerHTML='<div class="error">Guest not found. Try a different spelling.</div>';return;}
+var match=matches[0];
+el.innerHTML='<div class="guest-card"><div class="guest-name">'+escapeHtml(match.first_name+' '+match.last_name)+'</div><div class="checkin-status '+(match.checked_in?'checked':'pending')+'">'+(match.checked_in?'Checked In ✓':'Not Yet Checked In')+'</div>'+(match.checked_in?'':'<button class="checkin-btn" onclick="doCheckin(\''+escapeHtml(match._id)+'\')">CHECK IN</button>')+'</div>';
+}).catch(function(){el.innerHTML='<div class="error">Could not connect. Please try again later.</div>'});
 }
-var id=match._id||match.id||match.name;
-var checked=checkins.indexOf(id)!==-1;
-el.innerHTML='<div class="guest-card"><div class="guest-name">'+escapeHtml(match.name||match.first_name+' '+match.last_name)+'</div><div class="guest-table">Table '+(match.tableNum||'—')+'</div><div class="checkin-status '+(checked?'checked':'pending')+'">'+(checked?'Checked In ✓':'Not Yet Checked In')+'</div>'+(checked?'':'<button class="checkin-btn" onclick="doCheckin(\''+escapeHtml(id)+'\')">CHECK IN</button>')+'</div>';
-el.classList.add('show');
-}
-function doCheckin(id){
-if(checkins.indexOf(id)===-1)checkins.push(id);
-localStorage.setItem(CHECKIN_KEY,JSON.stringify(checkins));
-searchGuest();
+function doCheckin(guestId){
+var el=document.getElementById('result');
+el.innerHTML='<div style="padding:1rem;color:rgba(255,255,255,.4)">Checking in...</div>';
+fetch(CONVEX_URL+'/api/checkin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({guestId:guestId})}).then(function(r){if(!r.ok)throw Error();return r.json()}).then(function(data){searchGuest()}).catch(function(){el.innerHTML='<div class="error">Check-in failed. Please try again.</div>'});
 }
 function escapeHtml(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 </script>

@@ -612,3 +612,43 @@ Floating petals are pure CSS:
 Every mistake here is a lesson for next time. The timezone bug alone cost hours of debugging. The Apps Script deploy trap cost a weekend. The QR positioning took 20 attempts.
 
 But now you know. And the next project — whatever it is — will be smoother because of everything this one taught you.
+
+---
+
+## Architecture v2 — Convex Backend + Vercel
+
+### Overview
+- **Frontend**: Static HTML + Tailwind CSS (CDN) served by Vercel
+- **Backend**: Convex functions at `https://wary-lark-534.convex.site`
+- **Data**: All guest/song/message/seating data in Convex serverless DB
+
+### Convex Project Structure
+```
+convex/
+  schema.ts     — Database schema (guests, sessions, seating, songs, messages)
+  auth.ts       — HTTP actions for /api/auth/* (login, logout, me)
+  guests.ts     — HTTP actions for /api/guests, /api/guest, /api/guest/delete
+  seating.ts    — HTTP actions for /api/seating (list, assign, getByGuest)
+  songs.ts      — HTTP actions for /api/songs (list, submit)
+  messages.ts   — HTTP actions for /api/messages (list, submit)
+  checkin.ts    — HTTP actions for /api/checkin, /api/checkin/lookup
+  http.ts       — Router mapping all routes to handlers
+```
+
+### Deploy Steps
+1. `npm install`
+2. `npx convex dev` — starts local Convex dev server + generates `_generated/` files
+3. `npx convex deploy` — deploys functions to `wary-lark-534`
+4. Commit and push — Vercel auto-deploys the static site
+
+### Key Urls
+- Convex Dashboard: https://dashboard.convex.dev/deployment/wary-lark-534
+- HTTP Actions URL: https://wary-lark-534.convex.site
+- Vercel: Auto-linked to GitHub repo
+
+### Data Flow
+- **Public pages** (songs.html, messages.html, playlist.html, checkin.html): Try Convex first, fallback to localStorage
+- **Admin panel** (admin.html): Uses Convex for all CRUD with localStorage fallback
+- **Table finder** (tables.html): Fetches seating from Convex, falls back to pre-assigned data
+- **Auth**: Simple token-based; password `Ty&Bella@26` verified server-side via HTTP action
+

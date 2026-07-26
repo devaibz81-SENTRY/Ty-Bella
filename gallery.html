@@ -14,21 +14,6 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{"inverse-primary":"#e3c
 .glass-panel{background:rgba(255,255,255,.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(225,193,110,.2)}
 body{min-height:100dvh}
 
-.card-stack{position:relative;width:100%;max-width:480px;margin:0 auto;aspect-ratio:3/4;perspective:1200px}
-.card-stack-item{position:absolute;inset:0;border-radius:1rem;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.25);transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s ease,box-shadow .6s ease;cursor:pointer}
-.card-stack-item img{width:100%;height:100%;object-cover}
-.card-stack-item .card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 50%);display:flex;flex-direction:column;justify-content:flex-end;padding:2rem;color:white}
-.card-stack-item .card-title{font-family:'Great Vibes',cursive;font-size:1.5rem;font-weight:400;margin-bottom:.25rem}
-.card-stack-item .card-desc{font-family:'Cormorant Garamond',serif;font-size:.875rem;opacity:.8;font-weight:300}
-.card-stack-item.state-current{z-index:3;transform:translateY(0) scale(1);opacity:1;box-shadow:0 25px 60px rgba(0,0,0,.25)}
-.card-stack-item.state-behind{z-index:2;transform:translateY(12px) scale(0.95);opacity:.7;box-shadow:0 15px 40px rgba(0,0,0,.15)}
-.card-stack-item.state-behind-2{z-index:1;transform:translateY(24px) scale(0.9);opacity:.4;box-shadow:0 10px 30px rgba(0,0,0,.1)}
-.card-stack-item.state-hidden{z-index:0;transform:translateY(36px) scale(0.85);opacity:0;pointer-events:none}
-
-.card-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1.5rem}
-.card-dot{width:8px;height:8px;border-radius:50%;background:rgba(115,91,17,.25);cursor:pointer;transition:all .3s ease}
-.card-dot.active{background:#735b11;transform:scale(1.3)}
-
 .gallery-item{transition:transform .5s cubic-bezier(.4,0,.2,1),box-shadow .5s ease}
 .gallery-item:hover{transform:scale(1.02);box-shadow:0 25px 60px rgba(0,0,0,.2)}
 .lb-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.95);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease}
@@ -46,6 +31,9 @@ body{min-height:100dvh}
 .lb-dots span.active{background:#E1C16E;transform:scale(1.3)}
 .lb-counter{position:absolute;bottom:56px;left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',serif;font-size:.82rem;color:rgba(255,255,255,.45);letter-spacing:.1em;z-index:10}
 @media(max-width:768px){.lb-content{padding:40px 12px}.lb-prev{left:8px}.lb-next{right:8px}.lb-nav{padding:10px}}
+.lb-caption{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);text-align:center;z-index:10;pointer-events:none;max-width:80%}
+.lb-cap-title{font-family:'Great Vibes',cursive;font-size:1.6rem;color:#E1C16E;text-shadow:0 2px 12px rgba(0,0,0,.5);margin-bottom:2px}
+.lb-cap-desc{font-family:'Cormorant Garamond',serif;font-size:0.9rem;color:rgba(255,255,255,.7);text-shadow:0 2px 8px rgba(0,0,0,.4);font-style:italic}
 </style>
 <script>
 if(performance.navigation.type===1||performance.getEntriesByType("navigation")[0].type==="reload"){
@@ -82,30 +70,6 @@ window.location.href="index.html";
 <div class="h-[1px] w-16 bg-primary-container"></div>
 </div>
 </section>
-<section class="px-6 mb-20">
-<div class="card-stack" id="cardStack">
-<div class="card-stack-item state-current" data-index="0">
-<img src="Photos/Photo galery (1).jpg" alt="Photo 1"/>
-<div class="card-overlay"><div class="card-title">Our Beginning</div><div class="card-desc">Where it all started</div></div>
-</div>
-<div class="card-stack-item state-behind" data-index="1">
-<img src="Photos/Photo galery (2).jpg" alt="Photo 2"/>
-<div class="card-overlay"><div class="card-title">Together Forever</div><div class="card-desc">Every moment counts</div></div>
-</div>
-<div class="card-stack-item state-behind-2" data-index="2">
-<img src="Photos/Photo galery (3).jpg" alt="Photo 3"/>
-<div class="card-overlay"><div class="card-title">Adventures</div><div class="card-desc">Exploring the world hand in hand</div></div>
-</div>
-<div class="card-stack-item state-hidden" data-index="3">
-<img src="Photos/Photo galery (4).jpg" alt="Photo 4"/>
-<div class="card-overlay"><div class="card-title">Pure Joy</div><div class="card-desc">Laughter and love</div></div>
-</div>
-<div class="card-stack-item state-hidden" data-index="4">
-<img src="Photos/Photo galery (5).jpg" alt="Photo 5"/>
-<div class="card-overlay"><div class="card-title">Growing Together</div><div class="card-desc">Building our future</div></div>
-</div>
-</div>
-<div class="card-dots" id="cardDots"></div>
 </section>
 <section class="max-w-[1200px] mx-auto px-6">
 <h3 class="font-headline-md text-headline-md text-on-surface text-center mb-12">All Photos</h3>
@@ -134,6 +98,14 @@ window.location.href="index.html";
 <img class="w-full h-[350px] object-cover" src="Photos/Photo galery (5).jpg" alt="Gallery photo 5"/>
 <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
 </div>
+<div class="md:col-span-4 overflow-hidden rounded-3xl relative shadow-lg gallery-item cursor-pointer" onclick="openLightbox('Photos/cork steet.jpg')">
+<img class="w-full h-[300px] object-cover" src="Photos/cork steet.jpg" alt="Cork Street Venue"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+</div>
+<div class="md:col-span-4 overflow-hidden rounded-3xl relative shadow-lg gallery-item cursor-pointer" onclick="openLightbox('Photos/cork steet.png')">
+<img class="w-full h-[300px] object-cover" src="Photos/cork steet.png" alt="Cork Street Venue"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+</div>
 </div>
 </section>
 <section class="max-w-2xl mx-auto text-center px-6 mt-20">
@@ -159,6 +131,10 @@ window.location.href="index.html";
 </button>
 <div class="lb-content" id="lb-swipe">
 <img id="lb-img" src="" alt="Gallery photo"/>
+</div>
+<div class="lb-caption">
+<div class="lb-cap-title" id="lb-cap-title"></div>
+<div class="lb-cap-desc" id="lb-cap-desc"></div>
 </div>
 <button class="lb-nav lb-next" onclick="lbNext(event)">
 <span class="material-symbols-outlined text-3xl">chevron_right</span>
@@ -190,59 +166,26 @@ Your browser does not support the video tag.
 </a>
 </nav>
 <script>
+var lbPhotos=[],lbIndex=0,lbCaptions={};
+lbCaptions["Photos/Photo galery (1).jpg"]={title:"Our Beginning",desc:"Where it all started"};
+lbCaptions["Photos/Photo galery (2).jpg"]={title:"Together Forever",desc:"Every moment counts"};
+lbCaptions["Photos/Photo galery (3).jpg"]={title:"Adventures",desc:"Exploring the world hand in hand"};
+lbCaptions["Photos/Photo galery (4).jpg"]={title:"Pure Joy",desc:"Laughter and love"};
+lbCaptions["Photos/Photo galery (5).jpg"]={title:"Growing Together",desc:"Building our future"};
+lbCaptions["Photos/Photo galery (6).jpg"]={title:"The Proposal",desc:"A moment to remember forever"};
+lbCaptions["Photos/cork steet.jpg"]={title:"The Venue",desc:"19 Cork Street, Belize City"};
+lbCaptions["Photos/cork steet.png"]={title:"The Venue",desc:"Where we'll say I do"};
 function openLightbox(src){initLb();var i=lbPhotos.indexOf(src);if(i===-1){lbPhotos.push(src);i=lbPhotos.length-1}lbIndex=i;showLbImg();document.getElementById('lightbox').classList.add('active');document.body.style.overflow='hidden'}
 function lbClose(e){if(e)e.stopPropagation();document.getElementById('lightbox').classList.remove('active');document.body.style.overflow=''}
 function lbPrev(e){if(e)e.stopPropagation();lbIndex--;showLbImg()}
 function lbNext(e){if(e)e.stopPropagation();lbIndex++;showLbImg()}
-var lbPhotos=[],lbIndex=0;
 function initLb(){if(lbPhotos.length)return;var imgs=document.querySelectorAll('.gallery-item');lbPhotos=[];imgs.forEach(function(el){var m=el.getAttribute('onclick');if(m){var r=m.match(/openLightbox\('([^']+)'\)/);if(r)lbPhotos.push(r[1])}})}
-function showLbImg(){var img=document.getElementById('lb-img');var i=((lbIndex%lbPhotos.length)+lbPhotos.length)%lbPhotos.length;img.style.opacity='0';img.style.transform='scale(0.95)';setTimeout(function(){img.src=lbPhotos[i];img.style.opacity='1';img.style.transform='scale(1)'},60);updateLbDots(i);document.getElementById('lb-counter').textContent=(i+1)+' / '+lbPhotos.length}
+function showLbImg(){var img=document.getElementById('lb-img');var i=((lbIndex%lbPhotos.length)+lbPhotos.length)%lbPhotos.length;var src=lbPhotos[i];img.style.opacity='0';img.style.transform='scale(0.95)';setTimeout(function(){img.src=src;img.style.opacity='1';img.style.transform='scale(1)'},60);updateLbDots(i);document.getElementById('lb-counter').textContent=(i+1)+' / '+lbPhotos.length;var cap=lbCaptions[src];document.getElementById('lb-cap-title').textContent=cap?cap.title:'';document.getElementById('lb-cap-desc').textContent=cap?cap.desc:''}
 function updateLbDots(i){var c=document.getElementById('lb-dots');c.innerHTML='';for(var j=0;j<lbPhotos.length;j++){var d=document.createElement('span');if(j===i)d.className='active';d.setAttribute('data-idx',j);d.onclick=function(e){e.stopPropagation();lbIndex=parseInt(this.getAttribute('data-idx'));showLbImg()};c.appendChild(d)}}
 var lbTouchX=0;document.getElementById('lightbox').addEventListener('touchstart',function(e){lbTouchX=e.changedTouches[0].screenX},{passive:true});document.getElementById('lightbox').addEventListener('touchend',function(e){var diff=lbTouchX-e.changedTouches[0].screenX;if(Math.abs(diff)>50){if(diff>0)lbNext();else lbPrev()}},{passive:true});
 document.addEventListener('keydown',function(e){if(!document.getElementById('lightbox').classList.contains('active')){if(e.key==='Escape')closeVideoOverlay();return}if(e.key==='Escape')lbClose();if(e.key==='ArrowRight')lbNext();if(e.key==='ArrowLeft')lbPrev()});
 function openVideoOverlay(){document.getElementById('video-overlay').style.display='flex';var v=document.getElementById('proposal-video');v.load();v.play().catch(function(){})}
 function closeVideoOverlay(){var v=document.getElementById('proposal-video');v.pause();v.currentTime=0;document.getElementById('video-overlay').style.display='none'}
-
-(function(){
-var cards=document.querySelectorAll('.card-stack-item');
-var dotsContainer=document.getElementById('cardDots');
-var current=0;
-var total=cards.length;
-var intervalMs=3000;
-var timer=null;
-var paused=false;
-
-cards.forEach(function(_,i){
-var dot=document.createElement('div');
-dot.className='card-dot'+(i===0?' active':'');
-dot.addEventListener('click',function(){goTo(i)});
-dotsContainer.appendChild(dot);
-});
-
-function goTo(index){
-current=index;
-cards.forEach(function(card,i){
-card.className='card-stack-item';
-if(i===current)card.classList.add('state-current');
-else if(i===(current+1)%total)card.classList.add('state-behind');
-else if(i===(current+2)%total)card.classList.add('state-behind-2');
-else card.classList.add('state-hidden');
-});
-var dots=dotsContainer.querySelectorAll('.card-dot');
-dots.forEach(function(d,i){d.className='card-dot'+(i===current?' active':'')});
-}
-
-function next(){goTo((current+1)%total)}
-
-function startTimer(){timer=setInterval(function(){if(!paused)next()},intervalMs)}
-function stopTimer(){clearInterval(timer)}
-
-var stack=document.getElementById('cardStack');
-stack.addEventListener('mouseenter',function(){paused=true});
-stack.addEventListener('mouseleave',function(){paused=false});
-
-startTimer();
-})();
 </script>
 </body>
 </html>

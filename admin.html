@@ -1406,11 +1406,25 @@ Isabella and Tyler</textarea>
       if (view === 'whatsapp') updateWaPreview();
     }
 
-    function renderMediaView() {
-      const songs = JSON.parse(localStorage.getItem('it_songs') || '[]');
-      const messages = JSON.parse(localStorage.getItem('it_messages') || '[]');
-      document.querySelector('#view-media .song-count').textContent = songs.length;
-      document.querySelector('#view-media .msg-count').textContent = messages.length;
+    async function renderMediaView() {
+      try {
+        const songsRes = await fetch(`${CONVEX_HTTP_URL}/api/songs`, { headers: authHeaders() });
+        const messagesRes = await fetch(`${CONVEX_HTTP_URL}/api/messages`, { headers: authHeaders() });
+        if (songsRes.ok) {
+          const songs = await songsRes.json();
+          document.querySelector('#view-media .song-count').textContent = songs.length;
+        } else throw new Error('songs failed');
+        if (messagesRes.ok) {
+          const messages = await messagesRes.json();
+          document.querySelector('#view-media .msg-count').textContent = messages.length;
+        } else throw new Error('messages failed');
+      } catch {
+        // Fallback to localStorage
+        const songs = JSON.parse(localStorage.getItem('it_songs') || '[]');
+        const messages = JSON.parse(localStorage.getItem('it_messages') || '[]');
+        document.querySelector('#view-media .song-count').textContent = songs.length;
+        document.querySelector('#view-media .msg-count').textContent = messages.length;
+      }
     }
 
     // Seating functions
@@ -1421,18 +1435,17 @@ Isabella and Tyler</textarea>
       if (!el) return;
       
       el.innerHTML = '<div class="loading">Loading guests...</div>';
-      
-      // Ensure guests are loaded from Convex
       if (!guests.length) await fetchGuests({ showLoading: false });
       if (!guests.length) { el.innerHTML = '<div class="loading">Could not load guests. Check admin token.</div>'; return; }
-      
-      // Load existing seating from localStorage
       let seatingMap = {};
       try {
-        const local = JSON.parse(localStorage.getItem('it_seating') || '{}');
-        Object.keys(local).forEach(k => { seatingMap[k] = local[k]; });
+        const res = await fetch(`${CONVEX_HTTP_URL}/api/seating`, { headers: authHeaders() });
+        if (res.ok) { const data = await res.json(); data.forEach(s => { seatingMap[s.guest_id] = s.table_num; }); }
       } catch {}
-      
+      try {
+        const local = JSON.parse(localStorage.getItem('it_seating') || '{}');
+        Object.keys(local).forEach(k => { if (!seatingMap[k]) seatingMap[k] = local[k]; });
+      } catch {}
       seatingData = seatingMap;
       
       el.innerHTML = guests.map(g => {
@@ -1471,14 +1484,21 @@ Isabella and Tyler</textarea>
           guestName: guests.find(g => String(g._id || g.id) === id)?.first_name || 'Guest',
           tableNum: table
         }));
-      
       saveSeatingLocal();
-      
+      // Save to Convex
+      for (const a of assignments) {
+        try {
+          await fetch(`${CONVEX_HTTP_URL}/api/seating`, {
+            method: 'POST',
+            headers: authHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({ guestId: a.guestId, tableNum: a.tableNum })
+          });
+        } catch {}
+      }
       document.querySelectorAll('.s-saved').forEach(el => {
         el.textContent = 'saved';
         el.style.color = '#2ecc71';
       });
-      
       renderSeatingByTable();
     }
 
@@ -1614,12 +1634,16 @@ Isabella and Tyler</textarea>
       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
     }
 
-    function downloadMessages() {
-      const messages = JSON.parse(localStorage.getItem('it_messages') || '[]');
-      if (!messages.length) {
-        alert('No messages to download.');
-        return;
+    async function downloadMessages() {
+      let messages = [];
+      try {
+        const res = await fetch(`${CONVEX_HTTP_URL}/api/messages`, { headers: authHeaders() });
+        if (res.ok) messages = await res.json();
+        else throw new Error('fetch failed');
+      } catch {
+        messages = JSON.parse(localStorage.getItem('it_messages') || '[]');
       }
+      if (!messages.length) { alert('No messages to download.'); return; }
       const content = messages.map((m, i) => `${i + 1}. ${m.name}\n"${m.text}"\n`).join('\n');
       const blob = new Blob([`Wedding Guest Messages\nIsabella & Tyler\n\n${content}`], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);

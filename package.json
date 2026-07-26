@@ -1,0 +1,13 @@
+{
+  "name": "ty-bella-wedding",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "python server.py",
+    "convex:dev": "npx convex dev",
+    "convex:deploy": "npx convex deploy"
+  },
+  "dependencies": {
+    "convex": "^1.42.0"
+  }
+}

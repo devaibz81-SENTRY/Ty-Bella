@@ -46,16 +46,22 @@ nav a:hover{opacity:1;border-color:var(--gold)}
 </div>
 </div>
 <script>
+const CONVEX_URL='https://wary-lark-534.convex.site';
 const STORAGE_KEY='it_songs';
-const songs=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
 var el=document.getElementById('playlist');
-if(!songs.length){
+function renderSongs(songs){
+if(!songs||!songs.length){
 el.innerHTML='<div class="empty-state"><span>🎵</span><p>No song requests yet. Share the song request page with your guests!</p></div>';
-}else{
+return;
+}
 el.innerHTML=songs.map(function(s,i){
-return '<div class="song-card"><div class="song-num">'+(i+1)+'</div><div class="song-info"><div class="song-title">'+escapeHtml(s.title)+'</div><div class="song-artist">'+escapeHtml(s.artist)+'</div></div><div class="song-name">'+escapeHtml(s.name)+'</div></div>';
+var title=s.song||s.title||'';
+var artist=s.artist||'';
+var name=s.name||'';
+return '<div class="song-card"><div class="song-num">'+(i+1)+'</div><div class="song-info"><div class="song-title">'+escapeHtml(title)+'</div><div class="song-artist">'+escapeHtml(artist)+'</div></div><div class="song-name">'+escapeHtml(name)+'</div></div>';
 }).join('');
 }
+fetch(CONVEX_URL+'/api/songs').then(function(r){if(!r.ok)throw Error();return r.json()}).then(function(data){renderSongs(data)}).catch(function(){var local=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');renderSongs(local)});
 function escapeHtml(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 </script>
 </body>
