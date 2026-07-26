@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Isabella & Tyler — Invitation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config={darkMode:"class",theme:{extend:{colors:{"inverse-primary":"#e3c370","tertiary-fixed":"#e4e4cc","on-surface":"#1a1c1a","primary-fixed":"#ffdf91","on-primary":"#ffffff","on-error-container":"#93000a","tertiary":"#5e604d","inverse-surface":"#2f312f","tertiary-container":"#c5c6ae","secondary":"#665c60","surface-bright":"#faf9f6","on-background":"#1a1c1a","on-secondary-fixed-variant":"#4e4448","primary":"#735b11","on-secondary-fixed":"#211a1d","surface-dim":"#dbdad7","on-primary-fixed":"#241a00","secondary-fixed":"#eddfe4","outline":"#7e7666","tertiary-fixed-dim":"#c8c8b0","inverse-on-surface":"#f2f1ee","surface-tint":"#735b11","on-primary-fixed-variant":"#584400","on-primary-container":"#654e02","secondary-container":"#eadce1","on-tertiary":"#ffffff","error-container":"#ffdad6","error":"#ba1a1a","background":"#faf9f6","primary-fixed-dim":"#e3c370","on-error":"#ffffff","surface-container":"#efeeeb","surface":"#faf9f6","surface-container-high":"#e9e8e5","on-secondary-container":"#6a6064","surface-variant":"#e3e2e0","on-tertiary-container":"#515240","on-tertiary-fixed":"#1b1d0e","on-surface-variant":"#4c4638","surface-container-lowest":"#ffffff","on-secondary":"#ffffff","surface-container-highest":"#e3e2e0","surface-container-low":"#f4f3f1","secondary-fixed-dim":"#d1c3c8","on-tertiary-fixed-variant":"#474836","outline-variant":"#cfc5b3","primary-container":"#e1c16e"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"margin-edge":"40px",unit:"8px",gutter:"24px","section-gap":"80px","container-max":"1200px"},fontFamily:{"display-lg":["Great Vibes","cursive"],"body-md":["Cormorant Garamond","serif"],"headline-sm":["Cormorant Garamond","serif"],"label-caps":["Cormorant Garamond","serif"],"body-lg":["Cormorant Garamond","serif"],"headline-md":["Cormorant Garamond","serif"]},fontSize:{"display-lg":["48px",{lineHeight:"1.1",letterSpacing:"-0.02em",fontWeight:"400"}],"body-md":["16px",{lineHeight:"1.6",fontWeight:"300"}],"headline-sm":["24px",{lineHeight:"1.3",fontWeight:"400"}],"label-caps":["12px",{lineHeight:"1.0",letterSpacing:"0.15em",fontWeight:"500"}],"body-lg":["18px",{lineHeight:"1.6",fontWeight:"300"}],"headline-md":["32px",{lineHeight:"1.2",fontWeight:"400"}]}}}}
+</script>
+<style>
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.intro-fade{animation:fadeIn 1s ease forwards}
+.intro-fade-up{opacity:0;animation:fadeInUp 1s ease 1.3s forwards}
+.intro-fade-up-2{opacity:0;animation:fadeInUp 1s ease 1.5s forwards}
+.intro-fade-up-3{opacity:0;animation:fadeInUp 1s ease 1.7s forwards}
+.intro-scale{opacity:0;animation:scaleIn .8s ease 1s forwards}
+.glass-panel{background:rgba(255,255,255,.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(225,193,110,.2)}
+.gloss-btn{background:linear-gradient(180deg,#2a2c2a 0%,#1a1c1a 40%,#0d0d0d 100%);color:#E1C16E;border:1px solid rgba(225,193,110,.3);position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);transition:all .3s}
+.gloss-btn::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.08) 0%,transparent 60%);pointer-events:none}
+.gloss-btn::after{content:'';position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(180deg,rgba(255,255,255,.06) 0%,transparent 100%);pointer-events:none;border-radius:999px 999px 0 0}
+.gloss-btn:hover{box-shadow:0 6px 32px rgba(225,193,110,.15),inset 0 1px 0 rgba(255,255,255,.12);border-color:rgba(225,193,110,.5);transform:translateY(-1px)}
+.gloss-card{background:linear-gradient(180deg,#2a2c2a 0%,#1a1c1a 40%,#111 100%);border:1px solid rgba(225,193,110,.15);box-shadow:0 4px 24px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.06);position:relative;overflow:hidden}
+.gloss-card::before{content:'';position:absolute;top:-60%;left:-60%;width:220%;height:220%;background:radial-gradient(ellipse at 30% 20%,rgba(255,255,255,.04) 0%,transparent 50%);pointer-events:none}
+.gloss-card::after{content:'';position:absolute;top:0;left:0;right:0;height:35%;background:linear-gradient(180deg,rgba(255,255,255,.04) 0%,transparent 100%);pointer-events:none;border-radius:16px 16px 0 0}
+.hero-gradient{background:linear-gradient(to bottom,rgba(0,0,0,.1),rgba(0,0,0,.3))}
+.vows-countdown .vows-cd-num{color:#735b11}
+.vows-countdown .vows-cd-label{color:#735b11;opacity:.6}
+.vows-countdown .vows-cd-digits{color:#735b11}
+.vows-countdown .vows-cd-celebrate{color:#735b11}
+body{min-height:100dvh}
+
+.timeline{position:relative;max-width:900px;margin:0 auto;padding:2rem 0}
+.timeline::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,transparent,#E1C16E 10%,#E1C16E 90%,transparent);transform:translateX(-50%)}
+.timeline-item{position:relative;width:50%;padding:1.5rem;opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.4,0,.2,1)}
+.timeline-item.visible{opacity:1;transform:translateY(0)}
+.timeline-item.left{left:0;padding-right:3rem;text-align:right}
+.timeline-item.right{left:50%;padding-left:3rem;text-align:left}
+.timeline-item .timeline-dot{position:absolute;top:2rem;width:16px;height:16px;background:#E1C16E;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 3px #E1C16E;z-index:2}
+.timeline-item.left .timeline-dot{right:-8px}
+.timeline-item.right .timeline-dot{left:-8px}
+.timeline-card{background:#fff;border-radius:1rem;padding:1.5rem;box-shadow:0 10px 40px rgba(0,0,0,.08);border:1px solid rgba(225,193,110,.15)}
+.timeline-card .tl-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;color:#735b11;font-weight:500;margin-bottom:.5rem}
+.timeline-card .tl-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:#1a1c1a;margin-bottom:.5rem}
+.timeline-card .tl-desc{font-size:.875rem;color:#665c60;line-height:1.6;font-weight:300}
+.timeline-card img{width:100%;border-radius:.75rem;margin-top:1rem;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.timeline-video-wrap{position:relative;border-radius:.75rem;overflow:hidden;margin-top:1rem;cursor:pointer;aspect-ratio:16/9;background:#000}
+.timeline-video-wrap video{width:100%;height:100%;object-fit:cover}
+.timeline-video-wrap .tv-overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;transition:opacity .3s}
+.timeline-video-wrap .tv-overlay.hidden{opacity:0;pointer-events:none}
+.timeline-video-wrap .tv-play{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.3);transition:transform .3s}
+.timeline-video-wrap:hover .tv-play{transform:scale(1.1)}
+@media(max-width:768px){
+.timeline::before{left:20px}
+.timeline-item{width:100%!important;left:0!important;padding:1rem 1rem 1rem 3rem!important;text-align:left!important}
+.timeline-item .timeline-dot{left:12px!important;right:auto!important}
+}
+</style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#1a1c1a]/90 backdrop-blur-xl border-b border-[#E1C16E]/20 shadow-[0_10px_40px_rgba(225,193,110,0.1)]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#E1C16E]">favorite</span>
+<div class="vows-breadcrumb text-white/70">
+<div class="step active" data-step="1">
+<span class="dot"></span>
+<span class="step-label">INVITATION</span>
+</div>
+<span class="connector"></span>
+<div class="step" data-step="2">
+<span class="dot"></span>
+<span class="step-label">RSVP</span>
+</div>
+</div>
+</div>
+<div class="font-serif italic text-2xl text-[#E1C16E]">I & T</div>
+</header>
+<main>
+<section class="premium-section relative h-screen w-full flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover" src="Photos/Photo galery (1).jpg" alt="Wedding venue"/>
+<div class="absolute inset-0 hero-gradient"></div>
+</div>
+<div class="relative z-10 w-full max-w-[1200px] px-gutter flex flex-col items-center">
+<div class="glass-panel p-12 md:p-24 rounded-xl shadow-[0_10px_40px_rgba(225,193,110,0.15)] max-w-2xl w-full text-center relative overflow-hidden intro-scale">
+<div class="absolute top-4 left-4 w-16 h-16 opacity-40">
+<svg fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M10 90C10 90 15 60 40 40C65 20 90 10 90 10" stroke="#E1C16E" stroke-width="0.5"/><circle cx="40" cy="40" fill="#E1C16E" r="2"/><path d="M10 70C10 70 25 55 45 55" stroke="#E1C16E" stroke-width="0.5"/></svg>
+</div>
+<div class="absolute bottom-4 right-4 w-16 h-16 rotate-180 opacity-40">
+<svg fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M10 90C10 90 15 60 40 40C65 20 90 10 90 10" stroke="#E1C16E" stroke-width="0.5"/><circle cx="40" cy="40" fill="#E1C16E" r="2"/><path d="M10 70C10 70 25 55 45 55" stroke="#E1C16E" stroke-width="0.5"/></svg>
+</div>
+<p class="font-label-caps text-label-caps text-primary tracking-[0.25em] mb-8 intro-fade-up">MR. AND MRS. EMILIO ZABANEH</p>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-6 italic intro-fade-up">Isabella & Tyler</h1>
+<div class="flex items-center justify-center gap-6 mb-8 intro-fade-up-2">
+<div class="h-[1px] w-12 bg-primary-container"></div>
+<p class="font-headline-sm text-headline-sm text-on-surface-variant">ARE GETTING MARRIED</p>
+<div class="h-[1px] w-12 bg-primary-container"></div>
+</div>
+<div class="space-y-2 mb-8 intro-fade-up-2">
+<p class="font-body-lg text-body-lg text-on-surface-variant">Saturday, the Twenty-Seventh of February</p>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Two Thousand Twenty-Seven</p>
+<p class="font-label-caps text-label-caps text-primary mt-4 tracking-widest">19 CORK STREET, BELIZE CITY</p>
+</div>
+<div class="vows-countdown flex justify-center gap-6 mb-6"></div>
+<div class="flex justify-center gap-4 md:gap-6 mb-8" id="countdown">
+<div class="flex flex-col items-center"><div class="bg-[#1a1c1a] text-[#E1C16E] font-headline-sm text-2xl md:text-4xl w-16 md:w-20 h-16 md:h-20 rounded-xl flex items-center justify-center shadow-lg" id="cd-days">00</div><span class="font-label-caps text-[10px] text-on-surface-variant mt-2 tracking-widest">DAYS</span></div>
+<div class="flex flex-col items-center"><div class="bg-[#1a1c1a] text-[#E1C16E] font-headline-sm text-2xl md:text-4xl w-16 md:w-20 h-16 md:h-20 rounded-xl flex items-center justify-center shadow-lg" id="cd-hours">00</div><span class="font-label-caps text-[10px] text-on-surface-variant mt-2 tracking-widest">HOURS</span></div>
+<div class="flex flex-col items-center"><div class="bg-[#1a1c1a] text-[#E1C16E] font-headline-sm text-2xl md:text-4xl w-16 md:w-20 h-16 md:h-20 rounded-xl flex items-center justify-center shadow-lg" id="cd-mins">00</div><span class="font-label-caps text-[10px] text-on-surface-variant mt-2 tracking-widest">MINS</span></div>
+<div class="flex flex-col items-center"><div class="bg-[#1a1c1a] text-[#E1C16E] font-headline-sm text-2xl md:text-4xl w-16 md:w-20 h-16 md:h-20 rounded-xl flex items-center justify-center shadow-lg" id="cd-secs">00</div><span class="font-label-caps text-[10px] text-on-surface-variant mt-2 tracking-widest">SECS</span></div>
+</div>
+<a href="rsvp.html" data-slide="rsvp.html" data-direction="left" class="gloss-btn font-body-md px-10 py-4 rounded-full inline-block no-underline text-center tracking-[.15em] text-sm font-semibold intro-fade-up-3">
+REQUEST THE PLEASURE OF YOUR COMPANY
+</a>
+</div>
+</div>
+</section>
+<section class="premium-section bg-surface py-section-gap px-gutter">
+</section>
+<section class="premium-section bg-surface py-section-gap px-6">
+<div class="max-w-[900px] mx-auto text-center">
+<span class="font-label-caps text-label-caps text-primary bg-secondary-container px-4 py-2 rounded-full inline-block mb-6">OUR STORY</span>
+<h2 class="font-headline-md text-display-lg text-on-surface mb-6">A Journey of Love & Light</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-2xl mx-auto">
+It began with a shared glance in a small garden café and blossomed into a lifetime of adventure. We invite you to join us as we begin our most beautiful chapter yet, surrounded by the warmth of our dearest friends and family.
+</p>
+<div class="pt-6">
+<div class="w-24 h-[1px] bg-primary mx-auto mb-4"></div>
+<p class="font-headline-sm text-headline-sm italic text-primary">"Whatever our souls are made of, his and mine are the same."</p>
+</div>
+</div>
+</section>
+<section class="premium-section max-w-[1200px] mx-auto px-6 py-section-gap">
+<h3 class="font-headline-md text-headline-md text-on-surface text-center mb-4">Our Journey</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant text-center mb-16 italic">The moments that led us here</p>
+<div class="timeline">
+<div class="timeline-item left">
+<div class="timeline-dot"></div>
+<div class="timeline-card">
+<div class="tl-label">How We Met</div>
+<div class="tl-title">A Chance Encounter</div>
+<div class="tl-desc">It started with a simple hello in Belize City. What began as a casual conversation quickly turned into hours of laughter, shared stories, and the realization that we had found something truly special.</div>
+<img src="Photos/Photo galery (1).jpg" alt="How we met"/>
+</div>
+</div>
+<div class="timeline-item right">
+<div class="timeline-dot"></div>
+<div class="timeline-card">
+<div class="tl-label">Our First Trip</div>
+<div class="tl-title">Adventures Together</div>
+<div class="tl-desc">From weekend getaways to spontaneous road trips, every journey became an adventure worth remembering. We discovered the world side by side, falling deeper in love with each passing mile.</div>
+<img src="Photos/Photo galery (2).jpg" alt="First trip together"/>
+</div>
+</div>
+<div class="timeline-item left">
+<div class="timeline-dot"></div>
+<div class="timeline-card">
+<div class="tl-label">Growing Together</div>
+<div class="tl-title">Building Our Story</div>
+<div class="tl-desc">Through every challenge and celebration, we grew stronger together. Our love became the foundation of everything we do, and our future started to take shape in the most beautiful way.</div>
+<img src="Photos/Photo galery (3).jpg" alt="Growing together"/>
+</div>
+</div>
+<div class="timeline-item right">
+<div class="timeline-dot"></div>
+<div class="timeline-card">
+<div class="tl-label">The Proposal</div>
+<div class="tl-title">She Said Yes!</div>
+<div class="tl-desc">Under the golden sky of Belize, on one knee, a question was asked and a lifetime was promised. The most magical moment of our lives, captured forever.</div>
+<div class="timeline-video-wrap" onclick="playTimelineVideo(this)">
+<video muted playsinline preload="none" onplay="this.parentElement.querySelector('.tv-overlay').classList.add('hidden')">
+<source src="Photos/Proposal Video.mp4" type="video/mp4"/>
+</video>
+<div class="tv-overlay">
+<div class="tv-play">
+<span class="material-symbols-outlined text-[#735b11] text-3xl">play_arrow</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="timeline-item left">
+<div class="timeline-dot"></div>
+<div class="timeline-card">
+<div class="tl-label">February 27, 2027</div>
+<div class="tl-title">The Wedding Day</div>
+<div class="tl-desc">Our love story reaches its most beautiful chapter. We invite you to join us as we say "I do" surrounded by the warmth of our dearest friends and family in Belize City.</div>
+</div>
+</div>
+</div>
+<div class="mt-12 max-w-3xl mx-auto px-4">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="gloss-card p-6 rounded-2xl text-center">
+<div class="w-14 h-14 rounded-2xl bg-[#E1C16E]/10 flex items-center justify-center mx-auto mb-4">
+<span class="material-symbols-outlined text-[#E1C16E] text-2xl">favorite</span>
+</div>
+<h4 class="font-headline-sm text-white text-lg mb-2">The Ceremony</h4>
+<p class="text-white/60 text-sm font-light">19 Cork Street, Belize City</p>
+<p class="text-[#E1C16E] text-xs tracking-widest mt-2 font-medium">4:00 PM</p>
+</div>
+<div class="gloss-card p-6 rounded-2xl text-center">
+<div class="w-14 h-14 rounded-2xl bg-[#E1C16E]/10 flex items-center justify-center mx-auto mb-4">
+<svg class="text-[#E1C16E] w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><polygon fill="#E1C16E" points="371.506,59.531 512,71.744 431.236,489.039 256,489.039 80.765,489.039 0,71.744 140.494,59.531 256.595,87.867"/><polygon fill="#C8A95A" points="371.506,59.531 256.595,87.867 256,87.722 256,489.039 431.235,489.039 512,71.744"/><polygon fill="#FFF8E7" points="371.506,59.531 140.494,59.531 256,418.11"/><polygon fill="#F5ECD7" points="256,59.531 256,418.11 371.506,59.531"/><path fill="#E1C16E" d="M234.979,93.73l-53.181,29.216c-11.387,5.619-24.897-1.713-26.403-14.323c-1.05-8.799-1.836-20.225-1.836-34.712s0.786-25.914,1.836-34.712c1.505-12.608,15.016-19.942,26.403-14.323l53.181,29.216L256,73.91L234.979,93.73z"/><path fill="#D4B45E" d="M277.021,93.73l53.181,29.216c11.387,5.619,24.898-1.713,26.403-14.323c1.05-8.799,1.836-20.225,1.836-34.712s-0.786-25.914-1.836-34.712c-1.505-12.608-15.016-19.942-26.403-14.323l-53.181,29.216L256,73.91L277.021,93.73z"/><path fill="#D4B45E" d="M267.856,98.026h-23.713c-5.06,0-9.164-4.103-9.164-9.164V58.958c0-5.06,4.103-9.164,9.164-9.164h23.713c5.06,0,9.164,4.103,9.164,9.164v29.906C277.021,93.924,272.917,98.026,267.856,98.026z"/></svg>
+</div>
+<h4 class="font-headline-sm text-white text-lg mb-2">The Reception</h4>
+<p class="text-white/60 text-sm font-light">Philip Goldson Highway, Belize City</p>
+<p class="text-[#E1C16E] text-xs tracking-widest mt-2 font-medium">Reception to Follow</p>
+</div>
+</div>
+<div class="gloss-card p-5 rounded-2xl flex items-center gap-4 mt-4 max-w-xl mx-auto">
+<div class="w-12 h-12 rounded-2xl bg-[#E1C16E]/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[#E1C16E] text-xl">airport_shuttle</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-white text-[15px]">Transportation</h4>
+<p class="text-white/50 text-sm">Shuttle transport between hotel and venue starting at 3:15 PM.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="premium-section max-w-2xl mx-auto text-center px-6 py-section-gap">
+<h3 class="font-headline-md text-headline-md text-primary mb-4">Will You Join Us?</h3>
+<p class="font-body-lg text-body-lg text-secondary italic mb-8 max-w-lg mx-auto">We would be honored by your presence at our celebration. Kindly respond by January 27th, 2027.</p>
+<a href="rsvp.html" data-slide="rsvp.html" data-direction="left" class="gloss-btn font-body-md px-10 py-4 rounded-full inline-block no-underline text-center tracking-[.15em] text-sm font-semibold">
+RSVP NOW
+</a>
+</section>
+</main>
+<footer class="py-12 text-center text-secondary/60 font-body-md text-sm border-t border-[#E1C16E]/20">
+<div class="vows-breadcrumb justify-center mb-4 text-white/40">
+<div class="step active" data-step="1">
+<span class="dot"></span>
+<span class="step-label">INVITATION</span>
+</div>
+<span class="connector"></span>
+<a href="rsvp.html" data-slide="rsvp.html" data-direction="left" class="step no-underline text-inherit hover:text-primary transition-colors">
+<span class="dot"></span>
+<span class="step-label">RSVP</span>
+</a>
+</div>
+<p class="font-display-lg text-2xl tracking-wider opacity-60" style="color:#E1C16E">I & T</p>
+<p class="font-serif text-[10px] tracking-[.2em] uppercase opacity-40 mt-1">2027</p>
+</footer>
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-4 bg-[#1a1c1a]/90 backdrop-blur-xl border-t border-[#E1C16E]/20 rounded-t-2xl shadow-[0_-10px_40px_rgba(225,193,110,0.1)]">
+<a href="index.html" class="flex flex-col items-center justify-center text-[#E1C16E] scale-110 transition-transform no-underline">
+<span class="material-symbols-outlined">home</span>
+<span class="font-serif text-[10px] uppercase tracking-tighter">Home</span>
+</a>
+<a href="gallery.html" class="flex flex-col items-center justify-center text-stone-400 hover:text-[#E1C16E] transition-colors no-underline">
+<span class="material-symbols-outlined">photo_library</span>
+<span class="font-serif text-[10px] uppercase tracking-tighter">Gallery</span>
+</a>
+<a href="rsvp.html" data-slide="rsvp.html" data-direction="left" class="btn-feedback flex flex-col items-center justify-center text-stone-400 hover:text-[#E1C16E] transition-colors no-underline">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-serif text-[10px] uppercase tracking-tighter">RSVP</span>
+</a>
+</nav>
+<script>
+function playTimelineVideo(wrap){
+var v=wrap.querySelector('video');
+v.play();
+}
+(function(){
+var items=document.querySelectorAll('.timeline-item');
+var observer=new IntersectionObserver(function(entries){
+entries.forEach(function(entry){
+if(entry.isIntersecting){
+entry.target.classList.add('visible');
+}
+});
+},{threshold:0.2,rootMargin:'0px 0px -50px 0px'});
+items.forEach(function(item){observer.observe(item)});
+})();
+function updateCountdown(){
+var target=new Date('2027-02-27T22:00:00Z').getTime();
+var now=Date.now();
+var diff=target-now;
+if(diff<=0)diff=0;
+var d=Math.floor(diff/86400000);
+var h=Math.floor((diff%86400000)/3600000);
+var m=Math.floor((diff%3600000)/60000);
+var s=Math.floor((diff%60000)/1000);
+document.getElementById('cd-days').textContent=String(d).padStart(2,'0');
+document.getElementById('cd-hours').textContent=String(h).padStart(2,'0');
+document.getElementById('cd-mins').textContent=String(m).padStart(2,'0');
+document.getElementById('cd-secs').textContent=String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+</script>
+</body>
+</html>

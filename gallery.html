@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gallery — Isabella & Tyler</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config={darkMode:"class",theme:{extend:{colors:{"inverse-primary":"#e3c370","tertiary-fixed":"#e4e4cc","on-surface":"#1a1c1a","primary-fixed":"#ffdf91","on-primary":"#ffffff","on-error-container":"#93000a","tertiary":"#5e604d","inverse-surface":"#2f312f","tertiary-container":"#c5c6ae","secondary":"#665c60","surface-bright":"#faf9f6","on-background":"#1a1c1a","on-secondary-fixed-variant":"#4e4448","primary":"#735b11","on-secondary-fixed":"#211a1d","surface-dim":"#dbdad7","on-primary-fixed":"#241a00","secondary-fixed":"#eddfe4","outline":"#7e7666","tertiary-fixed-dim":"#c8c8b0","inverse-on-surface":"#f2f1ee","surface-tint":"#735b11","on-primary-fixed-variant":"#584400","on-primary-container":"#654e02","secondary-container":"#eadce1","on-tertiary":"#ffffff","error-container":"#ffdad6","error":"#ba1a1a","background":"#faf9f6","primary-fixed-dim":"#e3c370","on-error":"#ffffff","surface-container":"#efeeeb","surface":"#faf9f6","surface-container-high":"#e9e8e5","on-secondary-container":"#6a6064","surface-variant":"#e3e2e0","on-tertiary-container":"#515240","on-tertiary-fixed":"#1b1d0e","on-surface-variant":"#4c4638","surface-container-lowest":"#ffffff","on-secondary":"#ffffff","surface-container-highest":"#e3e2e0","surface-container-low":"#f4f3f1","secondary-fixed-dim":"#d1c3c8","on-tertiary-fixed-variant":"#474836","outline-variant":"#cfc5b3","primary-container":"#e1c16e"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"margin-edge":"40px",unit:"8px",gutter:"24px","section-gap":"80px","container-max":"1200px"},fontFamily:{"display-lg":["Great Vibes","cursive"],"body-md":["Cormorant Garamond","serif"],"headline-sm":["Cormorant Garamond","serif"],"label-caps":["Cormorant Garamond","serif"],"body-lg":["Cormorant Garamond","serif"],"headline-md":["Cormorant Garamond","serif"]},fontSize:{"display-lg":["48px",{lineHeight:"1.1",letterSpacing:"-0.02em",fontWeight:"400"}],"body-md":["16px",{lineHeight:"1.6",fontWeight:"300"}],"headline-sm":["24px",{lineHeight:"1.3",fontWeight:"400"}],"label-caps":["12px",{lineHeight:"1.0",letterSpacing:"0.15em",fontWeight:"500"}],"body-lg":["18px",{lineHeight:"1.6",fontWeight:"300"}],"headline-md":["32px",{lineHeight:"1.2",fontWeight:"400"}]}}}
+</script>
+<style>
+.glass-panel{background:rgba(255,255,255,.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(225,193,110,.2)}
+body{min-height:100dvh}
+
+.card-stack{position:relative;width:100%;max-width:480px;margin:0 auto;aspect-ratio:3/4;perspective:1200px}
+.card-stack-item{position:absolute;inset:0;border-radius:1rem;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.25);transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s ease,box-shadow .6s ease;cursor:pointer}
+.card-stack-item img{width:100%;height:100%;object-cover}
+.card-stack-item .card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 50%);display:flex;flex-direction:column;justify-content:flex-end;padding:2rem;color:white}
+.card-stack-item .card-title{font-family:'Great Vibes',cursive;font-size:1.5rem;font-weight:400;margin-bottom:.25rem}
+.card-stack-item .card-desc{font-family:'Cormorant Garamond',serif;font-size:.875rem;opacity:.8;font-weight:300}
+.card-stack-item.state-current{z-index:3;transform:translateY(0) scale(1);opacity:1;box-shadow:0 25px 60px rgba(0,0,0,.25)}
+.card-stack-item.state-behind{z-index:2;transform:translateY(12px) scale(0.95);opacity:.7;box-shadow:0 15px 40px rgba(0,0,0,.15)}
+.card-stack-item.state-behind-2{z-index:1;transform:translateY(24px) scale(0.9);opacity:.4;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.card-stack-item.state-hidden{z-index:0;transform:translateY(36px) scale(0.85);opacity:0;pointer-events:none}
+
+.card-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1.5rem}
+.card-dot{width:8px;height:8px;border-radius:50%;background:rgba(115,91,17,.25);cursor:pointer;transition:all .3s ease}
+.card-dot.active{background:#735b11;transform:scale(1.3)}
+
+.gallery-item{transition:transform .5s cubic-bezier(.4,0,.2,1),box-shadow .5s ease}
+.gallery-item:hover{transform:scale(1.02);box-shadow:0 25px 60px rgba(0,0,0,.2)}
+.lb-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.95);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease}
+.lb-overlay.active{opacity:1;pointer-events:auto}
+.lb-content{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:60px 80px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.lb-content img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.5);transition:opacity .25s ease,transform .25s ease}
+.lb-close{position:absolute;top:20px;right:20px;z-index:10;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);cursor:pointer;padding:10px;border-radius:50%;transition:all .2s;backdrop-filter:blur(8px);line-height:0}
+.lb-close:hover{color:#fff;background:rgba(255,255,255,.15)}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;cursor:pointer;padding:14px;border-radius:50%;transition:all .2s;backdrop-filter:blur(8px);line-height:0}
+.lb-nav:hover{background:rgba(255,255,255,.18)}
+.lb-prev{left:20px}
+.lb-next{right:20px}
+.lb-dots{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10}
+.lb-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);transition:all .3s;cursor:pointer}
+.lb-dots span.active{background:#E1C16E;transform:scale(1.3)}
+.lb-counter{position:absolute;bottom:56px;left:50%;transform:translateX(-50%);font-family:'Cormorant Garamond',serif;font-size:.82rem;color:rgba(255,255,255,.45);letter-spacing:.1em;z-index:10}
+@media(max-width:768px){.lb-content{padding:40px 12px}.lb-prev{left:8px}.lb-next{right:8px}.lb-nav{padding:10px}}
+</style>
+<script>
+if(performance.navigation.type===1||performance.getEntriesByType("navigation")[0].type==="reload"){
+window.location.href="index.html";
+}
+</script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#1a1c1a]/90 backdrop-blur-xl border-b border-[#E1C16E]/20 shadow-[0_10px_40px_rgba(225,193,110,0.1)]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#E1C16E]">favorite</span>
+<div class="vows-breadcrumb text-[#735b11]/70">
+<a href="index.html" class="step no-underline text-inherit hover:text-primary transition-colors" data-step="1">
+<span class="dot"></span>
+<span class="step-label">INVITATION</span>
+</a>
+<span class="connector"></span>
+<div class="step active" data-step="2">
+<span class="dot"></span>
+<span class="step-label">GALLERY</span>
+</div>
+</div>
+</div>
+<div class="font-serif italic text-2xl text-[#E1C16E]">I & T</div>
+</header>
+<main class="pt-24 pb-32">
+<section class="text-center px-6 mb-16">
+<p class="font-label-caps text-label-caps text-primary tracking-[0.3em] mb-4">CAPTURED MOMENTS</p>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-4 italic">Isabella & Tyler</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant italic max-w-lg mx-auto">A collection of our most cherished memories together</p>
+<div class="mt-6 flex justify-center items-center gap-4">
+<div class="h-[1px] w-16 bg-primary-container"></div>
+<span class="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+<div class="h-[1px] w-16 bg-primary-container"></div>
+</div>
+</section>
+<section class="px-6 mb-20">
+<div class="card-stack" id="cardStack">
+<div class="card-stack-item state-current" data-index="0">
+<img src="Photos/Photo galery (1).jpg" alt="Photo 1"/>
+<div class="card-overlay"><div class="card-title">Our Beginning</div><div class="card-desc">Where it all started</div></div>
+</div>
+<div class="card-stack-item state-behind" data-index="1">
+<img src="Photos/Photo galery (2).jpg" alt="Photo 2"/>
+<div class="card-overlay"><div class="card-title">Together Forever</div><div class="card-desc">Every moment counts</div></div>
+</div>
+<div class="card-stack-item state-behind-2" data-index="2">
+<img src="Photos/Photo galery (3).jpg" alt="Photo 3"/>
+<div class="card-overlay"><div class="card-title">Adventures</div><div class="card-desc">Exploring the world hand in hand</div></div>
+</div>
+<div class="card-stack-item state-hidden" data-index="3">
+<img src="Photos/Photo galery (4).jpg" alt="Photo 4"/>
+<div class="card-overlay"><div class="card-title">Pure Joy</div><div class="card-desc">Laughter and love</div></div>
+</div>
+<div class="card-stack-item state-hidden" data-index="4">
+<img src="Photos/Photo galery (5).jpg" alt="Photo 5"/>
+<div class="card-overlay"><div class="card-title">Growing Together</div><div class="card-desc">Building our future</div></div>
+</div>
+</div>
+<div class="card-dots" id="cardDots"></div>
+</section>
+<section class="max-w-[1200px] mx-auto px-6">
+<h3 class="font-headline-md text-headline-md text-on-surface text-center mb-12">All Photos</h3>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+<div class="md:col-span-8 overflow-hidden rounded-3xl relative shadow-lg gallery-item cursor-pointer" onclick="openLightbox('Photos/Photo galery (6).jpg')">
+<img class="w-full h-[400px] object-cover" src="Photos/Photo galery (6).jpg" alt="Gallery photo 6"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+</div>
+<div class="md:col-span-4 overflow-hidden rounded-3xl relative shadow-lg gallery-item cursor-pointer" onclick="openLightbox('Photos/Photo galery (1).jpg')">
+<img class="w-full h-[400px] object-cover" src="Photos/Photo galery (1).jpg" alt="Gallery photo 1"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+</div>
+<div class="md:col-span-4 overflow-hidden rounded-3xl relative shadow-lg gallery-item cursor-pointer" onclick="openLightbox('Photos/Photo galery (2).jpg')">
+<img class="w-full h-[300px] object-cover" src="Photos/Photo galery (2).jpg" alt="Gallery photo 2"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+</div>
+<div class="md:col-span-8 overflow-hidden rounded-3xl relative shadow-lg gallery-item cursor-pointer" onclick="openLightbox('Photos/Photo galery (3).jpg')">
+<img class="w-full h-[300px] object-cover" src="Photos/Photo galery (3).jpg" alt="Gallery photo 3"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+</div>
+<div class="md:col-span-6 overflow-hidden rounded-3xl relative shadow-lg gallery-item cursor-pointer" onclick="openLightbox('Photos/Photo galery (4).jpg')">
+<img class="w-full h-[350px] object-cover" src="Photos/Photo galery (4).jpg" alt="Gallery photo 4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+</div>
+<div class="md:col-span-6 overflow-hidden rounded-3xl relative shadow-lg gallery-item cursor-pointer" onclick="openLightbox('Photos/Photo galery (5).jpg')">
+<img class="w-full h-[350px] object-cover" src="Photos/Photo galery (5).jpg" alt="Gallery photo 5"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+</div>
+</div>
+</section>
+<section class="max-w-2xl mx-auto text-center px-6 mt-20">
+<div class="glass-panel p-12 rounded-xl">
+<p class="font-label-caps text-label-caps text-primary tracking-[0.3em] mb-4">PROPOSAL VIDEO</p>
+<div class="relative rounded-xl overflow-hidden cursor-pointer group" onclick="openVideoOverlay()">
+<img src="Photos/Photo galery (6).jpg" alt="Proposal thumbnail" class="w-full aspect-video object-cover"/>
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center transition-all group-hover:bg-black/40">
+<div class="w-20 h-20 rounded-full bg-white/90 flex items-center justify-center shadow-2xl transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-[#735b11] text-4xl">play_arrow</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<div class="lb-overlay" id="lightbox" onclick="lbClose()">
+<button class="lb-close" onclick="lbClose(event)">
+<span class="material-symbols-outlined text-3xl">close</span>
+</button>
+<button class="lb-nav lb-prev" onclick="lbPrev(event)">
+<span class="material-symbols-outlined text-3xl">chevron_left</span>
+</button>
+<div class="lb-content" id="lb-swipe">
+<img id="lb-img" src="" alt="Gallery photo"/>
+</div>
+<button class="lb-nav lb-next" onclick="lbNext(event)">
+<span class="material-symbols-outlined text-3xl">chevron_right</span>
+</button>
+<div class="lb-dots" id="lb-dots"></div>
+<div class="lb-counter" id="lb-counter"></div>
+</div>
+<div class="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center" id="video-overlay" style="display:none">
+<button class="absolute top-6 right-6 text-white/80 hover:text-white transition-colors z-10" onclick="closeVideoOverlay()">
+<span class="material-symbols-outlined text-4xl">close</span>
+</button>
+<video id="proposal-video" class="w-full max-h-[80vh] object-contain" controls autoplay>
+<source src="Photos/Proposal Video.mp4" type="video/mp4"/>
+Your browser does not support the video tag.
+</video>
+</div>
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-4 bg-[#1a1c1a]/90 backdrop-blur-xl border-t border-[#E1C16E]/20 rounded-t-2xl shadow-[0_-10px_40px_rgba(225,193,110,0.1)]">
+<a href="index.html" class="flex flex-col items-center justify-center text-stone-400 hover:text-[#E1C16E] transition-colors no-underline">
+<span class="material-symbols-outlined">home</span>
+<span class="font-serif text-[10px] uppercase tracking-tighter">Home</span>
+</a>
+<a href="gallery.html" class="flex flex-col items-center justify-center text-[#E1C16E] scale-110 transition-transform no-underline">
+<span class="material-symbols-outlined" style="font-variation-settings:'FILL'1">photo_library</span>
+<span class="font-serif text-[10px] uppercase tracking-tighter">Gallery</span>
+</a>
+<a href="rsvp.html" class="flex flex-col items-center justify-center text-stone-400 hover:text-[#E1C16E] transition-colors no-underline">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-serif text-[10px] uppercase tracking-tighter">RSVP</span>
+</a>
+</nav>
+<script>
+function openLightbox(src){initLb();var i=lbPhotos.indexOf(src);if(i===-1){lbPhotos.push(src);i=lbPhotos.length-1}lbIndex=i;showLbImg();document.getElementById('lightbox').classList.add('active');document.body.style.overflow='hidden'}
+function lbClose(e){if(e)e.stopPropagation();document.getElementById('lightbox').classList.remove('active');document.body.style.overflow=''}
+function lbPrev(e){if(e)e.stopPropagation();lbIndex--;showLbImg()}
+function lbNext(e){if(e)e.stopPropagation();lbIndex++;showLbImg()}
+var lbPhotos=[],lbIndex=0;
+function initLb(){if(lbPhotos.length)return;var imgs=document.querySelectorAll('.gallery-item');lbPhotos=[];imgs.forEach(function(el){var m=el.getAttribute('onclick');if(m){var r=m.match(/openLightbox\('([^']+)'\)/);if(r)lbPhotos.push(r[1])}})}
+function showLbImg(){var img=document.getElementById('lb-img');var i=((lbIndex%lbPhotos.length)+lbPhotos.length)%lbPhotos.length;img.style.opacity='0';img.style.transform='scale(0.95)';setTimeout(function(){img.src=lbPhotos[i];img.style.opacity='1';img.style.transform='scale(1)'},60);updateLbDots(i);document.getElementById('lb-counter').textContent=(i+1)+' / '+lbPhotos.length}
+function updateLbDots(i){var c=document.getElementById('lb-dots');c.innerHTML='';for(var j=0;j<lbPhotos.length;j++){var d=document.createElement('span');if(j===i)d.className='active';d.setAttribute('data-idx',j);d.onclick=function(e){e.stopPropagation();lbIndex=parseInt(this.getAttribute('data-idx'));showLbImg()};c.appendChild(d)}}
+var lbTouchX=0;document.getElementById('lightbox').addEventListener('touchstart',function(e){lbTouchX=e.changedTouches[0].screenX},{passive:true});document.getElementById('lightbox').addEventListener('touchend',function(e){var diff=lbTouchX-e.changedTouches[0].screenX;if(Math.abs(diff)>50){if(diff>0)lbNext();else lbPrev()}},{passive:true});
+document.addEventListener('keydown',function(e){if(!document.getElementById('lightbox').classList.contains('active')){if(e.key==='Escape')closeVideoOverlay();return}if(e.key==='Escape')lbClose();if(e.key==='ArrowRight')lbNext();if(e.key==='ArrowLeft')lbPrev()});
+function openVideoOverlay(){document.getElementById('video-overlay').style.display='flex';var v=document.getElementById('proposal-video');v.load();v.play().catch(function(){})}
+function closeVideoOverlay(){var v=document.getElementById('proposal-video');v.pause();v.currentTime=0;document.getElementById('video-overlay').style.display='none'}
+
+(function(){
+var cards=document.querySelectorAll('.card-stack-item');
+var dotsContainer=document.getElementById('cardDots');
+var current=0;
+var total=cards.length;
+var intervalMs=3000;
+var timer=null;
+var paused=false;
+
+cards.forEach(function(_,i){
+var dot=document.createElement('div');
+dot.className='card-dot'+(i===0?' active':'');
+dot.addEventListener('click',function(){goTo(i)});
+dotsContainer.appendChild(dot);
+});
+
+function goTo(index){
+current=index;
+cards.forEach(function(card,i){
+card.className='card-stack-item';
+if(i===current)card.classList.add('state-current');
+else if(i===(current+1)%total)card.classList.add('state-behind');
+else if(i===(current+2)%total)card.classList.add('state-behind-2');
+else card.classList.add('state-hidden');
+});
+var dots=dotsContainer.querySelectorAll('.card-dot');
+dots.forEach(function(d,i){d.className='card-dot'+(i===current?' active':'')});
+}
+
+function next(){goTo((current+1)%total)}
+
+function startTimer(){timer=setInterval(function(){if(!paused)next()},intervalMs)}
+function stopTimer(){clearInterval(timer)}
+
+var stack=document.getElementById('cardStack');
+stack.addEventListener('mouseenter',function(){paused=true});
+stack.addEventListener('mouseleave',function(){paused=false});
+
+startTimer();
+})();
+</script>
+</body>
+</html>

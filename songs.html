@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Song Requests — Isabella & Tyler</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+<style>
+body{min-height:100dvh;overflow-x:hidden;background:#1a1c1a}
+.spline-bg{position:fixed;inset:0;z-index:0}
+.spline-bg spline-viewer{width:100%;height:100%}
+.glass-panel{
+background:rgba(255,255,255,.18);
+backdrop-filter:blur(40px) saturate(200%) brightness(1.1);
+-webkit-backdrop-filter:blur(40px) saturate(200%) brightness(1.1);
+border:1px solid rgba(255,255,255,.35);
+box-shadow:0 8px 80px rgba(225,193,110,.1),inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(255,255,255,.1);
+}
+.glass-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.25) 0%,rgba(255,255,255,.05) 100%);border-radius:48px 48px 0 0;pointer-events:none;z-index:0}
+.glass-input{
+width:100%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+border-radius:1rem;padding:.875rem 1rem;color:#1a1c1a;
+ font-family:'Cormorant Garamond',serif;font-size:.875rem;
+transition:all .3s;backdrop-filter:blur(20px) saturate(150%);
+-webkit-backdrop-filter:blur(20px) saturate(150%);
+box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 2px 8px rgba(0,0,0,.05);
+}
+.glass-input:focus{outline:none;border-color:rgba(225,193,110,.5);background:rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 3px rgba(225,193,110,.15),0 4px 16px rgba(0,0,0,.08)}
+.glass-input::placeholder{color:rgba(102,92,96,.35)}
+.glass-btn{padding:1rem 2rem;border-radius:1rem;font-size:.8rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;transition:all .3s;cursor:pointer;border:0;position:relative;z-index:1}
+.glass-btn-primary{background:linear-gradient(135deg,rgba(225,193,110,.85),rgba(200,169,90,.9));color:#fff;box-shadow:0 8px 32px rgba(225,193,110,.3),inset 0 1px 0 rgba(255,255,255,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.glass-btn-primary:hover{box-shadow:0 12px 40px rgba(225,193,110,.45),inset 0 1px 0 rgba(255,255,255,.4);transform:translateY(-2px)}
+.glass-btn-outline{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.glass-btn-outline:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
+.glass-input-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:#fff;font-weight:500;margin-bottom:.5rem;display:block;text-shadow:0 1px 4px rgba(0,0,0,.15)}
+.search-result{display:none;animation:fadeIn .3s ease}
+.search-result.show{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body class="text-white font-body-md">
+<div class="spline-bg">
+<spline-viewer url="https://my.spline.design/liquidglass-esHZYVnWLTAdnpdvu12cOG4v/"></spline-viewer>
+<div class="absolute inset-0 bg-gradient-to-b from-[#1a1c1a]/30 via-transparent to-[#1a1c1a]/50 pointer-events-none"></div>
+</div>
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#1a1c1a]/90 backdrop-blur-2xl border-b border-white/20 shadow-[0_10px_40px_rgba(225,193,110,0.1)]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#E1C16E]">music_note</span>
+<div class="font-serif italic text-white/50 text-xs tracking-widest uppercase">Song Requests</div>
+</div>
+<div class="font-serif italic text-2xl text-[#E1C16E]" style="text-shadow:0 2px 8px rgba(0,0,0,.2)">I & T</div>
+</header>
+<main class="relative z-10 pt-24 pb-32 max-w-[1200px] mx-auto px-6">
+<a href="index.html" class="inline-flex items-center gap-2 text-white/60 hover:text-white font-body-md mb-8 no-underline transition-colors">
+<span class="material-symbols-outlined text-lg">arrow_back</span>
+Back to Invitation
+</a>
+<section class="flex justify-center">
+<div class="glass-panel max-w-2xl w-full p-10 md:p-14 rounded-[48px] shadow-[0_20px_60px_rgba(225,193,110,0.15)] relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1/3 h-[2px] bg-gradient-to-r from-[#E1C16E] to-transparent shadow-[0_0_15px_rgba(225,193,110,0.5)]"></div>
+<div class="text-center mb-8">
+<span class="material-symbols-outlined text-white mb-4 block text-4xl" style="text-shadow:0 2px 8px rgba(0,0,0,.2)">queue_music</span>
+<h2 class="font-headline-md text-3xl font-serif text-white mb-2" style="text-shadow:0 2px 8px rgba(0,0,0,.2)">Request a Song</h2>
+<p class="text-white/70">Help us build the perfect playlist for our celebration</p>
+</div>
+<form class="space-y-6" id="songForm" onsubmit="event.preventDefault();handleSubmit(event)">
+<div>
+<label class="glass-input-label">YOUR NAME</label>
+<input class="glass-input" id="name" placeholder="Your name" type="text" required/>
+</div>
+<div>
+<label class="glass-input-label">SONG TITLE</label>
+<input class="glass-input" id="songTitle" placeholder="Song name" type="text" required/>
+</div>
+<div>
+<label class="glass-input-label">ARTIST</label>
+<input class="glass-input" id="artist" placeholder="Artist name" type="text" required/>
+</div>
+<div>
+<label class="glass-input-label">WHY THIS SONG? (OPTIONAL)</label>
+<textarea class="glass-input resize-none" id="reason" placeholder="A special memory with this song..." rows="2"></textarea>
+</div>
+<button type="submit" class="glass-btn glass-btn-primary w-full">SUBMIT REQUEST</button>
+</form>
+<div id="successMsg" class="text-center py-8" style="display:none">
+<span class="material-symbols-outlined text-[#E1C16E] text-5xl mb-4 block">check_circle</span>
+<p class="font-serif text-2xl text-white mb-2">Song Request Sent!</p>
+<p class="text-white/70">We'll add it to the playlist. Thank you!</p>
+</div>
+</div>
+</section>
+</main>
+<footer class="relative z-10 py-12 text-center text-white/40 font-body-md text-sm border-t border-white/10 bg-[#1a1c1a]/90 backdrop-blur-sm">
+<p class="font-display-lg text-2xl tracking-wider opacity-60" style="color:#E1C16E">I & T</p>
+<p class="font-serif text-[10px] tracking-[.2em] uppercase opacity-40 mt-1">2027</p>
+</footer>
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-4 bg-[#1a1c1a]/90 backdrop-blur-2xl border-t border-white/20 rounded-t-2xl shadow-[0_-10px_40px_rgba(225,193,110,0.1)]">
+<a href="index.html" class="flex flex-col items-center justify-center text-white/50 hover:text-[#E1C16E] transition-colors no-underline">
+<span class="material-symbols-outlined">home</span>
+<span class="font-serif text-[10px] uppercase tracking-tighter">Home</span>
+</a>
+<a href="gallery.html" class="flex flex-col items-center justify-center text-white/50 hover:text-[#E1C16E] transition-colors no-underline">
+<span class="material-symbols-outlined">photo_library</span>
+<span class="font-serif text-[10px] uppercase tracking-tighter">Gallery</span>
+</a>
+<a href="rsvp.html" class="flex flex-col items-center justify-center text-white/50 hover:text-[#E1C16E] transition-colors no-underline">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-serif text-[10px] uppercase tracking-tighter">RSVP</span>
+</a>
+<a href="songs.html" class="flex flex-col items-center justify-center text-[#E1C16E] scale-110 transition-transform no-underline">
+<span class="material-symbols-outlined">music_note</span>
+<span class="font-serif text-[10px] uppercase tracking-tighter">Songs</span>
+</a>
+</nav>
+<script>
+const STORAGE_KEY='it_songs';
+function handleSubmit(e){
+var name=document.getElementById('name').value.trim();
+var title=document.getElementById('songTitle').value.trim();
+var artist=document.getElementById('artist').value.trim();
+var reason=document.getElementById('reason').value.trim();
+if(!name||!title||!artist)return;
+var songs=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+songs.push({name:name,title:title,artist:artist,reason:reason,date:new Date().toISOString()});
+localStorage.setItem(STORAGE_KEY,JSON.stringify(songs));
+document.getElementById('songForm').style.display='none';
+document.getElementById('successMsg').style.display='block';
+}
+</script>
+</body>
+</html>

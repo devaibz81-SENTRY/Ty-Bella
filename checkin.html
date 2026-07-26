@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Check-In — Isabella & Tyler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--gold:#c9a84c;--black:#0d0d0d;--ivory:#f5f0e8;--green:#2ecc71}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d0d0d;color:var(--ivory);font-family:'Montserrat',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+.container{max-width:500px;width:100%;padding:2rem 1.5rem;text-align:center}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3rem);color:var(--gold);margin-bottom:.5rem}
+.subtitle{color:rgba(255,255,255,.4);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:2rem}
+.search-box{display:flex;gap:.5rem;margin-bottom:2rem}
+.search-box input{flex:1;background:#222;border:1px solid var(--gold);border-radius:8px;padding:1rem;color:#fff;font-family:'Montserrat',sans-serif;font-size:1rem}
+.search-box input::placeholder{color:#666}
+.search-box button{background:var(--gold);color:#000;border:none;padding:1rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:1rem}
+.result{display:none;animation:fadeIn .3s ease}
+.result.show{display:block}
+.guest-card{background:#111;border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+.guest-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--ivory)}
+.guest-table{font-size:.8rem;color:var(--gold);margin-top:.3rem}
+.checkin-status{margin-top:1rem;padding:.8rem;border-radius:8px;font-size:.8rem}
+.checkin-status.checked{background:rgba(46,204,113,.15);color:var(--green);border:1px solid rgba(46,204,113,.3)}
+.checkin-status.pending{background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1)}
+.checkin-btn{padding:.8rem 2rem;background:var(--gold);color:#000;border:none;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer;margin-top:1rem;transition:all .2s}
+.checkin-btn:hover{opacity:.9}
+.checkin-btn:disabled{opacity:.4;cursor:default}
+.error{color:#e74c3c;text-align:center;padding:1rem}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Guest Check-In</h1>
+<p class="subtitle">Find your name and check in</p>
+<div class="search-box">
+<input type="text" id="search" placeholder="Search your name..." onkeydown="if(event.key==='Enter') searchGuest()"/>
+<button onclick="searchGuest()">Find</button>
+</div>
+<div class="result" id="result"></div>
+</div>
+<script>
+const GUESTS_KEY='it_guests';
+const CHECKIN_KEY='it_checkins';
+let guests=JSON.parse(localStorage.getItem(GUESTS_KEY)||'[]');
+let checkins=JSON.parse(localStorage.getItem(CHECKIN_KEY)||'[]');
+function searchGuest(){
+var query=document.getElementById('search').value.trim().toLowerCase();
+var el=document.getElementById('result');
+if(!query){el.innerHTML='<div class="error">Enter a name to search</div>';el.classList.add('show');return;}
+var match=guests.find(function(g){
+var name=(g.name||g.first_name||'').toLowerCase();
+return name.includes(query);
+});
+if(!match){
+el.innerHTML='<div class="error">Guest not found. Try a different spelling.</div>';
+el.classList.add('show');
+return;
+}
+var id=match._id||match.id||match.name;
+var checked=checkins.indexOf(id)!==-1;
+el.innerHTML='<div class="guest-card"><div class="guest-name">'+escapeHtml(match.name||match.first_name+' '+match.last_name)+'</div><div class="guest-table">Table '+(match.tableNum||'—')+'</div><div class="checkin-status '+(checked?'checked':'pending')+'">'+(checked?'Checked In ✓':'Not Yet Checked In')+'</div>'+(checked?'':'<button class="checkin-btn" onclick="doCheckin(\''+escapeHtml(id)+'\')">CHECK IN</button>')+'</div>';
+el.classList.add('show');
+}
+function doCheckin(id){
+if(checkins.indexOf(id)===-1)checkins.push(id);
+localStorage.setItem(CHECKIN_KEY,JSON.stringify(checkins));
+searchGuest();
+}
+function escapeHtml(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+</script>
+</body>
+</html>
