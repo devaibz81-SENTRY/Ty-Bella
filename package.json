@@ -9,8 +9,5 @@
   },
   "dependencies": {
     "convex": "^1.42.0"
-  },
-  "devDependencies": {
-    "shadcn": "^4.15.0"
   }
 }
