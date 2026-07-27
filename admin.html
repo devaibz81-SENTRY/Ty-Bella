@@ -398,6 +398,7 @@ Isabella and Tyler</textarea>
         <h2 class="font-serif text-xl text-gold">Add Guest / Household</h2>
       </div>
       <div class="p-6 space-y-4">
+        <div id="modal-error" class="hidden text-red-400 text-xs bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2" style="display:none;"></div>
         <div class="grid sm:grid-cols-2 gap-4">
           <div>
             <label class="text-[11px] tracking-wider uppercase text-zinc-500 block mb-1.5">First Name (Lead Guest)</label>
@@ -450,7 +451,7 @@ Isabella and Tyler</textarea>
 
   <script>
     const CONVEX_HTTP_URL = 'https://adept-bat-233.convex.site';
-    const WEDDING_URL = 'http://localhost:8888';
+    const WEDDING_URL = 'https://ty-bella.vercel.app';
     const SESSION_KEY = 'it_admin_token';
     const ADMIN_PASSWORD = 'Ty&Bella@26';
     const LIVE_REFRESH_MS = 12000;
@@ -895,6 +896,7 @@ Isabella and Tyler</textarea>
 
     function openAddGuest() {
       editingGuestId = null;
+      document.getElementById('modal-error').style.display = 'none';
       document.querySelector('#add-modal h2').textContent = 'Add Guest / Household';
       document.getElementById('m-fname').value = '';
       document.getElementById('m-lname').value = '';
@@ -933,7 +935,26 @@ Isabella and Tyler</textarea>
       s.style.display = (t === 'couple') ? 'block' : 'none';
     }
 
+    function validateName(val, label) {
+      if (!val || !val.trim()) return label + ' is required';
+      if (/[&%$#@!*(){}[\]\\\/=+<>|~^`]/.test(val)) return label + ' contains invalid characters (& % $ # @ ! * etc)';
+      return '';
+    }
+
     function submitGuest() {
+      const errEl = document.getElementById('modal-error');
+      errEl.style.display = 'none';
+
+      const fname = document.getElementById('m-fname').value.trim();
+      const lname = document.getElementById('m-lname').value.trim();
+      const ferr = validateName(fname, 'First name');
+      const lerr = validateName(lname, 'Last name');
+      if (ferr || lerr) {
+        errEl.textContent = ferr || lerr;
+        errEl.style.display = 'block';
+        return;
+      }
+
       const btn = document.querySelector('#add-modal .bg-gold');
       const originalText = btn.textContent;
       btn.textContent = 'Saving...'; btn.disabled = true;
