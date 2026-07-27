@@ -1,18 +1,34 @@
 import { httpAction } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
+import { v } from "convex/values";
+
+export const listAllSeating = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query("seating").collect();
+  },
+});
+
+export const upsertSeating = mutation({
+  args: { guest_id: v.string(), table_num: v.string(), updated_at: v.number() },
+  handler: async (ctx, { guest_id, table_num, updated_at }) => {
+    const existing = await ctx.db.query("seating").withIndex("by_guest", q => q.eq("guest_id", guest_id)).first();
+    if (existing) {
+      await ctx.db.patch(existing._id, { table_num, updated_at });
+    } else {
+      await ctx.db.insert("seating", { guest_id, table_num, updated_at });
+    }
+  },
+});
 
 export const listAssigned = httpAction(async (ctx) => {
-  const seating = await ctx.db.query("seating").collect();
-  return new Response(JSON.stringify(seating), { status: 200 });
+  const data = await ctx.runQuery("seating:listAllSeating");
+  return new Response(JSON.stringify(data), { status: 200 });
 });
 
 export const assign = httpAction(async (ctx, request) => {
   const { guestId, tableNum } = await request.json();
-  const existing = await ctx.db.query("seating").withIndex("by_guest", q => q.eq("guest_id", guestId)).first();
-  if (existing) {
-    await ctx.db.patch(existing._id, { table_num: String(tableNum), updated_at: Date.now() });
-  } else {
-    await ctx.db.insert("seating", { guest_id: guestId, table_num: String(tableNum), updated_at: Date.now() });
-  }
+  await ctx.runMutation("seating:upsertSeating", { guest_id: guestId, table_num: String(tableNum), updated_at: Date.now() });
   return new Response(JSON.stringify({ ok: true }), { status: 200 });
 });
 
@@ -20,6 +36,7 @@ export const getByGuest = httpAction(async (ctx, request) => {
   const url = new URL(request.url);
   const guestId = url.searchParams.get("guestId");
   if (!guestId) return new Response(JSON.stringify({ error: "Missing guestId" }), { status: 400 });
-  const seat = await ctx.db.query("seating").withIndex("by_guest", q => q.eq("guest_id", guestId)).first();
+  const all = await ctx.runQuery("seating:listAllSeating");
+  const seat = all.find((s: any) => s.guest_id === guestId);
   return new Response(JSON.stringify(seat || { table_num: null }), { status: 200 });
 });

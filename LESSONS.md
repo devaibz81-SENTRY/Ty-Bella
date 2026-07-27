@@ -619,7 +619,7 @@ But now you know. And the next project — whatever it is — will be smoother b
 
 ### Overview
 - **Frontend**: Static HTML + Tailwind CSS (CDN) served by Vercel
-- **Backend**: Convex functions at `https://wary-lark-534.convex.site`
+- **Backend**: Convex functions at `https://hip-donkey-513.convex.site`
 - **Data**: All guest/song/message/seating data in Convex serverless DB
 
 ### Convex Project Structure
@@ -638,12 +638,12 @@ convex/
 ### Deploy Steps
 1. `npm install`
 2. `npx convex dev` — starts local Convex dev server + generates `_generated/` files
-3. `npx convex deploy` — deploys functions to `wary-lark-534`
+3. `npx convex deploy` — deploys functions to `hip-donkey-513`
 4. Commit and push — Vercel auto-deploys the static site
 
 ### Key Urls
-- Convex Dashboard: https://dashboard.convex.dev/deployment/wary-lark-534
-- HTTP Actions URL: https://wary-lark-534.convex.site
+- Convex Dashboard: https://dashboard.convex.dev/deployment/hip-donkey-513
+- HTTP Actions URL: https://hip-donkey-513.convex.site
 - Vercel: Auto-linked to GitHub repo
 
 ### Data Flow
