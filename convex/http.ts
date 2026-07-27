@@ -7,6 +7,7 @@ import { listAssigned, assign, getByGuest } from "./seating";
 import { listSongs, submitSong } from "./songs";
 import { listMessages, submitMessage } from "./messages";
 import { checkIn, lookup } from "./checkin";
+import { submit as rsvp } from "./rsvp";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -29,6 +30,7 @@ const apiPaths = [
   "/api/songs",
   "/api/messages",
   "/api/checkin", "/api/checkin/lookup",
+  "/api/rsvp",
 ];
 for (const p of apiPaths) {
   router.route({ path: p, method: "OPTIONS", handler: preflight });
@@ -49,5 +51,6 @@ router.route({ path: "/api/messages", method: "GET", handler: listMessages });
 router.route({ path: "/api/messages", method: "POST", handler: submitMessage });
 router.route({ path: "/api/checkin", method: "POST", handler: checkIn });
 router.route({ path: "/api/checkin/lookup", method: "POST", handler: lookup });
+router.route({ path: "/api/rsvp", method: "POST", handler: rsvp });
 
 export default router;

@@ -77,14 +77,14 @@ window.location.href="index.html";
   </section>
 
   <!-- RSVP Card -->
-  <section>
+  <section id="rsvp-card">
     <div class="glass-panel rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden">
       <div class="absolute top-0 left-0 w-1/3 h-[2px] bg-gradient-to-r from-gold to-transparent shadow-[0_0_20px_rgba(225,193,110,.5)]"></div>
       
       <div class="text-center mb-7">
-        <span class="material-symbols-outlined text-4xl text-white/80 block mb-3">mail</span>
-        <h2 class="font-serif text-3xl text-white">Kindly Respond</h2>
-        <p class="text-sm text-white/60 mt-1">Please let us know by January 27th, 2027</p>
+        <span class="material-symbols-outlined text-4xl text-white/80 block mb-3" id="rsvp-icon">mail</span>
+        <h2 class="font-serif text-3xl text-white" id="rsvp-heading">Kindly Respond</h2>
+        <p class="text-sm text-white/60 mt-1" id="rsvp-subtitle">Please let us know by January 27th, 2027</p>
       </div>
 
       <!-- Attendance Slider -->
@@ -167,8 +167,21 @@ window.location.href="index.html";
 </nav>
 
 <script>
+const CONVEX_HTTP_URL = 'https://adept-bat-233.convex.site';
+
 var attending=false;
 var wasAttending=false;
+var guestId = new URLSearchParams(window.location.search).get('id') || '';
+
+window.addEventListener('DOMContentLoaded', function(){
+  var nameEl = document.getElementById('name');
+  var guestsEl = document.getElementById('guests');
+  var p = new URLSearchParams(window.location.search);
+  if(p.get('name')) nameEl.value = p.get('name');
+  if(p.get('max')) guestsEl.value = Math.min(parseInt(p.get('max'),10)||1, 3);
+  if(p.get('spouse')) nameEl.value = nameEl.value + ' & ' + p.get('spouse');
+});
+
 function toggleAttendance(){
   wasAttending=attending;
   attending=!attending;
@@ -202,10 +215,45 @@ function toggleAttendance(){
         setTimeout(function(){decline.style.opacity='1'},50);
       },350);
     }
+    if(guestId && !wasAttending){
+      setTimeout(function(){handleSubmit(null,true)},400);
+    }
   }
 }
-function handleSubmit(e){
-  alert('Thank you! Your RSVP has been received.');
+function handleSubmit(e, isDeclineAuto){
+  var btn = e ? e.target.querySelector('button[type="submit"]') : null;
+  if(btn){ var originalText = btn.textContent; btn.textContent = 'Sending...'; btn.disabled = true; }
+
+  var payload = {
+    guest_id: guestId,
+    attendance: attending ? 'attending' : 'declined',
+    guests_count: document.getElementById('guests').value,
+    dietary: document.getElementById('diet').value.trim(),
+    message: document.getElementById('message').value.trim(),
+    name: document.getElementById('name').value.trim(),
+  };
+
+  fetch(CONVEX_HTTP_URL + '/api/rsvp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(function(r){ return r.json(); }).then(function(data){
+    if(data.ok){
+      document.getElementById('formFields').style.display = 'none';
+      document.getElementById('attendanceSlider').style.display = 'none';
+      document.getElementById('rsvp-icon').textContent = 'check_circle';
+      document.getElementById('rsvp-heading').textContent = attending ? "Can't Wait to See You!" : "You'll Be Missed";
+      document.getElementById('rsvp-subtitle').textContent = attending
+        ? 'Your RSVP has been received. We look forward to celebrating with you!'
+        : 'Thank you for letting us know. You will be in our hearts!';
+    } else {
+      alert('Something went wrong. Please try again.');
+      if(btn){ btn.textContent = originalText; btn.disabled = false; }
+    }
+  }).catch(function(){
+    alert('Network error. Please check your connection and try again.');
+    if(btn){ btn.textContent = originalText; btn.disabled = false; }
+  });
 }
 </script>
 </body>

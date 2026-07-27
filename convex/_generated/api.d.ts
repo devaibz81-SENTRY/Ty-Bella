@@ -14,6 +14,7 @@ import type * as cors from "../cors.js";
 import type * as guests from "../guests.js";
 import type * as http from "../http.js";
 import type * as messages from "../messages.js";
+import type * as rsvp from "../rsvp.js";
 import type * as seating from "../seating.js";
 import type * as songs from "../songs.js";
 
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   guests: typeof guests;
   http: typeof http;
   messages: typeof messages;
+  rsvp: typeof rsvp;
   seating: typeof seating;
   songs: typeof songs;
 }>;
