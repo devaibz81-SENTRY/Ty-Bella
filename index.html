@@ -261,7 +261,7 @@ RSVP NOW
 <script>
 function playTimelineVideo(wrap){
 var v=wrap.querySelector('video');
-v.play();
+v.play().catch(function(){v.load();v.play().catch(function(){})});
 }
 (function(){
 var items=document.querySelectorAll('.timeline-item');

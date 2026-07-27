@@ -67,7 +67,7 @@
       </div>
       <div class="bg-surface-light border border-surface-border rounded-xl p-6 space-y-4">
         <input type="password" id="admin-pass" class="w-full h-10 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm text-center tracking-widest placeholder:text-zinc-600 focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none" placeholder="Enter Password" onkeydown="if(event.key==='Enter') doLogin()" />
-        <button onclick="doLogin()" class="w-full h-10 bg-gold text-black font-medium text-xs tracking-[0.2em] uppercase rounded-lg hover:bg-gold-400 transition-colors">Enter</button>
+        <button onclick="doLogin()" class="w-full h-10 bg-gold text-black font-medium text-xs tracking-[0.2em] uppercase rounded-lg hover:bg-gold-400 transition-colors cursor-pointer">Enter</button>
         <p id="login-err" class="text-red-400 text-xs text-center hidden">Incorrect password.</p>
       </div>
     </div>
@@ -478,28 +478,38 @@ Isabella and Tyler</textarea>
     async function doLogin() {
       const pass = document.getElementById('admin-pass').value;
       const errEl = document.getElementById('login-err');
+      const btn = document.querySelector('#login-overlay button[onclick*="doLogin"]');
       errEl.style.display = 'none';
+      if (!pass) { errEl.textContent = 'Please enter a password.'; errEl.style.display = 'block'; return; }
+      if (btn) { btn.textContent = 'Connecting...'; btn.disabled = true; }
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
         const res = await fetch(`${CONVEX_HTTP_URL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: pass })
+          body: JSON.stringify({ password: pass }),
+          signal: controller.signal
         });
+        clearTimeout(timeoutId);
         if (res.ok) {
           const data = await res.json();
           adminToken = data.token;
         } else {
           throw new Error('Convex auth unavailable');
         }
-      } catch {
+      } catch (e) {
         if (pass !== ADMIN_PASSWORD) {
+          errEl.textContent = e.name === 'AbortError' ? 'Network timeout — try again' : 'Incorrect password.';
           errEl.style.display = 'block';
+          if (btn) { btn.textContent = 'Enter'; btn.disabled = false; }
           return;
         }
         adminToken = 'local_' + btoa(pass);
       }
       localStorage.setItem(SESSION_KEY, adminToken);
       document.getElementById('login-overlay').style.display = 'none';
+      if (btn) { btn.textContent = 'Enter'; btn.disabled = false; }
       await fetchGuests();
       startLiveRefresh();
     }

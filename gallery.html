@@ -142,11 +142,11 @@ window.location.href="index.html";
 <div class="lb-dots" id="lb-dots"></div>
 <div class="lb-counter" id="lb-counter"></div>
 </div>
-<div class="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center" id="video-overlay" style="display:none">
+<div class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center" id="video-overlay" style="display:none">
 <button class="absolute top-6 right-6 text-white/80 hover:text-white transition-colors z-10" onclick="closeVideoOverlay()">
 <span class="material-symbols-outlined text-4xl">close</span>
 </button>
-<video id="proposal-video" class="w-full max-h-[80vh] object-contain" controls autoplay>
+<video id="proposal-video" class="w-full max-h-[80vh] object-contain" controls playsinline>
 <source src="Photos/Proposal%20Video.mp4" type="video/mp4"/>
 Your browser does not support the video tag.
 </video>
