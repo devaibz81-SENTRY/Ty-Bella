@@ -21,16 +21,16 @@ const preflight = httpAction(async () => {
 
 const router = httpRouter();
 
-// CORS preflight for each POST path
-const postPaths = [
-  "/api/auth/login", "/api/auth/logout",
-  "/api/guest", "/api/guest/delete",
-  "/api/seating",
+// CORS preflight for ALL API paths
+const apiPaths = [
+  "/api/auth/login", "/api/auth/logout", "/api/auth/me",
+  "/api/guests", "/api/guest", "/api/guest/delete",
+  "/api/seating", "/api/seating/guest",
   "/api/songs",
   "/api/messages",
   "/api/checkin", "/api/checkin/lookup",
 ];
-for (const p of postPaths) {
+for (const p of apiPaths) {
   router.route({ path: p, method: "OPTIONS", handler: preflight });
 }
 
