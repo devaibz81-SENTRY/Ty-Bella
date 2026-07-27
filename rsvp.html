@@ -1,87 +1,45 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>RSVP — Isabella & Tyler</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
-<script id="tailwind-config">
-tailwind.config={darkMode:"class",theme:{extend:{colors:{"inverse-primary":"#e3c370","tertiary-fixed":"#e4e4cc","on-surface":"#1a1c1a","primary-fixed":"#ffdf91","on-primary":"#ffffff","on-error-container":"#93000a","tertiary":"#5e604d","inverse-surface":"#2f312f","tertiary-container":"#c5c6ae","secondary":"#665c60","surface-bright":"#faf9f6","on-background":"#1a1c1a","on-secondary-fixed-variant":"#4e4448","primary":"#735b11","on-secondary-fixed":"#211a1d","surface-dim":"#dbdad7","on-primary-fixed":"#241a00","secondary-fixed":"#eddfe4","outline":"#7e7666","tertiary-fixed-dim":"#c8c8b0","inverse-on-surface":"#f2f1ee","surface-tint":"#735b11","on-primary-fixed-variant":"#584400","on-primary-container":"#654e02","secondary-container":"#eadce1","on-tertiary":"#ffffff","error-container":"#ffdad6","error":"#ba1a1a","background":"#faf9f6","primary-fixed-dim":"#e3c370","on-error":"#ffffff","surface-container":"#efeeeb","surface":"#faf9f6","surface-container-high":"#e9e8e5","on-secondary-container":"#6a6064","surface-variant":"#e3e2e0","on-tertiary-container":"#515240","on-tertiary-fixed":"#1b1d0e","on-surface-variant":"#4c4638","surface-container-lowest":"#ffffff","on-secondary":"#ffffff","surface-container-highest":"#e3e2e0","surface-container-low":"#f4f3f1","secondary-fixed-dim":"#d1c3c8","on-tertiary-fixed-variant":"#474836","outline-variant":"#cfc5b3","primary-container":"#e1c16e"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"margin-edge":"40px",unit:"8px",gutter:"24px","section-gap":"80px","container-max":"1200px"},fontFamily:{"display-lg":["Great Vibes","cursive"],"body-md":["Cormorant Garamond","serif"],"headline-sm":["Cormorant Garamond","serif"],"label-caps":["Cormorant Garamond","serif"],"body-lg":["Cormorant Garamond","serif"],"headline-md":["Cormorant Garamond","serif"]},fontSize:{"display-lg":["48px",{lineHeight:"1.1",letterSpacing:"-0.02em",fontWeight:"400"}],"body-md":["16px",{lineHeight:"1.6",fontWeight:"300"}],"headline-sm":["24px",{lineHeight:"1.3",fontWeight:"400"}],"label-caps":["12px",{lineHeight:"1.0",letterSpacing:"0.15em",fontWeight:"500"}],"body-lg":["18px",{lineHeight:"1.6",fontWeight:"300"}],"headline-md":["32px",{lineHeight:"1.2",fontWeight:"400"}]}}}
+<script>
+tailwind.config={theme:{extend:{colors:{gold:'#E1C16E',golddark:'#735b11',surface:'#0a0a0b',surface2:'#18181b'},fontFamily:{serif:['Cormorant Garamond','serif'],script:['Great Vibes','cursive']}}}}
 </script>
 <style>
-body{min-height:100dvh;overflow-x:hidden}
-
+body{min-height:100dvh;overflow-x:hidden;background:#0a0a0b}
 .spline-bg{position:fixed;inset:0;z-index:0}
 .spline-bg spline-viewer{width:100%;height:100%}
-
-.glass-panel{
-background:rgba(255,255,255,.18);
-backdrop-filter:blur(40px) saturate(200%) brightness(1.1);
--webkit-backdrop-filter:blur(40px) saturate(200%) brightness(1.1);
-border:1px solid rgba(255,255,255,.35);
-box-shadow:
-  0 8px 80px rgba(225,193,110,.1),
-  inset 0 1px 0 rgba(255,255,255,.5),
-  inset 0 -1px 0 rgba(255,255,255,.1);
-}
-.glass-panel::before{
-content:'';position:absolute;top:0;left:0;right:0;height:50%;
-background:linear-gradient(180deg,rgba(255,255,255,.25) 0%,rgba(255,255,255,.05) 100%);
-border-radius:48px 48px 0 0;pointer-events:none;z-index:0;
-}
-
-.attendance-slider{position:relative;width:100%;max-width:320px;height:64px;margin:0 auto;border-radius:32px;overflow:hidden;cursor:pointer}
+.glass-panel{background:rgba(255,255,255,.12);backdrop-filter:blur(40px) saturate(180%) brightness(1.1);-webkit-backdrop-filter:blur(40px) saturate(180%) brightness(1.1);border:1px solid rgba(255,255,255,.25);box-shadow:0 8px 80px rgba(225,193,110,.08),inset 0 1px 0 rgba(255,255,255,.4)}
+.glass-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,.02) 100%);border-radius:48px 48px 0 0;pointer-events:none;z-index:0}
+.glass-input{width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:1rem;padding:.875rem 1rem;color:#fff;font-family:'Cormorant Garamond',serif;font-size:.875rem;transition:all .3s;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 2px 8px rgba(0,0,0,.08)}
+.glass-input:focus{outline:none;border-color:rgba(225,193,110,.5);background:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 0 3px rgba(225,193,110,.15),0 4px 16px rgba(0,0,0,.1)}
+.glass-input::placeholder{color:rgba(255,255,255,.25)}
+.glass-input option{background:#1a1c1a;color:#fff}
+.glass-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.7);font-weight:500;margin-bottom:.4rem;display:block;text-shadow:0 1px 4px rgba(0,0,0,.15)}
+.attendance-slider{position:relative;width:100%;max-width:320px;height:64px;margin:0 auto;border-radius:32px;overflow:hidden;cursor:pointer;user-select:none}
 .attendance-slider .slider-bg{position:absolute;inset:0;border-radius:32px;transition:all .5s cubic-bezier(.4,0,.2,1)}
 .attendance-slider .slider-bg.yes{background:linear-gradient(135deg,rgba(225,193,110,.85),rgba(200,169,90,.9));box-shadow:0 8px 32px rgba(225,193,110,.4),inset 0 1px 0 rgba(255,255,255,.3)}
-.attendance-slider .slider-bg.no{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
-.attendance-slider .slider-knob{position:absolute;top:4px;left:4px;width:56px;height:56px;border-radius:28px;background:rgba(255,255,255,.9);box-shadow:0 4px 20px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.9),0 0 0 1px rgba(255,255,255,.5);transition:all .5s cubic-bezier(.4,0,.2,1);z-index:2;display:flex;align-items:center;justify-content:center}
+.attendance-slider .slider-bg.no{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.attendance-slider .slider-knob{position:absolute;top:4px;left:4px;width:56px;height:56px;border-radius:28px;background:rgba(255,255,255,.9);box-shadow:0 4px 20px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.9),0 0 0 1px rgba(255,255,255,.5);transition:all .5s cubic-bezier(.4,0,.2,1);z-index:2;display:flex;align-items:center;justify-content:center}
 .attendance-slider .slider-knob.active{left:calc(100% - 60px)}
-.attendance-slider .slider-labels{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;height:100%;padding:0 24px;font-size:.8rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;user-select:none}
-.attendance-slider .slider-labels span{transition:color .3s}
+.attendance-slider .slider-labels{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;height:100%;padding:0 24px;font-size:.8rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase}
+.attendance-slider .slider-labels span{transition:color .35s}
 .attendance-slider.yes-state .slider-labels .label-no{color:rgba(255,255,255,.3)}
 .attendance-slider.yes-state .slider-labels .label-yes{color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.15)}
 .attendance-slider.no-state .slider-labels .label-no{color:rgba(255,255,255,.8);text-shadow:0 1px 4px rgba(0,0,0,.15)}
-.attendance-slider.no-state .slider-labels .label-yes{color:rgba(255,255,255,.3)}
-
-.glass-input{
-width:100%;
-background:rgba(255,255,255,.12);
-border:1px solid rgba(255,255,255,.25);
-border-radius:1rem;
-padding:.875rem 1rem;
-color:#1a1c1a;
-font-family:'Cormorant Garamond',serif;
-font-size:.875rem;
-transition:all .3s;
-backdrop-filter:blur(20px) saturate(150%);
--webkit-backdrop-filter:blur(20px) saturate(150%);
-box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 2px 8px rgba(0,0,0,.05);
-}
-.glass-input:focus{
-outline:none;
-border-color:rgba(225,193,110,.5);
-background:rgba(255,255,255,.2);
-box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 3px rgba(225,193,110,.15),0 4px 16px rgba(0,0,0,.08);
-}
-.glass-input::placeholder{color:rgba(102,92,96,.35)}
-.glass-input-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:#fff;font-weight:500;margin-bottom:.5rem;display:block;text-shadow:0 1px 4px rgba(0,0,0,.15)}
-
-.glass-btn{padding:1rem 2rem;border-radius:1rem;font-size:.8rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;transition:all .3s;cursor:pointer;border:0;position:relative;z-index:1}
-.glass-btn-primary{background:linear-gradient(135deg,rgba(225,193,110,.85),rgba(200,169,90,.9));color:#fff;box-shadow:0 8px 32px rgba(225,193,110,.3),inset 0 1px 0 rgba(255,255,255,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.glass-btn-primary:hover{box-shadow:0 12px 40px rgba(225,193,110,.45),inset 0 1px 0 rgba(255,255,255,.4);transform:translateY(-2px)}
-.glass-btn-primary:active{transform:translateY(0) scale(.98)}
-.glass-btn-outline{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
-.glass-btn-outline:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
-
-@keyframes missYouFadeIn{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes missYouHeartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
-@keyframes missYouPulse{0%,100%{opacity:.6}50%{opacity:1}}
-.miss-you-anim{animation:missYouFadeIn .8s cubic-bezier(.4,0,.2,1) forwards}
-.miss-you-heart{animation:missYouHeartbeat 1.2s ease-in-out infinite}
-.miss-you-pulse{animation:missYouPulse 2s ease-in-out infinite}
+.attendance-slider.no-state .slider-labels .label-yes{color:rgba(255,255,255,.25)}
+@keyframes missYouFadeIn{from{opacity:0;transform:translateY(16px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+@keyframes pulseSoft{0%,100%{opacity:.5}50%{opacity:1}}
+.miss-you-anim{animation:missYouFadeIn .7s cubic-bezier(.4,0,.2,1) forwards}
+.heartbeat{animation:heartbeat 1.2s ease-in-out infinite}
+.pulse-soft{animation:pulseSoft 2s ease-in-out infinite}
 </style>
 <script>
 if(performance.navigation.type===1||performance.getEntriesByType("navigation")[0].type==="reload"){
@@ -89,176 +47,165 @@ window.location.href="index.html";
 }
 </script>
 </head>
-<body class="bg-[#1a1c1a] text-white font-body-md">
+<body class="font-serif">
 <div class="spline-bg">
 <spline-viewer url="https://my.spline.design/liquidglass-esHZYVnWLTAdnpdvu12cOG4v/"></spline-viewer>
-<div class="absolute inset-0 bg-gradient-to-b from-[#1a1c1a]/30 via-transparent to-[#1a1c1a]/50 pointer-events-none"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0b]/40 via-transparent to-[#0a0a0b]/60 pointer-events-none"></div>
 </div>
-<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#1a1c1a]/90 backdrop-blur-2xl border-b border-white/20 shadow-[0_10px_40px_rgba(225,193,110,0.1)]">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-[#E1C16E]">favorite</span>
-<div class="vows-breadcrumb text-white/50">
-<a href="index.html" class="step no-underline text-inherit hover:text-[#E1C16E] transition-colors" data-step="1">
-<span class="dot"></span>
-<span class="step-label">INVITATION</span>
-</a>
-<span class="connector"></span>
-<div class="step active" data-step="2">
-<span class="dot"></span>
-<span class="step-label">RSVP</span>
-</div>
-</div>
-</div>
-<div class="font-serif italic text-2xl text-[#E1C16E]" style="text-shadow:0 2px 8px rgba(0,0,0,.2)">I & T</div>
+
+<!-- Top Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-5 h-14 bg-[#0a0a0b]/80 backdrop-blur-2xl border-b border-white/10">
+  <a href="index.html" class="flex items-center gap-1.5 text-white/50 hover:text-white transition-colors no-underline">
+    <span class="material-symbols-outlined text-lg">arrow_back</span>
+    <span class="text-xs tracking-widest uppercase font-serif">Back</span>
+  </a>
+  <span class="font-script text-2xl text-gold italic">I & T</span>
+  <span class="w-16"></span>
 </header>
-<main class="relative z-10 pt-24 pb-32 max-w-[1200px] mx-auto px-6">
-<a href="index.html" class="inline-flex items-center gap-2 text-white/60 hover:text-white font-body-md mb-8 no-underline transition-colors">
-<span class="material-symbols-outlined text-lg">arrow_back</span>
-Back to Invitation
-</a>
-<section class="text-center mb-16">
-<p class="font-label-caps text-label-caps text-white tracking-[0.3em] mb-4" style="text-shadow:0 2px 8px rgba(0,0,0,.2)">SAVE THE DATE</p>
-<h1 class="font-display-lg text-display-lg text-white mb-6" style="text-shadow:0 2px 12px rgba(0,0,0,.2)">Isabella & Tyler</h1>
-<p class="font-body-lg text-body-lg text-white/70 italic max-w-lg mx-auto">
-Join us for an intimate celebration of love, light, and a lifetime together in Belize City.
-</p>
-<div class="mt-8 flex justify-center items-center gap-4">
-<div class="h-[1px] w-16 bg-white/30"></div>
-<span class="material-symbols-outlined text-white/60 text-sm">auto_awesome</span>
-<div class="h-[1px] w-16 bg-white/30"></div>
-</div>
-<div class="vows-countdown flex justify-center mt-6"></div>
-</section>
-<section class="flex justify-center" id="rsvp">
-<div class="glass-panel max-w-2xl w-full p-10 md:p-14 rounded-[48px] shadow-[0_20px_60px_rgba(225,193,110,0.15)] relative overflow-hidden">
-<div class="absolute top-0 left-0 w-1/3 h-[2px] bg-gradient-to-r from-[#E1C16E] to-transparent shadow-[0_0_15px_rgba(225,193,110,0.5)]"></div>
-<div class="text-center mb-8">
-<span class="material-symbols-outlined text-white mb-4 block text-4xl" style="text-shadow:0 2px 8px rgba(0,0,0,.2)">mail</span>
-<h2 class="font-headline-md text-headline-md text-white mb-2" style="text-shadow:0 2px 8px rgba(0,0,0,.2)">Kindly Respond</h2>
-<p class="font-body-md text-white/70">Please let us know your plans by January 27th, 2027</p>
-</div>
-<div class="text-center mb-8">
-<p class="font-label-caps text-xs text-white/70 mb-4">WILL YOU BE ATTENDING?</p>
-<div class="attendance-slider no-state" id="attendanceSlider" onclick="toggleAttendance()">
-<div class="slider-bg no" id="sliderBg"></div>
-<div class="slider-knob" id="sliderKnob">
-<span class="material-symbols-outlined text-[#735b11] text-xl" id="sliderIcon">close</span>
-</div>
-<div class="slider-labels">
-<span class="label-no">No</span>
-<span class="label-yes">Yes, I'll be there!</span>
-</div>
-</div>
-</div>
-<form class="space-y-6" id="rsvpForm" onsubmit="event.preventDefault();handleSubmit(event)">
-<div id="formFields" style="display:none;opacity:0;transition:opacity .5s">
-<div class="mb-6">
-<label class="glass-input-label">FULL NAME</label>
-<input class="glass-input" id="name" placeholder="Your full name" type="text"/>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-<div>
-<label class="glass-input-label">EMAIL ADDRESS</label>
-<input class="glass-input" id="email" placeholder="your@email.com" type="email"/>
-</div>
-<div>
-<label class="glass-input-label">NUMBER OF GUESTS</label>
-<select class="glass-input appearance-none" id="guests">
-<option value="1">1 Guest</option>
-<option value="2">2 Guests</option>
-<option value="3">3 Guests</option>
-</select>
-</div>
-</div>
-<div class="mb-6">
-<label class="glass-input-label">DIETARY PREFERENCES</label>
-<textarea class="glass-input resize-none" id="diet" placeholder="Any dietary requirements?" rows="2"></textarea>
-</div>
-<div class="mb-6">
-<label class="glass-input-label">MESSAGE FOR THE COUPLE</label>
-<textarea class="glass-input resize-none" id="message" placeholder="Share a special note..." rows="2"></textarea>
-</div>
-<div class="flex gap-4 pt-2">
-<button type="submit" class="glass-btn glass-btn-primary flex-1">SEND RSVP</button>
-</div>
-</div>
-<div id="declineMsg" class="text-center py-8" style="display:none;opacity:0">
-<span class="material-symbols-outlined text-[#E1C16E] text-5xl mb-4 block miss-you-heart" style="text-shadow:0 2px 12px rgba(225,193,110,.4)">favorite</span>
-<p class="font-headline-sm text-white mb-2" style="text-shadow:0 2px 8px rgba(0,0,0,.2)">We'll Miss You</p>
-<p class="font-body-md text-white/70 miss-you-pulse">Thank you for letting us know. You'll be in our hearts!</p>
-</div>
-</div>
-</section>
+
+<main class="relative z-10 pt-20 pb-36 px-5 max-w-2xl mx-auto">
+  <!-- Hero -->
+  <section class="text-center mb-10">
+    <p class="text-[10px] tracking-[0.35em] uppercase text-white/50 mb-3">Save the Date</p>
+    <h1 class="font-script text-5xl md:text-6xl text-white leading-tight" style="text-shadow:0 2px 20px rgba(0,0,0,.3)">Isabella <span class="text-gold">&amp;</span> Tyler</h1>
+    <p class="text-lg text-white/60 italic mt-3 max-w-md mx-auto">Join us for an intimate celebration of love in Belize City.</p>
+    <div class="flex items-center justify-center gap-4 mt-5">
+      <span class="h-px w-12 bg-white/20"></span>
+      <span class="material-symbols-outlined text-white/40 text-sm">auto_awesome</span>
+      <span class="h-px w-12 bg-white/20"></span>
+    </div>
+  </section>
+
+  <!-- RSVP Card -->
+  <section>
+    <div class="glass-panel rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-1/3 h-[2px] bg-gradient-to-r from-gold to-transparent shadow-[0_0_20px_rgba(225,193,110,.5)]"></div>
+      
+      <div class="text-center mb-7">
+        <span class="material-symbols-outlined text-4xl text-white/80 block mb-3">mail</span>
+        <h2 class="font-serif text-3xl text-white">Kindly Respond</h2>
+        <p class="text-sm text-white/60 mt-1">Please let us know by January 27th, 2027</p>
+      </div>
+
+      <!-- Attendance Slider -->
+      <div class="text-center mb-7">
+        <p class="text-[10px] tracking-[0.25em] uppercase text-white/60 mb-3">Will you be attending?</p>
+        <div class="attendance-slider no-state" id="attendanceSlider" onclick="toggleAttendance()">
+          <div class="slider-bg no" id="sliderBg"></div>
+          <div class="slider-knob" id="sliderKnob">
+            <span class="material-symbols-outlined text-golddark text-xl" id="sliderIcon">close</span>
+          </div>
+          <div class="slider-labels">
+            <span class="label-no">No</span>
+            <span class="label-yes">Yes, I'll be there!</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form onsubmit="event.preventDefault();handleSubmit(event)" class="space-y-5">
+        <div id="formFields" style="display:none;opacity:0;transition:opacity .5s">
+          <div>
+            <label class="glass-label">Full Name</label>
+            <input class="glass-input" id="name" placeholder="Your full name" type="text"/>
+          </div>
+          <div class="grid md:grid-cols-2 gap-5">
+            <div>
+              <label class="glass-label">Email</label>
+              <input class="glass-input" id="email" placeholder="your@email.com" type="email"/>
+            </div>
+            <div>
+              <label class="glass-label">Number of Guests</label>
+              <select class="glass-input appearance-none" id="guests">
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="glass-label">Dietary Preferences</label>
+            <textarea class="glass-input resize-none" id="diet" placeholder="Any dietary requirements?" rows="2"></textarea>
+          </div>
+          <div>
+            <label class="glass-label">Message for the Couple</label>
+            <textarea class="glass-input resize-none" id="message" placeholder="Share a special note..." rows="2"></textarea>
+          </div>
+          <button type="submit" class="w-full py-3.5 rounded-2xl text-sm font-semibold tracking-[0.15em] uppercase bg-gradient-to-r from-gold to-[#c9a84c] text-white shadow-[0_8px_32px_rgba(225,193,110,.3)] hover:shadow-[0_12px_40px_rgba(225,193,110,.45)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[.98] transition-all cursor-pointer border-0">Send RSVP</button>
+        </div>
+
+        <div id="declineMsg" class="text-center py-6 hidden" style="display:none;opacity:0">
+          <span class="material-symbols-outlined text-5xl block mb-3 heartbeat" style="color:#E1C16E;text-shadow:0 2px 12px rgba(225,193,110,.4)">favorite</span>
+          <p class="font-serif text-2xl text-white">We'll Miss You</p>
+          <p class="text-sm text-white/60 mt-1 pulse-soft">Thank you for letting us know. You'll be in our hearts!</p>
+        </div>
+      </form>
+    </div>
+  </section>
 </main>
-<footer class="relative z-10 py-12 text-center text-white/40 font-body-md text-sm border-t border-white/10 bg-[#1a1c1a]/90 backdrop-blur-sm">
-<div class="vows-breadcrumb justify-center mb-4 text-white/30">
-<a href="index.html" class="step no-underline text-inherit hover:text-[#E1C16E] transition-colors" data-step="1">
-<span class="dot"></span>
-<span class="step-label">INVITATION</span>
-</a>
-<span class="connector"></span>
-<div class="step active" data-step="2">
-<span class="dot"></span>
-<span class="step-label">RSVP</span>
-</div>
-</div>
-<p class="font-display-lg text-2xl tracking-wider opacity-60" style="color:#E1C16E">I & T</p>
-<p class="font-serif text-[10px] tracking-[.2em] uppercase opacity-40 mt-1">2027</p>
+
+<!-- Footer -->
+<footer class="relative z-10 py-8 text-center border-t border-white/5 bg-[#0a0a0b]/80 backdrop-blur-sm">
+  <p class="font-script text-3xl text-gold/70">I & T</p>
+  <p class="font-serif text-[10px] tracking-[.2em] uppercase text-white/30 mt-1">2027</p>
 </footer>
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-4 bg-[#1a1c1a]/90 backdrop-blur-2xl border-t border-white/20 rounded-t-2xl shadow-[0_-10px_40px_rgba(225,193,110,0.1)]">
-<a href="index.html" class="flex flex-col items-center justify-center text-white/50 hover:text-[#E1C16E] transition-colors no-underline">
-<span class="material-symbols-outlined">home</span>
-<span class="font-serif text-[10px] uppercase tracking-tighter">Home</span>
-</a>
-<a href="gallery.html" class="flex flex-col items-center justify-center text-white/50 hover:text-[#E1C16E] transition-colors no-underline">
-<span class="material-symbols-outlined">photo_library</span>
-<span class="font-serif text-[10px] uppercase tracking-tighter">Gallery</span>
-</a>
-<a href="rsvp.html" class="flex flex-col items-center justify-center text-[#E1C16E] scale-110 transition-transform no-underline">
-<span class="material-symbols-outlined" style="font-variation-settings:'FILL'1">mail</span>
-<span class="font-serif text-[10px] uppercase tracking-tighter">RSVP</span>
-</a>
+
+<!-- Bottom Nav -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-[#0a0a0b]/90 backdrop-blur-2xl border-t border-white/10 rounded-t-2xl px-4">
+  <a href="index.html" class="flex flex-col items-center text-white/40 hover:text-gold transition-colors no-underline">
+    <span class="material-symbols-outlined">home</span>
+    <span class="font-serif text-[9px] uppercase tracking-tight">Home</span>
+  </a>
+  <a href="gallery.html" class="flex flex-col items-center text-white/40 hover:text-gold transition-colors no-underline">
+    <span class="material-symbols-outlined">photo_library</span>
+    <span class="font-serif text-[9px] uppercase tracking-tight">Gallery</span>
+  </a>
+  <a href="rsvp.html" class="flex flex-col items-center text-gold scale-110 no-underline">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL'1">mail</span>
+    <span class="font-serif text-[9px] uppercase tracking-tight">RSVP</span>
+  </a>
 </nav>
+
 <script>
 var attending=false;
 var wasAttending=false;
 function toggleAttendance(){
-wasAttending=attending;
-attending=!attending;
-var slider=document.getElementById('attendanceSlider');
-var knob=document.getElementById('sliderKnob');
-var bg=document.getElementById('sliderBg');
-var icon=document.getElementById('sliderIcon');
-var fields=document.getElementById('formFields');
-var decline=document.getElementById('declineMsg');
-if(attending){
-slider.className='attendance-slider yes-state';
-knob.classList.add('active');
-bg.className='slider-bg yes';
-icon.textContent='check';
-fields.style.display='block';
-decline.style.display='none';
-decline.style.opacity='0';
-decline.classList.remove('miss-you-anim');
-setTimeout(function(){fields.style.opacity='1'},50);
-}else{
-slider.className='attendance-slider no-state';
-knob.classList.remove('active');
-bg.className='slider-bg no';
-icon.textContent='close';
-fields.style.opacity='0';
-setTimeout(function(){fields.style.display='none'},300);
-if(wasAttending){
-setTimeout(function(){
-decline.style.display='block';
-decline.classList.add('miss-you-anim');
-setTimeout(function(){decline.style.opacity='1'},50);
-},350);
-}
-}
+  wasAttending=attending;
+  attending=!attending;
+  var slider=document.getElementById('attendanceSlider');
+  var knob=document.getElementById('sliderKnob');
+  var bg=document.getElementById('sliderBg');
+  var icon=document.getElementById('sliderIcon');
+  var fields=document.getElementById('formFields');
+  var decline=document.getElementById('declineMsg');
+  if(attending){
+    slider.className='attendance-slider yes-state';
+    knob.classList.add('active');
+    bg.className='slider-bg yes';
+    icon.textContent='check';
+    fields.style.display='block';
+    decline.style.display='none';
+    decline.style.opacity='0';
+    decline.classList.remove('miss-you-anim');
+    setTimeout(function(){fields.style.opacity='1'},50);
+  }else{
+    slider.className='attendance-slider no-state';
+    knob.classList.remove('active');
+    bg.className='slider-bg no';
+    icon.textContent='close';
+    fields.style.opacity='0';
+    setTimeout(function(){fields.style.display='none'},300);
+    if(wasAttending){
+      setTimeout(function(){
+        decline.style.display='block';
+        decline.classList.add('miss-you-anim');
+        setTimeout(function(){decline.style.opacity='1'},50);
+      },350);
+    }
+  }
 }
 function handleSubmit(e){
-alert('Thank you! Your RSVP has been received.');
+  alert('Thank you! Your RSVP has been received.');
 }
 </script>
 </body>

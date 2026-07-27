@@ -1,6 +1,7 @@
 import { httpAction } from "./_generated/server";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { cors } from "./cors";
 
 export const listAllSongs = query({
   args: {},
@@ -18,17 +19,17 @@ export const insertSong = mutation({
 
 export const listSongs = httpAction(async (ctx) => {
   const data = await ctx.runQuery("songs:listAllSongs");
-  return new Response(JSON.stringify(data), { status: 200 });
+  return cors(data);
 });
 
 export const submitSong = httpAction(async (ctx, request) => {
   const { name, song, artist } = await request.json();
   if (!name || !song) {
-    return new Response(JSON.stringify({ error: "Name and song are required" }), { status: 400 });
+    return cors({ error: "Name and song are required" }, 400);
   }
   const id = await ctx.runMutation("songs:insertSong", {
     name: String(name).trim(), song: String(song).trim(),
     artist: artist ? String(artist).trim() : undefined, created_at: Date.now(),
   });
-  return new Response(JSON.stringify({ _id: id.toString(), ok: true }), { status: 200 });
+  return cors({ _id: id.toString(), ok: true });
 });

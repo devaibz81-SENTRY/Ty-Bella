@@ -1,1184 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - Isabella & Tyler Wedding Management</title>
+  <title>Admin — Isabella & Tyler Wedding</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Montserrat:wght@300;400;500&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: { DEFAULT: '#E1C16E', 50: '#fdf8ed', 100: '#f9efd1', 200: '#f2dfa0', 300: '#E1C16E', 400: '#c9a84c', 500: '#b08e38', 600: '#8b6e2e', 700: '#735b11' },
+            surface: { DEFAULT: '#0a0a0b', light: '#18181b', card: '#1c1c20', hover: '#252529', border: '#2a2a2e' },
+          },
+          fontFamily: { serif: ['Cormorant Garamond', 'serif'], sans: ['Inter', 'system-ui', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
   <style>
-    :root {
-      --black: #0d0d0d;
-      --ivory: #f5f0e8;
-      --champagne: #d4b896;
-      --gold: #c9a84c;
-      --sidebar: #111;
-      --attending: #2ecc71;
-      --declined: #e74c3c;
-      --later: #f39c12;
-      --msg: #3498db;
-    }
-
-    *,
-    *::before,
-    *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      display: flex;
-      min-height: 100vh;
-      background: #f0ede8;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 500;
-      font-size: 16px;
-    }
-
-    /* Login */
-    #login-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 999;
-      background: var(--black);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #login-overlay.hidden {
-      display: none;
-    }
-
-    .login-box {
-      text-align: center;
-      padding: 3rem;
-      border: 1px solid rgba(201, 168, 76, 0.3);
-      min-width: 320px;
-    }
-
-    .login-box h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem;
-      color: var(--ivory);
-      margin-bottom: 0.5rem;
-    }
-
-    .login-box p {
-      font-size: 0.65rem;
-      color: rgba(255, 255, 255, 0.4);
-      letter-spacing: 0.2em;
-      margin-bottom: 2rem;
-    }
-
-    .login-input {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(201, 168, 76, 0.3);
-      color: var(--ivory);
-      font-family: 'Montserrat', sans-serif;
-      outline: none;
-      margin-bottom: 1rem;
-      text-align: center;
-      letter-spacing: 0.2em;
-    }
-
-    .login-input:focus {
-      border-color: var(--gold);
-    }
-
-    .login-btn {
-      width: 100%;
-      padding: 0.9rem;
-      background: var(--gold);
-      border: none;
-      color: var(--black);
-      cursor: pointer;
-      font-size: 0.65rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      transition: background 0.3s;
-    }
-
-    .login-btn:hover {
-      background: #a8863a;
-    }
-
-    /* Sidebar */
-    #sidebar {
-      width: 240px;
-      background: var(--sidebar);
-      display: flex;
-      flex-direction: column;
-      padding: 2rem 0;
-      min-height: 100vh;
-      flex-shrink: 0;
-    }
-
-    .sidebar-brand {
-      text-align: center;
-      padding: 0 1.5rem 2rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .sidebar-brand .brand-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
-      color: var(--champagne);
-      font-style: italic;
-    }
-
-    .nav-label {
-      font-size: 0.55rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.25);
-      padding: 0 1.5rem;
-      margin: 1.5rem 0 0.5rem;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 0.7rem 1.5rem;
-      cursor: pointer;
-      color: rgba(255, 255, 255, 0.5);
-      border-left: 2px solid transparent;
-      font-size: 0.78rem;
-      transition: 0.2s;
-    }
-
-    .nav-item:hover,
-    .nav-item.active,
-    a.nav-item:hover {
-      color: var(--gold);
-      background: rgba(201, 168, 76, 0.06);
-      border-left-color: var(--gold);
-    }
-    
-    a.nav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 0.7rem 1.5rem;
-      cursor: pointer;
-      color: rgba(255, 255, 255, 0.5);
-      border-left: 2px solid transparent;
-      font-size: 0.78rem;
-      transition: 0.2s;
-      text-decoration: none;
-    }
-
-    /* Main Area */
-    #main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .top-bar {
-      background: white;
-      padding: 1.2rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #e5e0d8;
-    }
-
-    .sync-indicator {
-      font-size: 0.62rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #777;
-      margin-top: 0.4rem;
-    }
-
-    .sync-dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #2ecc71;
-      margin-right: 0.45rem;
-    }
-
-    .top-bar-actions {
-      display: flex;
-      gap: 1rem;
-    }
-
-    .btn-sm {
-      padding: 0.5rem 1.2rem;
-      border: 1px solid var(--gold);
-      background: transparent;
-      color: var(--black);
-      cursor: pointer;
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      transition: 0.2s;
-    }
-
-    .btn-sm:hover {
-      background: var(--gold);
-      color: white;
-    }
-
-    .btn-sm.primary {
-      background: var(--gold);
-      color: white;
-    }
-
-    #content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 2rem;
-    }
-
-    /* Stats Grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .stat-card {
-      background: white;
-      padding: 1.5rem;
-      border-bottom: 3px solid transparent;
-    }
-
-    .stat-card.green {
-      border-color: var(--attending);
-    }
-
-    .stat-card.red {
-      border-color: var(--declined);
-    }
-
-    .stat-card.yellow {
-      border-color: var(--later);
-    }
-
-    .stat-card.blue {
-      border-color: var(--msg);
-    }
-
-    .stat-label {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #999;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-num {
-      font-size: 2.5rem;
-      font-family: 'Cormorant Garamond', serif;
-      color: var(--black);
-      line-height: 1;
-    }
-
-    /* Filters */
-    .filter-bar {
-      background: white;
-      padding: 1rem 1.5rem;
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
-
-    .filter-btn {
-      padding: 0.4rem 1rem;
-      border: 1px solid #ddd;
-      background: transparent;
-      font-size: 0.65rem;
-      cursor: pointer;
-      border-radius: 2px;
-    }
-
-    .filter-btn.active {
-      background: var(--black);
-      color: white;
-      border-color: var(--black);
-    }
-
-    .filter-btn:hover:not(.active) {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    /* Tables */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-    }
-
-    th {
-      padding: 0.8rem 1rem;
-      text-align: left;
-      font-size: 0.58rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #aaa;
-      background: #fafaf9;
-    }
-
-    td {
-      padding: 0.9rem 1rem;
-      border-bottom: 1px solid #f8f5f0;
-      font-size: 0.8rem;
-      color: #333;
-    }
-
-    .status-pill {
-      display: inline-block;
-      padding: 0.25rem 0.8rem;
-      border-radius: 2px;
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .pill-attending {
-      background: rgba(46, 204, 113, 0.1);
-      color: var(--attending);
-    }
-
-    .pill-declined {
-      background: rgba(231, 76, 60, 0.1);
-      color: var(--declined);
-    }
-
-    .pill-later {
-      background: rgba(243, 156, 18, 0.1);
-      color: var(--later);
-    }
-
-    .pill-invited {
-      background: rgba(149, 165, 166, 0.1);
-      color: #95a5a6;
-    }
-
-    .btn-link {
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .table-shell {
-      overflow-x: auto;
-    }
-
-    .vault-hero {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .vault-copy {
-      background: linear-gradient(140deg, #171410 0%, #241c13 58%, #3b2f1a 100%);
-      color: var(--ivory);
-      padding: 2rem;
-      border: 1px solid rgba(201, 168, 76, 0.2);
-      box-shadow: 0 16px 34px rgba(13, 13, 13, 0.15);
-    }
-
-    .vault-copy h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
-      font-weight: 400;
-      margin-bottom: 0.75rem;
-    }
-
-    .vault-kicker {
-      display: inline-block;
-      margin-bottom: 0.85rem;
-      font-size: 0.58rem;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: rgba(245, 240, 232, 0.62);
-    }
-
-    .vault-copy p {
-      font-size: 0.92rem;
-      line-height: 1.7;
-      max-width: 32rem;
-      color: rgba(245, 240, 232, 0.85);
-    }
-
-    .vault-actions {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      margin-top: 1.5rem;
-    }
-
-    .vault-preview {
-      position: relative;
-      min-height: 270px;
-      padding: 1.6rem;
-      background:
-        radial-gradient(circle at top left, rgba(212, 184, 150, 0.22), transparent 42%),
-        linear-gradient(180deg, #fffaf2 0%, #f6efe6 100%);
-      border: 1px solid #eadfce;
-      overflow: hidden;
-    }
-
-    .vault-stack {
-      position: relative;
-      height: 100%;
-      min-height: 236px;
-    }
-
-    .vault-card-mini {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      width: min(100%, 280px);
-      min-height: 180px;
-      padding: 1.25rem;
-      background: rgba(255, 255, 255, 0.92);
-      border: 1px solid rgba(201, 168, 76, 0.18);
-      box-shadow: 0 16px 30px rgba(13, 13, 13, 0.08);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transform-origin: center bottom;
-    }
-
-    .vault-card-mini:nth-child(1) {
-      transform: translate(0, 0) rotate(-2deg);
-      z-index: 3;
-    }
-
-    .vault-card-mini:nth-child(2) {
-      transform: translate(-14px, 12px) rotate(2deg);
-      z-index: 2;
-    }
-
-    .vault-card-mini:nth-child(3) {
-      transform: translate(-28px, 24px) rotate(-4deg);
-      z-index: 1;
-    }
-
-    .vault-card-mini blockquote {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
-      line-height: 1.45;
-      color: #2f2418;
-      margin: 0;
-    }
-
-    .vault-card-mini footer {
-      margin-top: 1rem;
-      font-size: 0.65rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #826837;
-    }
-
-    .media-layout {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 1rem;
-      align-items: start;
-    }
-
-    .media-panel {
-      background: white;
-      border: 1px solid #e8e2d8;
-      box-shadow: 0 10px 28px rgba(13, 13, 13, 0.04);
-      overflow: hidden;
-    }
-
-    .media-panel-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 1rem;
-      padding: 1.4rem 1.5rem 1rem;
-      border-bottom: 1px solid #efe8dd;
-      background: linear-gradient(180deg, #fffdfb 0%, #fcf8f2 100%);
-    }
-
-    .media-panel-head h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.45rem;
-      font-weight: 400;
-      color: var(--black);
-    }
-
-    .media-kicker {
-      display: block;
-      margin-bottom: 0.35rem;
-      font-size: 0.58rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: #8b7444;
-    }
-
-    .media-count {
-      font-size: 0.7rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #6f6557;
-      text-align: right;
-    }
-
-    .media-note-cell {
-      max-width: 360px;
-      line-height: 1.55;
-      white-space: normal;
-    }
-
-    .media-empty {
-      text-align: center;
-      padding: 2rem;
-      color: #8b8276;
-      font-size: 0.84rem;
-    }
-
-    .song-tools {
-      padding: 1rem 1.5rem 1.2rem;
-      border-bottom: 1px solid #efe8dd;
-      background: #fffdfa;
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    .song-tools-row {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .song-tools-row input {
-      flex: 1 1 220px;
-      min-width: 220px;
-      padding: 0.66rem 0.78rem;
-      border: 1px solid #ddd3c2;
-      background: white;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.78rem;
-      outline: none;
-    }
-
-    .song-tools-row input:focus {
-      border-color: var(--gold);
-    }
-
-    .song-help {
-      font-size: 0.73rem;
-      color: #70685c;
-      line-height: 1.55;
-    }
-
-    /* WhatsApp Inbox Build */
-    .wa-builder {
-      background: white;
-      padding: 2rem;
-      border: 1px solid #e8e2d8;
-      box-shadow: 0 8px 22px rgba(13, 13, 13, 0.04);
-    }
-
-    .wa-builder h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.55rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .wa-muted {
-      font-size: 0.84rem;
-      color: #5f5f5f;
-      margin-bottom: 1.4rem;
-      line-height: 1.55;
-    }
-
-    .wa-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .wa-panel {
-      border: 1px solid #ece6dc;
-      background: #fcfbf9;
-      padding: 1rem;
-    }
-
-    .wa-panel h3 {
-      font-size: 0.73rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #826837;
-      margin-bottom: 0.9rem;
-    }
-
-    .wa-panel small {
-      color: #717171;
-      font-size: 0.75rem;
-    }
-
-    .wa-kpis {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .wa-kpi {
-      border: 1px solid #ece6dc;
-      background: #fcfbf9;
-      padding: 0.75rem 0.85rem;
-    }
-
-    .wa-kpi strong {
-      display: block;
-      font-size: 1.3rem;
-      font-family: 'Cormorant Garamond', serif;
-      color: #1f1f1f;
-      line-height: 1.1;
-    }
-
-    .wa-kpi span {
-      font-size: 0.62rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #737373;
-    }
-
-    .wa-row {
-      display: flex;
-      gap: 0.7rem;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
-
-    .wa-row select,
-    .wa-row input {
-      padding: 0.64rem;
-      border: 1px solid #ddd;
-      outline: none;
-      min-width: 260px;
-      background: white;
-    }
-
-    .wa-row select:focus,
-    .wa-row input:focus {
-      border-color: var(--gold);
-    }
-
-    .wa-template {
-      width: 100%;
-      min-height: 150px;
-      padding: 1rem;
-      border: 1px solid #ddd;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.85rem;
-      line-height: 1.6;
-      resize: vertical;
-      margin-bottom: 1rem;
-    }
-
-    .wa-vars {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .wa-var {
-      padding: 0.3rem 0.7rem;
-      background: #f5f5f5;
-      font-size: 0.65rem;
-      cursor: pointer;
-      border: 1px solid #e0e0e0;
-    }
-
-    .wa-var:hover {
-      background: var(--gold);
-      color: white;
-    }
-
-    .wa-preview {
-      background: #f0ede8;
-      padding: 1rem;
-      border-left: 3px solid #25D366;
-      font-size: 0.82rem;
-      white-space: pre-wrap;
-      margin-bottom: 1rem;
-    }
-
-    .wa-actions {
-      display: flex;
-      gap: 0.65rem;
-      flex-wrap: wrap;
-    }
-
-    .wa-person-info {
-      font-size: 0.76rem;
-      color: #505050;
-      background: #fff;
-      border: 1px solid #ece6dc;
-      padding: 0.7rem 0.75rem;
-      min-height: 44px;
-    }
-
-    .action-btn {
-      padding: 0.38rem 0.65rem;
-      border: 1px solid #ddd;
-      background: transparent;
-      cursor: pointer;
-      font-size: 0.65rem;
-    }
-
-    .action-btn.wa {
-      border-color: #25D366;
-      color: #25D366;
-      font-weight: 600;
-      min-width: 96px;
-    }
-
-    .action-btn.wa:hover {
-      background: #25D366;
-      color: white;
-    }
-
-    .action-btn.danger {
-      border-color: #e74c3c;
-      color: #e74c3c;
-      font-weight: 600;
-    }
-
-    .action-btn.danger:hover {
-      background: #e74c3c;
-      color: #fff;
-    }
-
-    .table-actions {
-      display: flex;
-      gap: 0.4rem;
-      align-items: center;
-    }
-
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-    }
-
-    .modal-overlay.open {
-      display: flex;
-    }
-
-    .modal {
-      background: white;
-      padding: 2.5rem;
-      width: 600px;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #eee;
-    }
-
-    .modal-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .modal-group label {
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #aaa;
-      display: block;
-      margin-bottom: 0.4rem;
-    }
-
-    .modal-group input,
-    .modal-group select {
-      width: 100%;
-      padding: 0.6rem;
-      border: 1px solid #ddd;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.85rem;
-      outline: none;
-    }
-
-    .modal-group input:focus,
-    .modal-group select:focus {
-      border-color: var(--gold);
-    }
-
-    @media (max-width: 960px) {
-      .wa-kpis {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .vault-hero,
-      .media-layout,
-      .wa-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 620px) {
-      #content {
-        padding: 1rem;
-      }
-
-      .wa-kpis {
-        grid-template-columns: 1fr;
-      }
-
-      .vault-copy,
-      .vault-preview {
-        padding: 1.2rem;
-      }
-
-      .vault-actions {
-        flex-direction: column;
-      }
-
-      .wa-row select,
-      .wa-row input {
-        min-width: 100%;
-        width: 100%;
-      }
-    }
-  
-    
-    /* --- COLOR & TRIM OVERRIDES V2 --- */
-    .hero-flourish, .hero-divider, 
-    .story-signature, .story-img-accent {
-        display: none !important;
-    }
-    
-    /* Restore Ampersand */
-    .hero-ampersand {
-        display: inline-block !important;
-        color: #000000 !important;
-    }
-    
-    /* Soft shadows on headings */
-    h1, h2, h3, .section-title, .hero-names, .gift-title {
-        text-shadow: 0 4px 15px rgba(0,0,0,0.08) !important;
-    }
-    
-    /* Black Nav Header & Buttons */
-    nav {
-        background: #000000 !important;
-        border-bottom: none !important;
-    }
-    nav a {
-        background: #000000 !important;
-        color: #ffffff !important;
-        border: 1px solid rgba(255,255,255,0.3) !important;
-    }
-    nav a:hover {
-        background: rgba(255,255,255,0.15) !important;
-        border-color: #ffffff !important;
-    }
-    
-    /* White Footer Text with Dark Background */
-    footer {
-        background: #000000 !important;
-        color: #ffffff !important;
-    }
-    footer .footer-names, footer p {
-        color: #ffffff !important;
-    }
-    /* Larger Date in Footer */
-    footer p:nth-of-type(1) {
-        font-size: clamp(2rem, 5vw, 3.2rem) !important;
-        margin-top: 1rem;
-    }
-    
-    /* Easy Mode Toggle for RSVP Testing */
-    .easy-toggle {
-        text-align: center;
-        padding: 0.8rem;
-        margin-bottom: 1rem;
-    }
-    .easy-toggle label {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        cursor: pointer;
-        font-size: 0.7rem;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: rgba(255,255,240,0.6);
-        transition: color 0.2s;
-    }
-    .easy-toggle label:hover { color: var(--gold); }
-    .easy-toggle input[type="checkbox"] {
-        width: 18px;
-        height: 18px;
-        accent-color: var(--gold);
-        cursor: pointer;
-    }
-
-    /* Seating */
-    .seating-row {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 0.7rem 1rem;
-      background: #fff;
-      border-radius: 8px;
-      margin-bottom: 0.4rem;
-      border-left: 4px solid var(--gold);
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .seating-row:hover { background: #f5f0e8; }
-    .seating-row .s-name { flex: 1; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; }
-    .seating-row .s-party { font-size: 0.75rem; color: #888; min-width: 40px; text-align: center; }
-    .seating-row .s-table-input { width: 70px; padding: 0.4rem; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-size: 0.9rem; }
-    .seating-row .s-table-input:focus { border-color: var(--gold); outline: none; }
-    .seating-row .s-saved { font-size: 0.7rem; color: #2ecc71; min-width: 35px; }
-    .seating-table-group { margin-bottom: 1.5rem; }
-    .seating-table-group h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; padding: 0.5rem 1rem; background: var(--gold); color: #000; border-radius: 6px; display: inline-block; }
-    .seating-table-group .table-guests { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
-    .seating-table-group .table-guest { background: #f5f0e8; padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.85rem; border-left: 3px solid var(--gold); }
-
+    * { scrollbar-width: thin; scrollbar-color: #2a2a2e transparent; }
+    *::-webkit-scrollbar { width: 6px; }
+    *::-webkit-scrollbar-track { background: transparent; }
+    *::-webkit-scrollbar-thumb { background: #2a2a2e; border-radius: 3px; }
+    .seating-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 1rem; background: #1c1c20; border: 1px solid #2a2a2e; border-left: 3px solid #E1C16E; margin-bottom: 0.35rem; cursor: pointer; transition: background 0.15s; }
+    .seating-row:hover { background: #252529; }
+    .seating-row .s-name { flex: 1; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #f4f4f5; }
+    .seating-row .s-party { font-size: 0.75rem; color: #a1a1aa; min-width: 36px; text-align: center; }
+    .seating-row .s-table-input { width: 64px; padding: 0.35rem; background: #0a0a0b; border: 1px solid #3f3f46; color: #f4f4f5; border-radius: 4px; text-align: center; font-size: 0.85rem; }
+    .seating-row .s-table-input:focus { border-color: #E1C16E; outline: none; }
+    .seating-row .s-saved { font-size: 0.65rem; min-width: 35px; text-align: right; }
+    .seating-table-group { margin-bottom: 1.25rem; }
+    .seating-table-group h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; padding: 0.35rem 0.85rem; background: #E1C16E; color: #09090b; border-radius: 999px; display: inline-block; }
+    .seating-table-group .table-guests { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+    .seating-table-group .table-guest { background: #1c1c20; border: 1px solid #2a2a2e; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.8rem; border-left: 2px solid #E1C16E; color: #d4d4d8; }
+    @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(225, 193, 110, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(225, 193, 110, 0); } 100% { box-shadow: 0 0 0 0 rgba(225, 193, 110, 0); } }
+    .pulse-gold { animation: pulse-ring 2s infinite; }
+    @media (max-width: 1023px) { .sidebar-open #sidebar-overlay { display: block; } .sidebar-open #sidebar { transform: translateX(0); } }
+
+    /* Animate in */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+    @keyframes slideRight { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+    .anim-fade-up { animation: fadeUp 0.4s ease-out both; }
+    .anim-fade-in { animation: fadeIn 0.3s ease-out both; }
+    .anim-scale-in { animation: scaleIn 0.35s ease-out both; }
+    .anim-slide-right { animation: slideRight 0.3s ease-out both; }
+    .anim-stagger > * { animation: fadeUp 0.4s ease-out both; }
+    .anim-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+    .anim-stagger > *:nth-child(2) { animation-delay: 0.1s; }
+    .anim-stagger > *:nth-child(3) { animation-delay: 0.15s; }
+    .anim-stagger > *:nth-child(4) { animation-delay: 0.2s; }
   </style>
 </head>
+<body class="bg-surface text-zinc-100 font-sans antialiased">
 
-<body>
-  <!-- Login -->
-  <div id="login-overlay">
-    <div class="login-box">
-      <h2>Wedding Admin</h2>
-      <p>Isabella &amp; Tyler - 2027</p>
-      <input type="password" id="admin-pass" class="login-input" placeholder="Enter Password"
-        onkeydown="if(event.key==='Enter') doLogin()" />
-      <button class="login-btn" onclick="doLogin()">Enter</button>
-      <p id="login-err" style="color:#e74c3c;display:none;margin-top:1rem;">Incorrect password.</p>
+  <!-- ============ LOGIN OVERLAY ============ -->
+  <div id="login-overlay" class="fixed inset-0 z-[100] bg-surface flex items-center justify-center px-4">
+    <div class="w-full max-w-sm">
+      <div class="text-center mb-8">
+        <div class="font-serif text-3xl text-gold italic">Wedding Admin</div>
+        <p class="text-xs text-zinc-500 tracking-[0.2em] uppercase mt-1">Isabella &amp; Tyler · 2027</p>
+      </div>
+      <div class="bg-surface-light border border-surface-border rounded-xl p-6 space-y-4">
+        <input type="password" id="admin-pass" class="w-full h-10 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm text-center tracking-widest placeholder:text-zinc-600 focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none" placeholder="Enter Password" onkeydown="if(event.key==='Enter') doLogin()" />
+        <button onclick="doLogin()" class="w-full h-10 bg-gold text-black font-medium text-xs tracking-[0.2em] uppercase rounded-lg hover:bg-gold-400 transition-colors">Enter</button>
+        <p id="login-err" class="text-red-400 text-xs text-center hidden">Incorrect password.</p>
+      </div>
     </div>
   </div>
 
-  <!-- Sidebar -->
-  <div id="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-name">Isabella &amp; Tyler</div>
-    </div>
-    <div class="nav-label">Management</div>
-    <div class="nav-item active" onclick="showView('guests', event)">Guests Data</div>
-    <div class="nav-item" onclick="showView('media', event)">Songs &amp; Messages</div>
-    <div class="nav-item" onclick="showView('whatsapp', event)">WhatsApp Inbox</div>
-    <div class="nav-item" onclick="showView('seating', event); loadSeating()">Seating</div>
-    <div class="nav-label">Public Pages</div>
-    <a href="index.html" class="nav-item" target="_blank">🎉 Invitation</a>
-    <a href="rsvp.html" class="nav-item" target="_blank">📋 RSVP</a>
-    <a href="tables.html" class="nav-item" target="_blank">🍽 Table Finder</a>
-    <a href="songs.html" class="nav-item" target="_blank">🎵 Song Requests</a>
-    <a href="playlist.html" class="nav-item" target="_blank">📻 Playlist</a>
-    <a href="messages.html" class="nav-item" target="_blank">💬 Messages</a>
-    <a href="checkin.html" class="nav-item" target="_blank">✓ Check-In</a>
-  </div>
+  <!-- ============ MOBILE HEADER ============ -->
+  <header class="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-surface-light border-b border-surface-border flex items-center justify-between px-4">
+    <button id="menu-toggle" onclick="toggleSidebar()" class="text-zinc-400 hover:text-gold transition-colors" aria-label="Toggle sidebar">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+    </button>
+    <span class="font-serif text-gold text-lg italic">Admin</span>
+    <button onclick="logout()" class="text-xs text-zinc-500 hover:text-zinc-300 transition-colors">Logout</button>
+  </header>
 
-  <!-- Main -->
-  <div id="main">
-    <div class="top-bar">
+  <!-- ============ SIDEBAR OVERLAY (mobile) ============ -->
+  <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 z-30 bg-black/60 hidden lg:hidden"></div>
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside id="sidebar" class="fixed top-0 left-0 z-30 h-full w-60 bg-surface-light border-r border-surface-border flex flex-col transition-transform duration-200 -translate-x-full lg:translate-x-0 lg:fixed pt-14 lg:pt-0">
+    <div class="hidden lg:flex flex-col items-center py-6 border-b border-surface-border">
+      <div class="font-serif text-lg text-gold italic">Isabella &amp; Tyler</div>
+      <div class="text-[10px] text-zinc-600 tracking-[0.25em] uppercase mt-0.5">Admin Panel</div>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto py-2 px-2 space-y-0.5">
+      <div class="text-[10px] text-zinc-600 tracking-[0.2em] uppercase px-3 pt-4 pb-1">Management</div>
+      <button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors text-left border-l-2 border-transparent active" data-view="guests" onclick="showView('guests', event)">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+        <span>Guests</span>
+      </button>
+      <button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors text-left border-l-2 border-transparent" data-view="media" onclick="showView('media', event)">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"/></svg>
+        <span>Songs &amp; Messages</span>
+      </button>
+      <button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors text-left border-l-2 border-transparent" data-view="whatsapp" onclick="showView('whatsapp', event)">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+        <span>WhatsApp</span>
+      </button>
+      <button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors text-left border-l-2 border-transparent" data-view="seating" onclick="showView('seating', event); loadSeating()">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/></svg>
+        <span>Seating</span>
+      </button>
+
+      <div class="text-[10px] text-zinc-600 tracking-[0.2em] uppercase px-3 pt-5 pb-1">Public Pages</div>
+      <a href="index.html" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+        Invitation
+      </a>
+      <a href="rsvp.html" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m16.5 1.615a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V8.844a2.25 2.25 0 011.183-1.98l7.5-4.04a2.25 2.25 0 012.134 0l7.5 4.04a2.25 2.25 0 011.183 1.98V19.5z"/></svg>
+        RSVP
+      </a>
+      <a href="tables.html" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/></svg>
+        Table Finder
+      </a>
+      <a href="songs.html" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"/></svg>
+        Song Requests
+      </a>
+      <a href="playlist.html" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z"/></svg>
+        Playlist
+      </a>
+      <a href="messages.html" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/></svg>
+        Messages
+      </a>
+      <a href="checkin.html" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Check-In
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main id="main" class="lg:ml-60 pt-14 lg:pt-0 min-h-screen flex flex-col">
+
+    <!-- Top Bar -->
+    <div class="hidden lg:flex items-center justify-between px-6 py-4 border-b border-surface-border bg-surface-light/50">
       <div>
-        <h1 id="view-title" style="font-size:1.1rem;font-weight:400;">Guest Management</h1>
-        <div id="sync-indicator" class="sync-indicator"><span class="sync-dot"></span>Live Sync Active</div>
+        <h1 id="view-title" class="text-lg font-medium text-zinc-100">Guest Management</h1>
+        <p id="sync-indicator" class="text-[11px] text-zinc-500 tracking-wide mt-0.5">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>Live Sync Active
+        </p>
       </div>
-      <div class="top-bar-actions">
-        <button class="btn-sm" onclick="fetchGuests()">Refresh</button>
-        <button id="add-guest-btn" class="btn-sm primary" onclick="openAddGuest()">+ Add Guest / Family</button>
-        <button class="btn-sm" onclick="logout()">Logout</button>
+      <div class="flex items-center gap-2">
+        <button onclick="fetchGuests()" class="h-8 px-3 text-xs text-zinc-400 border border-surface-border rounded-lg hover:bg-surface-hover hover:text-zinc-100 transition-colors">Refresh</button>
+        <button id="add-guest-btn" onclick="openAddGuest()" class="h-8 px-3 text-xs font-medium text-black bg-gold rounded-lg hover:bg-gold-400 transition-colors">+ Add Guest</button>
+        <button onclick="logout()" class="h-8 px-3 text-xs text-zinc-500 hover:text-zinc-300 transition-colors">Logout</button>
       </div>
     </div>
 
-    <div id="content">
-      <!-- GUEST LIST VIEW -->
+    <!-- Content Area -->
+    <div id="content" class="flex-1 overflow-y-auto p-4 lg:p-6">
+
+      <!-- ===== GUESTS VIEW ===== -->
       <div id="view-guests">
-        <div class="stats-grid">
-          <div class="stat-card green">
-            <div class="stat-label">Attending</div>
-            <div class="stat-num" id="st-attending">0</div>
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+          <div class="bg-surface-card border border-surface-border rounded-xl p-4 border-l-[3px] border-l-emerald-500">
+            <div class="text-[11px] tracking-wider uppercase text-zinc-500 mb-1">Attending</div>
+            <div class="text-3xl font-serif text-zinc-100" id="st-attending">0</div>
           </div>
-          <div class="stat-card red">
-            <div class="stat-label">Declined</div>
-            <div class="stat-num" id="st-declined">0</div>
+          <div class="bg-surface-card border border-surface-border rounded-xl p-4 border-l-[3px] border-l-red-500">
+            <div class="text-[11px] tracking-wider uppercase text-zinc-500 mb-1">Declined</div>
+            <div class="text-3xl font-serif text-zinc-100" id="st-declined">0</div>
           </div>
-          <div class="stat-card yellow">
-            <div class="stat-label">Ask Later (Waitlist)</div>
-            <div class="stat-num" id="st-later">0</div>
+          <div class="bg-surface-card border border-surface-border rounded-xl p-4 border-l-[3px] border-l-amber-500">
+            <div class="text-[11px] tracking-wider uppercase text-zinc-500 mb-1">Ask Later</div>
+            <div class="text-3xl font-serif text-zinc-100" id="st-later">0</div>
           </div>
-          <div class="stat-card blue">
-            <div class="stat-label">Total Invited Seats</div>
-            <div class="stat-num" id="st-total">0</div>
+          <div class="bg-surface-card border border-surface-border rounded-xl p-4 border-l-[3px] border-l-gold">
+            <div class="text-[11px] tracking-wider uppercase text-zinc-500 mb-1">Total Seats</div>
+            <div class="text-3xl font-serif text-zinc-100" id="st-total">0</div>
           </div>
         </div>
 
-        <div class="filter-bar">
-          <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-          <button class="filter-btn" onclick="setFilter('attending', this)">Attending</button>
-          <button class="filter-btn" onclick="setFilter('later', this)">Ask Again Later</button>
-          <button class="filter-btn" onclick="setFilter('invited', this)">Not Responded</button>
-          <button class="filter-btn" onclick="setFilter('single', this)">Singles</button>
-          <button class="filter-btn" onclick="setFilter('couple', this)">Couples</button>
-          <button class="filter-btn" onclick="setFilter('family', this)">Families</button>
+        <!-- Filters -->
+        <div class="flex flex-wrap gap-1.5 mb-4">
+          <button class="filter-btn px-3 py-1.5 text-xs rounded-lg border border-surface-border text-zinc-400 hover:border-gold/50 hover:text-gold transition-colors bg-surface-card active" onclick="setFilter('all', this)">All</button>
+          <button class="filter-btn px-3 py-1.5 text-xs rounded-lg border border-surface-border text-zinc-400 hover:border-gold/50 hover:text-gold transition-colors bg-surface-card" onclick="setFilter('attending', this)">Attending</button>
+          <button class="filter-btn px-3 py-1.5 text-xs rounded-lg border border-surface-border text-zinc-400 hover:border-gold/50 hover:text-gold transition-colors bg-surface-card" onclick="setFilter('later', this)">Ask Later</button>
+          <button class="filter-btn px-3 py-1.5 text-xs rounded-lg border border-surface-border text-zinc-400 hover:border-gold/50 hover:text-gold transition-colors bg-surface-card" onclick="setFilter('invited', this)">Pending</button>
+          <button class="filter-btn px-3 py-1.5 text-xs rounded-lg border border-surface-border text-zinc-400 hover:border-gold/50 hover:text-gold transition-colors bg-surface-card" onclick="setFilter('single', this)">Singles</button>
+          <button class="filter-btn px-3 py-1.5 text-xs rounded-lg border border-surface-border text-zinc-400 hover:border-gold/50 hover:text-gold transition-colors bg-surface-card" onclick="setFilter('couple', this)">Couples</button>
+          <button class="filter-btn px-3 py-1.5 text-xs rounded-lg border border-surface-border text-zinc-400 hover:border-gold/50 hover:text-gold transition-colors bg-surface-card" onclick="setFilter('family', this)">Families</button>
         </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Guest / Family Lead</th>
-              <th>Type</th>
-              <th>Max Size</th>
-              <th>Status</th>
-              <th>Contact</th>
-              <th>Deadline</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="guests-tbody">
-            <tr>
-              <td colspan="7" style="text-align:center;padding:3rem;">Loading data from Convex...</td>
-            </tr>
-          </tbody>
-        </table>
+        <!-- Guest Table -->
+        <div class="bg-surface-card border border-surface-border rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-surface-border">
+                  <th class="text-left px-4 py-3 text-[11px] tracking-wider uppercase text-zinc-500 font-medium">Guest</th>
+                  <th class="text-left px-4 py-3 text-[11px] tracking-wider uppercase text-zinc-500 font-medium hidden sm:table-cell">Type</th>
+                  <th class="text-left px-4 py-3 text-[11px] tracking-wider uppercase text-zinc-500 font-medium hidden md:table-cell">Seats</th>
+                  <th class="text-left px-4 py-3 text-[11px] tracking-wider uppercase text-zinc-500 font-medium">Status</th>
+                  <th class="text-left px-4 py-3 text-[11px] tracking-wider uppercase text-zinc-500 font-medium hidden md:table-cell">Contact</th>
+                  <th class="text-left px-4 py-3 text-[11px] tracking-wider uppercase text-zinc-500 font-medium hidden lg:table-cell">Deadline</th>
+                  <th class="text-left px-4 py-3 text-[11px] tracking-wider uppercase text-zinc-500 font-medium">Action</th>
+                </tr>
+              </thead>
+              <tbody id="guests-tbody">
+                <tr><td colspan="7" class="text-center py-12 text-zinc-500 text-sm">Loading data from Convex...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
-      <!-- SONGS & MESSAGES VIEW -->
-      <div id="view-media" style="display:none;">
-        <div style="max-width: 800px; margin: 0 auto; text-align: center; padding: 3rem 1rem;">
-          <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--black); margin-bottom: 2rem;">Songs & Messages</h2>
-          <p style="color: #888; margin-bottom: 2rem;">Song requests and messages from your guests.</p>
+      <!-- ===== MEDIA VIEW ===== -->
+      <div id="view-media" class="hidden">
+        <div class="max-w-2xl mx-auto text-center">
+          <h2 class="font-serif text-2xl text-gold mb-1">Songs &amp; Messages</h2>
+          <p class="text-zinc-500 text-sm mb-6">Song requests and messages from your guests.</p>
           
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 600px; margin: 0 auto 2rem;">
-            <div style="background: #fff; padding: 1.5rem; border: 1px solid #e8e2d8; border-radius: 8px;">
-              <div style="font-size: 2rem; color: var(--gold);">🎵</div>
-              <div style="font-size: 2rem; font-family: 'Cormorant Garamond', serif; color: var(--black);"><span class="song-count">0</span></div>
-              <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: #999;">Song Requests</div>
+          <div class="grid grid-cols-2 gap-4 max-w-sm mx-auto mb-8">
+            <div class="bg-surface-card border border-surface-border rounded-xl p-5 anim-fade-up">
+              <svg class="w-8 h-8 mx-auto mb-2 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"/></svg>
+              <div class="text-3xl font-serif text-gold"><span class="song-count">0</span></div>
+              <div class="text-[11px] tracking-wider uppercase text-zinc-500 mt-1">Song Requests</div>
             </div>
-            <div style="background: #fff; padding: 1.5rem; border: 1px solid #e8e2d8; border-radius: 8px;">
-              <div style="font-size: 2rem; color: var(--gold);">💌</div>
-              <div style="font-size: 2rem; font-family: 'Cormorant Garamond', serif; color: var(--black);"><span class="msg-count">0</span></div>
-              <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: #999;">Messages</div>
+            <div class="bg-surface-card border border-surface-border rounded-xl p-5 anim-fade-up">
+              <svg class="w-8 h-8 mx-auto mb-2 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+              <div class="text-3xl font-serif text-gold"><span class="msg-count">0</span></div>
+              <div class="text-[11px] tracking-wider uppercase text-zinc-500 mt-1">Messages</div>
             </div>
           </div>
-          
-          <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-            <!-- SONGS BUTTON -->
-            <div style="background: white; border: 1px solid #e8e2d8; border-radius: 12px; padding: 2rem; min-width: 280px; text-align: center;">
-              <div style="font-size: 3rem; margin-bottom: 1rem;">🎵</div>
-              <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--gold);">Song List</h3>
-              <p style="font-size: 0.85rem; color: #888; margin-bottom: 1.5rem;">View all song requests from guests</p>
-              <a href="songs.html" target="_blank" 
-                 style="display: inline-block; padding: 0.8rem 2rem; background: var(--gold); color: white; text-decoration: none; border-radius: 6px; font-size: 0.8rem; letter-spacing: 0.1em;">
-                OPEN SONG LIST
-              </a>
-              <br><br>
-              <button onclick="shareWithDj()" style="padding: 0.8rem 2rem; background: #25D366; color: white; border: none; border-radius: 6px; font-size: 0.8rem; cursor: pointer; letter-spacing: 0.1em;">
-                📱 Share with DJ
-              </button>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <div class="bg-surface-card border border-surface-border rounded-xl p-6 min-w-[240px] anim-scale-in">
+              <svg class="w-10 h-10 mx-auto mb-3 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"/></svg>
+              <h3 class="font-serif text-xl text-gold mb-2">Song List</h3>
+              <p class="text-zinc-500 text-xs mb-4">View all song requests from guests</p>
+              <a href="songs.html" target="_blank" class="inline-block h-9 px-5 bg-gold text-black text-xs font-medium rounded-lg hover:bg-gold-400 transition-colors leading-9">OPEN SONG LIST</a>
+              <div class="mt-3">
+                <button onclick="shareWithDj()" class="h-9 px-5 bg-emerald-600 text-white text-xs font-medium rounded-lg hover:bg-emerald-500 transition-colors">
+                  <svg class="w-3.5 h-3.5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>
+                  Share with DJ
+                </button>
+              </div>
             </div>
-            
-            <!-- MESSAGES BUTTON -->
-            <div style="background: white; border: 1px solid #e8e2d8; border-radius: 12px; padding: 2rem; min-width: 280px; text-align: center;">
-              <div style="font-size: 3rem; margin-bottom: 1rem;">💌</div>
-              <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--gold);">Messages</h3>
-              <p style="font-size: 0.85rem; color: #888; margin-bottom: 1.5rem;">Read guest messages one by one</p>
-              <a href="messages.html" target="_blank" 
-                 style="display: inline-block; padding: 0.8rem 2rem; background: var(--gold); color: white; text-decoration: none; border-radius: 6px; font-size: 0.8rem; letter-spacing: 0.1em;">
-                READ MESSAGES
-              </a>
-              <br><br>
-              <button onclick="downloadMessages()" style="padding: 0.8rem 2rem; background: #3498db; color: white; border: none; border-radius: 6px; font-size: 0.8rem; cursor: pointer; letter-spacing: 0.1em;">
-                📥 Download Messages
-              </button>
+            <div class="bg-surface-card border border-surface-border rounded-xl p-6 min-w-[240px] anim-scale-in">
+              <svg class="w-10 h-10 mx-auto mb-3 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+              <h3 class="font-serif text-xl text-gold mb-2">Messages</h3>
+              <p class="text-zinc-500 text-xs mb-4">Read guest messages one by one</p>
+              <a href="messages.html" target="_blank" class="inline-block h-9 px-5 bg-gold text-black text-xs font-medium rounded-lg hover:bg-gold-400 transition-colors leading-9">READ MESSAGES</a>
+              <div class="mt-3">
+                <button onclick="downloadMessages()" class="h-9 px-5 bg-sky-600 text-white text-xs font-medium rounded-lg hover:bg-sky-500 transition-colors">
+                  <svg class="w-3.5 h-3.5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                  Download Messages
+                </button>
+              </div>
             </div>
           </div>
+        </div>
       </div>
 
-      <!-- WHATSAPP VIEW -->
-      <div id="view-whatsapp" style="display:none;">
-        <div class="wa-builder">
-          <h2>WhatsApp Campaign Console</h2>
-          <p class="wa-muted">Send to groups or one guest at a time from a cleaner flow. Individual sends still use
-            RSVP-aware messages automatically.</p>
+      <!-- ===== WHATSAPP VIEW ===== -->
+      <div id="view-whatsapp" class="hidden">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="font-serif text-2xl text-gold mb-1">WhatsApp Campaign Console</h2>
+          <p class="text-zinc-500 text-sm mb-5">Send to groups or one guest at a time. Individual sends use RSVP-aware messages automatically.</p>
 
-          <div class="wa-kpis">
-            <div class="wa-kpi"><strong id="wa-kpi-phones">0</strong><span>With WhatsApp</span></div>
-            <div class="wa-kpi"><strong id="wa-kpi-invited">0</strong><span>Not Responded</span></div>
-            <div class="wa-kpi"><strong id="wa-kpi-later">0</strong><span>Ask Later</span></div>
-            <div class="wa-kpi"><strong id="wa-kpi-attending">0</strong><span>Attending</span></div>
+          <!-- KPIs -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+            <div class="bg-surface-card border border-surface-border rounded-lg p-3"><strong class="text-xl font-serif text-gold block" id="wa-kpi-phones">0</strong><span class="text-[11px] text-zinc-500 uppercase tracking-wider">With WhatsApp</span></div>
+            <div class="bg-surface-card border border-surface-border rounded-lg p-3"><strong class="text-xl font-serif text-gold block" id="wa-kpi-invited">0</strong><span class="text-[11px] text-zinc-500 uppercase tracking-wider">Not Responded</span></div>
+            <div class="bg-surface-card border border-surface-border rounded-lg p-3"><strong class="text-xl font-serif text-gold block" id="wa-kpi-later">0</strong><span class="text-[11px] text-zinc-500 uppercase tracking-wider">Ask Later</span></div>
+            <div class="bg-surface-card border border-surface-border rounded-lg p-3"><strong class="text-xl font-serif text-gold block" id="wa-kpi-attending">0</strong><span class="text-[11px] text-zinc-500 uppercase tracking-wider">Attending</span></div>
           </div>
 
-          <div class="wa-layout">
-            <div class="wa-panel">
-              <h3>Group Send</h3>
-              <div class="wa-row" style="margin-bottom:0.6rem;">
-                <select id="wa-group" onchange="updateWaPreview()">
+          <div class="grid lg:grid-cols-2 gap-4 mb-5">
+            <!-- Group Send -->
+            <div class="bg-surface-card border border-surface-border rounded-xl p-4">
+              <h3 class="text-xs tracking-wider uppercase text-gold mb-3">Group Send</h3>
+              <div class="space-y-3">
+                <select id="wa-group" onchange="updateWaPreview()" class="w-full h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none">
                   <option value="all">All Guests (Initial Invite)</option>
                   <option value="invited">Not Responded Yet (Reminders)</option>
                   <option value="later">Ask Later / Waitlist (Follow-ups)</option>
                   <option value="attending">Attending (Event Updates)</option>
                 </select>
-                <button class="btn-sm primary" onclick="sendMassWA()">Open WhatsApp for Group</button>
+                <button onclick="sendMassWA()" class="w-full h-9 bg-gold text-black text-xs font-medium rounded-lg hover:bg-gold-400 transition-colors">Open WhatsApp for Group</button>
               </div>
-              <small>Opens a WhatsApp tab per matching guest with a saved phone number.</small>
+              <p class="text-[11px] text-zinc-600 mt-2">Opens a WhatsApp tab per matching guest with a saved phone number.</p>
             </div>
 
-            <div class="wa-panel">
-              <h3>Send to Individual</h3>
-              <div class="wa-row" style="margin-bottom:0.6rem;">
-                <input id="wa-person-search" type="text" placeholder="Search by name or phone..."
-                  oninput="filterWaPeople()" />
+            <!-- Individual Send -->
+            <div class="bg-surface-card border border-surface-border rounded-xl p-4">
+              <h3 class="text-xs tracking-wider uppercase text-gold mb-3">Send to Individual</h3>
+              <div class="space-y-2">
+                <input id="wa-person-search" type="text" placeholder="Search by name or phone..." oninput="filterWaPeople()" class="w-full h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm placeholder:text-zinc-600 focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none" />
+                <div class="flex gap-2">
+                  <select id="wa-person" onchange="showSelectedPersonMeta()" class="flex-1 h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none"></select>
+                  <button onclick="sendOneWA()" class="h-9 px-4 bg-gold text-black text-xs font-medium rounded-lg hover:bg-gold-400 transition-colors shrink-0">Send</button>
+                </div>
+                <div id="wa-person-meta" class="text-xs text-zinc-500 bg-surface rounded-lg p-2.5 min-h-[36px]">Select a person to view details.</div>
               </div>
-              <div class="wa-row" style="margin-bottom:0.6rem;">
-                <select id="wa-person" onchange="showSelectedPersonMeta()"></select>
-                <button class="btn-sm primary" onclick="sendOneWA()">Open WhatsApp for Person</button>
-              </div>
-              <div id="wa-person-meta" class="wa-person-info">Select a person to view details.</div>
             </div>
           </div>
 
-          <div class="wa-vars">
-            <span class="wa-var" onclick="insertVar('{{name}}')">{{name}}</span>
-            <span class="wa-var" onclick="insertVar('{{type}}')">{{type}}</span>
-            <span class="wa-var" onclick="insertVar('{{deadline}}')">{{deadline}}</span>
-            <span class="wa-var" onclick="insertVar('{{link}}')">{{link}}</span>
+          <!-- Template Variables -->
+          <div class="flex flex-wrap gap-1.5 mb-3">
+            <span class="px-2.5 py-1 bg-surface border border-surface-border rounded text-xs text-zinc-400 cursor-pointer hover:bg-gold hover:text-black hover:border-gold transition-colors" onclick="insertVar('{{name}}')">{{name}}</span>
+            <span class="px-2.5 py-1 bg-surface border border-surface-border rounded text-xs text-zinc-400 cursor-pointer hover:bg-gold hover:text-black hover:border-gold transition-colors" onclick="insertVar('{{type}}')">{{type}}</span>
+            <span class="px-2.5 py-1 bg-surface border border-surface-border rounded text-xs text-zinc-400 cursor-pointer hover:bg-gold hover:text-black hover:border-gold transition-colors" onclick="insertVar('{{deadline}}')">{{deadline}}</span>
+            <span class="px-2.5 py-1 bg-surface border border-surface-border rounded text-xs text-zinc-400 cursor-pointer hover:bg-gold hover:text-black hover:border-gold transition-colors" onclick="insertVar('{{link}}')">{{link}}</span>
           </div>
 
-          <!-- Default Template Box -->
-          <textarea id="wa-text" class="wa-template" oninput="updateWaPreview()">Hi {{name}},
+          <!-- Template Editor -->
+          <div class="bg-surface-card border border-surface-border rounded-xl overflow-hidden mb-4">
+            <div class="px-4 py-2.5 border-b border-surface-border">
+              <span class="text-[11px] tracking-wider uppercase text-zinc-500">Message Template</span>
+            </div>
+            <textarea id="wa-text" class="w-full bg-surface border-0 text-zinc-100 text-sm p-4 min-h-[180px] resize-y focus:outline-none font-sans leading-relaxed" oninput="updateWaPreview()">Hi {{name}},
 
 You are cordially invited to celebrate the wedding of Isabella and Tyler.
 
@@ -1189,109 +336,120 @@ Open your invitation and respond here:
 
 With love,
 Isabella and Tyler</textarea>
+          </div>
 
-          <div style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#888;">Live Preview (First
-            match)</div>
-          <textarea class="wa-preview wa-template" id="wa-preview" style="min-height:220px;">Loading preview...</textarea>
+          <!-- Preview -->
+          <div class="bg-surface-card border border-surface-border rounded-xl overflow-hidden mb-4">
+            <div class="px-4 py-2.5 border-b border-surface-border">
+              <span class="text-[11px] tracking-wider uppercase text-zinc-500">Live Preview</span>
+            </div>
+            <textarea id="wa-preview" class="w-full bg-surface border-0 text-zinc-100 text-sm p-4 min-h-[180px] resize-y focus:outline-none font-sans leading-relaxed" readonly>Loading preview...</textarea>
+          </div>
 
-          <div class="wa-actions" style="margin-top:1.3rem;">
-            <button class="btn-sm" onclick="copyWA()">Copy Message</button>
+          <!-- Actions -->
+          <div class="flex gap-2">
+            <button onclick="copyWA()" class="h-9 px-4 border border-surface-border text-zinc-400 text-xs rounded-lg hover:bg-surface-hover hover:text-zinc-100 transition-colors">Copy Message</button>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- SEATING VIEW -->
-  <div id="view-seating" style="display:none;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-      <h2 style="font-size:1.2rem;font-weight:400;">Table Assignments</h2>
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-        <button class="btn-sm" onclick="loadSeating()">Refresh</button>
-        <button class="btn-sm primary" onclick="saveSeating()">Save All</button>
-        <button class="btn-sm" onclick="loadPreassigned()" style="border-color:#2ecc71;color:#2ecc71;">Load Pre-assigned Tables</button>
-      </div>
-    </div>
-    <div style="margin-bottom:1rem;font-size:0.8rem;color:#666;">Assign table numbers to guests. Click a guest row to assign a table.</div>
-    <div id="seating-list">
-      <div class="loading">Loading guests...</div>
-    </div>
-    <div id="seating-table-view" style="margin-top:2rem;">
-      <h3 style="font-size:1rem;margin-bottom:1rem;">By Table</h3>
-      <div id="seating-by-table"></div>
-    </div>
+      <!-- ===== SEATING VIEW ===== -->
+      <div id="view-seating" class="hidden">
+        <div class="max-w-4xl mx-auto">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h2 class="font-serif text-xl text-gold">Table Assignments</h2>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="loadSeating()" class="h-8 px-3 text-xs text-zinc-400 border border-surface-border rounded-lg hover:bg-surface-hover hover:text-zinc-100 transition-colors">Refresh</button>
+              <button onclick="saveSeating()" class="h-8 px-3 text-xs font-medium text-black bg-gold rounded-lg hover:bg-gold-400 transition-colors">Save All</button>
+              <button onclick="loadPreassigned()" class="h-8 px-3 text-xs border border-emerald-600 text-emerald-500 rounded-lg hover:bg-emerald-600/10 transition-colors">Load Pre-assigned</button>
+            </div>
+          </div>
+          <p class="text-sm text-zinc-500 mb-4">Assign table numbers to guests. Click a guest row to assign a table.</p>
+          
+          <div class="bg-surface-card border border-surface-border rounded-xl p-4 mb-6">
+            <div id="seating-list">
+              <div class="text-center py-8 text-zinc-500 text-sm">Loading guests...</div>
+            </div>
+          </div>
 
-    <!-- QR Code Portal -->
-    <div style="margin-top:3rem;padding:2rem;background:#fff;border-radius:12px;border:2px dashed var(--gold);text-align:center;">
-      <h3 style="font-size:1.1rem;margin-bottom:0.5rem;font-weight:400;">Table Finder QR Code</h3>
-      <p style="font-size:0.8rem;color:#888;margin-bottom:1rem;">Scan to search your table assignment</p>
-      <div id="qr-code-container" style="display:inline-block;background:#fff;padding:1rem;border-radius:8px;"></div>
-      <div id="qr-url" style="margin-top:0.8rem;font-size:0.75rem;color:#999;word-break:break-all;"></div>
-      <button class="btn-sm" style="margin-top:1rem;" onclick="printQr()">Print QR</button>
-    </div>
-  </div>
+          <div class="bg-surface-card border border-surface-border rounded-xl p-4 mb-6">
+            <h3 class="text-sm font-medium text-zinc-300 mb-3">By Table</h3>
+            <div id="seating-by-table"></div>
+          </div>
 
-  <!-- ADD GUEST MODAL -->
-  <div class="modal-overlay" id="add-modal">
-    <div class="modal">
-      <h2>Add Guest / Household</h2>
-      <div class="modal-row">
-        <div class="modal-group">
-          <label>First Name (Lead Guest)</label>
-          <input type="text" id="m-fname" placeholder="John" />
-        </div>
-        <div class="modal-group">
-          <label>Last Name</label>
-          <input type="text" id="m-lname" placeholder="Doe" />
+          <!-- QR Code -->
+          <div class="bg-surface-card border-2 border-dashed border-gold/40 rounded-xl p-6 text-center">
+            <h3 class="font-serif text-lg text-gold mb-1">Table Finder QR Code</h3>
+            <p class="text-xs text-zinc-500 mb-4">Scan to search your table assignment</p>
+            <div id="qr-code-container" class="inline-block bg-white p-3 rounded-lg"></div>
+            <p id="qr-url" class="text-xs text-zinc-600 mt-2 break-all"></p>
+            <button onclick="printQr()" class="mt-3 h-8 px-3 text-xs text-zinc-400 border border-surface-border rounded-lg hover:bg-surface-hover hover:text-zinc-100 transition-colors">Print QR</button>
+          </div>
         </div>
       </div>
-      <div class="modal-row">
-        <div class="modal-group">
-          <label>Guest Type</label>
-          <select id="m-type" onchange="syncPartySize()">
-            <option value="single">Single</option>
-            <option value="couple">Couple</option>
-            <option value="family">Family (up to 4)</option>
-          </select>
-        </div>
-        <div class="modal-group">
-          <label>Max Party Size</label>
-          <input type="number" id="m-max" value="1" min="1" max="10" />
-        </div>
+
+    </div><!-- /content -->
+  </main>
+
+  <!-- ============ ADD/EDIT GUEST MODAL ============ -->
+  <div id="add-modal" class="fixed inset-0 z-50 bg-black/70 hidden items-center justify-center p-4" style="display:none;">
+    <div class="bg-surface-card border border-surface-border rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div class="px-6 py-4 border-b border-surface-border">
+        <h2 class="font-serif text-xl text-gold">Add Guest / Household</h2>
       </div>
-      <div id="m-spouse-row" class="modal-row" style="display:none;">
-        <div class="modal-group" style="grid-column: 1 / -1;">
-          <label>Spouse / Partner First Name (Optional)</label>
-          <input type="text" id="m-spouse" placeholder="Jane" />
+      <div class="p-6 space-y-4">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-[11px] tracking-wider uppercase text-zinc-500 block mb-1.5">First Name (Lead Guest)</label>
+            <input type="text" id="m-fname" placeholder="John" class="w-full h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm placeholder:text-zinc-600 focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none" />
+          </div>
+          <div>
+            <label class="text-[11px] tracking-wider uppercase text-zinc-500 block mb-1.5">Last Name</label>
+            <input type="text" id="m-lname" placeholder="Doe" class="w-full h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm placeholder:text-zinc-600 focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none" />
+          </div>
         </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-[11px] tracking-wider uppercase text-zinc-500 block mb-1.5">Guest Type</label>
+            <select id="m-type" onchange="syncPartySize()" class="w-full h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none">
+              <option value="single">Single</option>
+              <option value="couple">Couple</option>
+              <option value="family">Family (up to 4)</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-[11px] tracking-wider uppercase text-zinc-500 block mb-1.5">Max Party Size</label>
+            <input type="number" id="m-max" value="1" min="1" max="10" class="w-full h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none" />
+          </div>
+        </div>
+        <div id="m-spouse-row" class="hidden">
+          <label class="text-[11px] tracking-wider uppercase text-zinc-500 block mb-1.5">Spouse / Partner First Name (Optional)</label>
+          <input type="text" id="m-spouse" placeholder="Jane" class="w-full h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm placeholder:text-zinc-600 focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none" />
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-[11px] tracking-wider uppercase text-zinc-500 block mb-1.5">WhatsApp Number</label>
+            <input type="tel" id="m-phone" placeholder="+501..." class="w-full h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm placeholder:text-zinc-600 focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none" />
+          </div>
+          <div>
+            <label class="text-[11px] tracking-wider uppercase text-zinc-500 block mb-1.5">RSVP Deadline</label>
+            <input type="date" id="m-due" value="2027-01-27" class="w-full h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none" />
+          </div>
+        </div>
+        <label class="flex items-center gap-2.5 cursor-pointer text-sm text-zinc-400">
+          <input type="checkbox" id="m-easy" class="rounded border-surface-border bg-surface text-gold focus:ring-gold/30" />
+          Easy Mode RSVP (Simplified form - only first name &amp; attendance)
+        </label>
       </div>
-      <div class="modal-row">
-        <div class="modal-group">
-          <label>WhatsApp Number</label>
-          <input type="tel" id="m-phone" placeholder="+501..." />
-        </div>
-        <div class="modal-group">
-          <label>RSVP Deadline</label>
-          <input type="date" id="m-due" value="2027-01-27" />
-        </div>
-      </div>
-      <div class="modal-row">
-        <div class="modal-group" style="grid-column: 1 / -1;">
-          <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
-            <input type="checkbox" id="m-easy" style="width:18px;height:18px;" />
-            Easy Mode RSVP (Simplified form - only first name & attendance)
-          </label>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:flex-end;gap:1rem;margin-top:2rem;">
-        <button class="btn-sm" onclick="document.getElementById('add-modal').classList.remove('open')">Cancel</button>
-        <button class="btn-sm primary" onclick="submitGuest()">Save Guest</button>
+      <div class="px-6 py-4 border-t border-surface-border flex justify-end gap-3">
+        <button onclick="closeModal('add-modal')" class="h-9 px-4 text-xs text-zinc-400 border border-surface-border rounded-lg hover:bg-surface-hover hover:text-zinc-100 transition-colors">Cancel</button>
+        <button onclick="submitGuest()" class="h-9 px-5 text-xs font-medium text-black bg-gold rounded-lg hover:bg-gold-400 transition-colors">Save Guest</button>
       </div>
     </div>
   </div>
 
   <script>
-    const CONVEX_HTTP_URL = 'https://hip-donkey-513.convex.site';
+    const CONVEX_HTTP_URL = 'https://adept-bat-233.convex.site';
     const WEDDING_URL = 'http://localhost:8888';
     const SESSION_KEY = 'it_admin_token';
     const ADMIN_PASSWORD = 'Ty&Bella@26';
@@ -1303,13 +461,24 @@ Isabella and Tyler</textarea>
     let adminToken = localStorage.getItem(SESSION_KEY) || '';
     let refreshTimer = null;
 
+    // ====== SIDEBAR TOGGLE (mobile) ======
+    function toggleSidebar() {
+      document.body.classList.toggle('sidebar-open');
+    }
+
+    // ====== MODAL HELPERS ======
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    window.onclick = function(e) {
+      const modal = document.getElementById('add-modal');
+      if (e.target === modal) closeModal('add-modal');
+    };
+
     async function doLogin() {
       const pass = document.getElementById('admin-pass').value;
       const errEl = document.getElementById('login-err');
       errEl.style.display = 'none';
-
       try {
-        // Try Convex auth first
         const res = await fetch(`${CONVEX_HTTP_URL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1322,16 +491,14 @@ Isabella and Tyler</textarea>
           throw new Error('Convex auth unavailable');
         }
       } catch {
-        // Fallback: local password check
         if (pass !== ADMIN_PASSWORD) {
           errEl.style.display = 'block';
           return;
         }
         adminToken = 'local_' + btoa(pass);
       }
-
       localStorage.setItem(SESSION_KEY, adminToken);
-      document.getElementById('login-overlay').classList.add('hidden');
+      document.getElementById('login-overlay').style.display = 'none';
       await fetchGuests();
       startLiveRefresh();
     }
@@ -1345,23 +512,23 @@ Isabella and Tyler</textarea>
         await fetch(`${CONVEX_HTTP_URL}/api/auth/logout`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${adminToken}` }
-        }).catch(() => { });
+        }).catch(() => {});
       }
       adminToken = '';
       localStorage.removeItem(SESSION_KEY);
-      document.getElementById('login-overlay').classList.remove('hidden');
+      document.getElementById('login-overlay').style.display = 'flex';
       document.getElementById('admin-pass').value = '';
     }
 
     window.onload = async () => {
       if (adminToken && await hasValidSession()) {
-        document.getElementById('login-overlay').classList.add('hidden');
+        document.getElementById('login-overlay').style.display = 'none';
         await fetchGuests();
         startLiveRefresh();
       } else {
         adminToken = '';
         localStorage.removeItem(SESSION_KEY);
-        document.getElementById('login-overlay').classList.remove('hidden');
+        document.getElementById('login-overlay').style.display = 'flex';
       }
     };
 
@@ -1385,25 +552,28 @@ Isabella and Tyler</textarea>
 
     function showView(view, evt) {
       currentView = view;
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(el => {
+        el.classList.remove('active', 'border-gold', 'text-zinc-100', 'bg-surface-hover');
+        el.classList.add('text-zinc-400');
+      });
+      if (evt && evt.currentTarget) {
+        const btn = evt.currentTarget;
+        btn.classList.remove('text-zinc-400');
+        btn.classList.add('active', 'border-gold', 'text-zinc-100', 'bg-surface-hover');
+      }
 
       document.getElementById('view-guests').style.display = view === 'guests' ? 'block' : 'none';
       document.getElementById('view-media').style.display = view === 'media' ? 'block' : 'none';
       document.getElementById('view-whatsapp').style.display = view === 'whatsapp' ? 'block' : 'none';
       document.getElementById('view-seating').style.display = view === 'seating' ? 'block' : 'none';
-      document.getElementById('add-guest-btn').style.display = view === 'guests' ? 'inline-flex' : 'none';
+      const addBtn = document.getElementById('add-guest-btn');
+      if (addBtn) addBtn.style.display = view === 'guests' ? 'inline-flex' : 'none';
 
-      const titles = {
-        guests: 'Guest Management',
-        media: 'Songs & Messages',
-        whatsapp: 'WhatsApp Inbox',
-        seating: 'Seating'
-      };
+      const titles = { guests: 'Guest Management', media: 'Songs & Messages', whatsapp: 'WhatsApp Inbox', seating: 'Seating' };
       document.getElementById('view-title').textContent = titles[view] || 'Guest Management';
-
       if (view === 'media') renderMediaView();
       if (view === 'whatsapp') updateWaPreview();
+      if (window.innerWidth < 1024) document.body.classList.remove('sidebar-open');
     }
 
     async function renderMediaView() {
@@ -1419,7 +589,6 @@ Isabella and Tyler</textarea>
           document.querySelector('#view-media .msg-count').textContent = messages.length;
         } else throw new Error('messages failed');
       } catch {
-        // Fallback to localStorage
         const songs = JSON.parse(localStorage.getItem('it_songs') || '[]');
         const messages = JSON.parse(localStorage.getItem('it_messages') || '[]');
         document.querySelector('#view-media .song-count').textContent = songs.length;
@@ -1427,16 +596,15 @@ Isabella and Tyler</textarea>
       }
     }
 
-    // Seating functions
+    // Seating
     let seatingData = {};
 
     async function loadSeating() {
       const el = document.getElementById('seating-list');
       if (!el) return;
-      
-      el.innerHTML = '<div class="loading">Loading guests...</div>';
+      el.innerHTML = '<div class="text-center py-8 text-zinc-500 text-sm">Loading guests...</div>';
       if (!guests.length) await fetchGuests({ showLoading: false });
-      if (!guests.length) { el.innerHTML = '<div class="loading">Could not load guests. Check admin token.</div>'; return; }
+      if (!guests.length) { el.innerHTML = '<div class="text-center py-8 text-zinc-500 text-sm">Could not load guests. Check admin token.</div>'; return; }
       let seatingMap = {};
       try {
         const res = await fetch(`${CONVEX_HTTP_URL}/api/seating`, { headers: authHeaders() });
@@ -1447,7 +615,7 @@ Isabella and Tyler</textarea>
         Object.keys(local).forEach(k => { if (!seatingMap[k]) seatingMap[k] = local[k]; });
       } catch {}
       seatingData = seatingMap;
-      
+
       el.innerHTML = guests.map(g => {
         const id = String(g._id || g.id || '');
         const name = `${g.first_name || ''} ${g.last_name || ''}`.trim() || 'Unknown';
@@ -1455,11 +623,10 @@ Isabella and Tyler</textarea>
         return `<div class="seating-row">
           <div class="s-name">${escapeHtml(name)}</div>
           <div class="s-party">${g.max_party || 1}</div>
-          <input class="s-table-input" type="text" value="${escapeHtml(table)}" data-guest-id="${escapeHtml(id)}" data-guest-name="${escapeHtml(name)}" placeholder="Table #" onchange="onTableChange(this)" />
+          <input class="s-table-input" type="text" value="${escapeHtml(table)}" data-guest-id="${escapeHtml(id)}" data-guest-name="${escapeHtml(name)}" placeholder="#" onchange="onTableChange(this)" />
           <span class="s-saved" id="saved-${escapeHtml(id)}"></span>
         </div>`;
       }).join('');
-      
       renderSeatingByTable();
       initQrCode();
     }
@@ -1472,7 +639,7 @@ Isabella and Tyler</textarea>
       const id = input.dataset.guestId;
       seatingData[id] = input.value.trim();
       const saved = document.getElementById(`saved-${id}`);
-      if (saved) { saved.textContent = 'unsaved'; saved.style.color = '#e74c3c'; }
+      if (saved) { saved.textContent = 'unsaved'; saved.style.color = '#ef4444'; }
       saveSeatingLocal();
     }
 
@@ -1485,7 +652,6 @@ Isabella and Tyler</textarea>
           tableNum: table
         }));
       saveSeatingLocal();
-      // Save to Convex
       for (const a of assignments) {
         try {
           await fetch(`${CONVEX_HTTP_URL}/api/seating`, {
@@ -1497,7 +663,7 @@ Isabella and Tyler</textarea>
       }
       document.querySelectorAll('.s-saved').forEach(el => {
         el.textContent = 'saved';
-        el.style.color = '#2ecc71';
+        el.style.color = '#10b981';
       });
       renderSeatingByTable();
     }
@@ -1505,7 +671,6 @@ Isabella and Tyler</textarea>
     function renderSeatingByTable() {
       const el = document.getElementById('seating-by-table');
       if (!el) return;
-      
       const tableMap = {};
       Object.entries(seatingData).forEach(([id, table]) => {
         if (!table) return;
@@ -1513,15 +678,12 @@ Isabella and Tyler</textarea>
         const g = guests.find(x => String(x._id || x.id) === id);
         if (g) tableMap[table].push(`${g.first_name || ''} ${g.last_name || ''}`.trim());
       });
-      
       const keys = Object.keys(tableMap).sort((a,b) => {
         const na = parseInt(a), nb = parseInt(b);
         if (!isNaN(na) && !isNaN(nb)) return na - nb;
         return a.localeCompare(b);
       });
-      
-      if (!keys.length) { el.innerHTML = '<div style="color:#888;font-size:0.9rem;">No tables assigned yet.</div>'; return; }
-      
+      if (!keys.length) { el.innerHTML = '<div class="text-zinc-500 text-sm">No tables assigned yet.</div>'; return; }
       el.innerHTML = keys.map(key => `
         <div class="seating-table-group">
           <h4>Table ${escapeHtml(key)}</h4>
@@ -1538,30 +700,27 @@ Isabella and Tyler</textarea>
       if (!container || !urlEl) return;
       const tablesUrl = `${String(WEDDING_URL || '').replace(/\/+$/, '')}/tables`;
       urlEl.textContent = tablesUrl;
-      container.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(tablesUrl)}" alt="QR Code for Table Finder" style="max-width:200px;height:auto;" />`;
+      container.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(tablesUrl)}" alt="QR Code for Table Finder" style="max-width:200px;height:auto;border-radius:4px;" />`;
     }
 
     function printQr() {
       const tablesUrl = `${String(WEDDING_URL || '').replace(/\/+$/, '')}/tables`;
       const win = window.open('', '_blank');
-      win.document.write(`<!DOCTYPE html><html><head><title>Table Finder QR</title><style>body{text-align:center;padding:2rem;font-family:sans-serif;}img{max-width:300px;}</style></head><body><h2>Scan to Find Your Table</h2><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(tablesUrl)}" alt="QR"/><p style="margin-top:1rem;color:#666;">${tablesUrl}</p><script>window.onload=function(){window.print()};<\/script></body></html>`);
+      win.document.write(`<!DOCTYPE html><html><head><title>Table Finder QR</title><style>body{text-align:center;padding:2rem;font-family:sans-serif;background:#09090b;color:#f4f4f5;}img{max-width:300px;}</style></head><body><h2 style="font-family:Georgia,serif;color:#E1C16E;">Scan to Find Your Table</h2><img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(tablesUrl)}" alt="QR"/><p style="margin-top:1rem;color:#a1a1aa;">${tablesUrl}</p><script>window.onload=function(){window.print()};<\/script></body></html>`);
       win.document.close();
     }
 
     function loadPreassigned() {
       const data = window.__PREASSIGNED_TABLES;
       if (!data || !data.length) { alert('No pre-assigned data loaded.'); return; }
-      data.forEach(a => {
-        seatingData[a.guestId] = a.tableNum;
-      });
+      data.forEach(a => { seatingData[a.guestId] = a.tableNum; });
       saveSeatingLocal();
-      // Update all visible inputs
       document.querySelectorAll('.s-table-input').forEach(inp => {
         const id = inp.dataset.guestId;
         if (seatingData[id] !== undefined) {
           inp.value = seatingData[id];
           const saved = document.getElementById(`saved-${id}`);
-          if (saved) { saved.textContent = 'saved'; saved.style.color = '#2ecc71'; }
+          if (saved) { saved.textContent = 'saved'; saved.style.color = '#10b981'; }
         }
       });
       renderSeatingByTable();
@@ -1577,12 +736,15 @@ Isabella and Tyler</textarea>
 
     function setFilter(f, btn) {
       currentFilter = f;
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('bg-gold', 'text-black', 'border-gold');
+        b.classList.add('text-zinc-400', 'border-surface-border', 'bg-surface-card');
+      });
+      btn.classList.remove('text-zinc-400', 'border-surface-border', 'bg-surface-card');
+      btn.classList.add('bg-gold', 'text-black', 'border-gold');
       renderTable();
     }
 
-    // Data sync
     function escapeHtml(value) {
       return String(value ?? '')
         .replace(/&/g, '&amp;')
@@ -1602,7 +764,6 @@ Isabella and Tyler</textarea>
     async function copyText(value, successMessage) {
       const text = String(value || '').trim();
       if (!text) return;
-
       try {
         await navigator.clipboard.writeText(text);
         alert(successMessage || 'Copied to clipboard.');
@@ -1656,27 +817,22 @@ Isabella and Tyler</textarea>
 
     async function fetchGuests(opts = { showLoading: true }) {
       if (opts.showLoading) {
-        document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">Syncing with Convex...</td></tr>`;
+        document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" class="text-center py-8 text-zinc-500 text-sm">Syncing with Convex...</td></tr>`;
       }
       try {
-        const guestRes = await fetch(`${CONVEX_HTTP_URL}/api/guests`, {
-          headers: authHeaders()
-        });
-
+        const guestRes = await fetch(`${CONVEX_HTTP_URL}/api/guests`, { headers: authHeaders() });
         if (guestRes.status === 401) {
           await logout();
           throw new Error('Session expired. Please log in again.');
         }
         if (!guestRes.ok) throw new Error(await guestRes.text());
-
         guests = await guestRes.json();
-
         updateStats();
         renderTable();
         updateWaPreview();
         updateSyncLabel();
       } catch (err) {
-        document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" style="text-align:center;color:red;padding:2rem;">Error loading data from Convex.</td></tr>`;
+        document.getElementById('guests-tbody').innerHTML = `<tr><td colspan="7" class="text-center py-8 text-red-400 text-sm">Error loading data from Convex.</td></tr>`;
       }
     }
 
@@ -1684,7 +840,7 @@ Isabella and Tyler</textarea>
       const el = document.getElementById('sync-indicator');
       const now = new Date();
       const t = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      el.innerHTML = `<span class="sync-dot"></span>Live Sync Active - Last update ${t}`;
+      el.innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>Live Sync Active - Last update ${t}`;
     }
 
     function updateStats() {
@@ -1707,36 +863,31 @@ Isabella and Tyler</textarea>
       });
 
       const tbody = document.getElementById('guests-tbody');
-      if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;">No guests matching filter.</td></tr>`; return; }
+      if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-zinc-500 text-sm">No guests matching filter.</td></tr>`; return; }
 
       tbody.innerHTML = filtered.map(g => {
         const st = g.attendance || 'invited';
-        const pClass = { attending: 'pill-attending', declined: 'pill-declined', later: 'pill-later', invited: 'pill-invited' }[st];
+        const pClass = { attending: 'bg-emerald-500/10 text-emerald-400', declined: 'bg-red-500/10 text-red-400', later: 'bg-amber-500/10 text-amber-400', invited: 'bg-zinc-500/10 text-zinc-400' }[st];
         const pLabel = { attending: 'Yes', declined: 'No', later: 'Ask Later', invited: 'Invited' }[st];
         const key = getGuestKey(g);
         const hasPhone = !!normalizeWaPhone(g.phone);
 
-        let displayName = `<strong>${g.first_name}${g.spouse_name ? ' & ' + g.spouse_name : ''} ${g.last_name}</strong>`;
+        let displayName = `<span class="font-medium text-zinc-100">${escapeHtml(g.first_name)}${g.spouse_name ? ' &amp; ' + escapeHtml(g.spouse_name) : ''} ${escapeHtml(g.last_name || '')}</span>`;
 
-        return `<tr>
-          <td>${displayName}</td>
-          <td style="text-transform:capitalize">${g.guest_type || 'Single'}</td>
-          <td>${g.max_party || 1} allowed</td>
-          <td><span class="status-pill ${pClass}">${pLabel}</span></td>
-          <td>${g.phone || '-'}</td>
-          <td style="font-size:0.75rem">${g.deadline ? new Date(g.deadline).toLocaleDateString() : '-'}</td>
-          <td><div class="table-actions">
-            <button class="action-btn" onclick="openEditGuest('${key}')" style="border-color:var(--gold);color:var(--gold);">Edit</button>
-            ${hasPhone ? `<button class="action-btn wa" onclick="sendQuickWA('${key}')" title="Send individualized WhatsApp message">WhatsApp</button>` : `<span style="font-size:0.7rem;color:#999;">No phone</span>`}
-            <button class="action-btn danger" onclick="deleteGuest('${key}')">Delete</button>
+        return `<tr class="border-b border-surface-border/50 hover:bg-surface-hover/50 transition-colors">
+          <td class="px-4 py-3 text-sm">${displayName}</td>
+          <td class="px-4 py-3 text-sm text-zinc-400 capitalize hidden sm:table-cell">${g.guest_type || 'single'}</td>
+          <td class="px-4 py-3 text-sm text-zinc-400 hidden md:table-cell">${g.max_party || 1}</td>
+          <td class="px-4 py-3"><span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-medium ${pClass}">${pLabel}</span></td>
+          <td class="px-4 py-3 text-sm text-zinc-400 hidden md:table-cell">${g.phone || '-'}</td>
+          <td class="px-4 py-3 text-xs text-zinc-500 hidden lg:table-cell">${g.deadline ? new Date(g.deadline).toLocaleDateString() : '-'}</td>
+          <td class="px-4 py-3"><div class="flex items-center gap-1.5">
+            <button onclick="openEditGuest('${key}')" class="h-7 px-2.5 text-xs border border-gold/40 text-gold rounded-lg hover:bg-gold/10 transition-colors">Edit</button>
+            ${hasPhone ? `<button onclick="sendQuickWA('${key}')" class="h-7 px-2.5 text-xs border border-emerald-600/50 text-emerald-500 rounded-lg hover:bg-emerald-600/10 transition-colors">WA</button>` : `<span class="text-[10px] text-zinc-600">No phone</span>`}
+            <button onclick="deleteGuest('${key}')" class="h-7 px-2.5 text-xs border border-red-500/40 text-red-400 rounded-lg hover:bg-red-500/10 transition-colors">Del</button>
           </div></td>
         </tr>`;
       }).join('');
-    }
-
-    function renderMediaView() {
-      // Media view now shows simple buttons to external Google Apps Script pages
-      // No local rendering needed - view-media div contains static HTML
     }
 
     // Adding from dashboard
@@ -1744,7 +895,7 @@ Isabella and Tyler</textarea>
 
     function openAddGuest() {
       editingGuestId = null;
-      document.getElementById('add-modal').querySelector('h2').textContent = 'Add Guest / Household';
+      document.querySelector('#add-modal h2').textContent = 'Add Guest / Household';
       document.getElementById('m-fname').value = '';
       document.getElementById('m-lname').value = '';
       document.getElementById('m-type').value = 'single';
@@ -1752,15 +903,16 @@ Isabella and Tyler</textarea>
       document.getElementById('m-phone').value = '';
       document.getElementById('m-due').value = '2026-06-10';
       document.getElementById('m-spouse').value = '';
+      document.getElementById('m-easy').checked = false;
       syncPartySize();
-      document.getElementById('add-modal').classList.add('open');
+      openModal('add-modal');
     }
 
     function openEditGuest(key) {
       const g = findGuestByKey(key);
       if (!g) return;
       editingGuestId = g._id || g.id;
-      document.getElementById('add-modal').querySelector('h2').textContent = 'Edit Guest / Household';
+      document.querySelector('#add-modal h2').textContent = 'Edit Guest / Household';
       document.getElementById('m-fname').value = g.first_name || '';
       document.getElementById('m-lname').value = g.last_name || '';
       document.getElementById('m-type').value = g.guest_type || 'single';
@@ -1770,7 +922,7 @@ Isabella and Tyler</textarea>
       document.getElementById('m-spouse').value = g.spouse_name || '';
       document.getElementById('m-easy').checked = g.easy_mode === true;
       syncPartySize();
-      document.getElementById('add-modal').classList.add('open');
+      openModal('add-modal');
     }
 
     function syncPartySize() {
@@ -1778,11 +930,11 @@ Isabella and Tyler</textarea>
       const m = document.getElementById('m-max');
       const s = document.getElementById('m-spouse-row');
       if (t === 'single') m.value = 1; else if (t === 'couple') m.value = 2; else if (t === 'family') m.value = 4;
-      s.style.display = (t === 'couple') ? 'grid' : 'none';
+      s.style.display = (t === 'couple') ? 'block' : 'none';
     }
 
     function submitGuest() {
-      const btn = document.querySelector('.modal .primary');
+      const btn = document.querySelector('#add-modal .bg-gold');
       const originalText = btn.textContent;
       btn.textContent = 'Saving...'; btn.disabled = true;
 
@@ -1810,7 +962,7 @@ Isabella and Tyler</textarea>
           throw new Error('Session expired. Please log in again.');
         }
         if (!res.ok) throw new Error(await res.text());
-        document.getElementById('add-modal').classList.remove('open');
+        closeModal('add-modal');
         btn.textContent = originalText; btn.disabled = false;
         fetchGuests();
       }).catch(e => { alert('Failed: ' + e); btn.textContent = originalText; btn.disabled = false; });
@@ -1820,7 +972,6 @@ Isabella and Tyler</textarea>
     function generatePersonalLink(g) {
       const base = String(WEDDING_URL || '').replace(/\/+$/, '');
       if (!g || !g.first_name) return `${base}/`;
-
       const p = new URLSearchParams({
         id: g._id || g.id || '',
         name: `${g.first_name} ${g.last_name || ''}`.trim(),
@@ -1829,12 +980,7 @@ Isabella and Tyler</textarea>
         max: g.max_party || 1,
         due: g.deadline || ''
       });
-      
-      // Add easy=1 if guest has Easy Mode enabled
-      if (g.easy_mode === true) {
-        p.set('easy', '1');
-      }
-      
+      if (g.easy_mode === true) { p.set('easy', '1'); }
       return `${base}/?${p.toString()}`;
     }
 
@@ -1852,11 +998,7 @@ Isabella and Tyler</textarea>
 
     function getGuestsForTarget(tgt, requirePhone = false) {
       const list = guests.filter(g => (
-        tgt === 'all'
-          ? true
-          : tgt === 'invited'
-            ? (!g.attendance || g.attendance === 'invited')
-            : g.attendance === tgt
+        tgt === 'all' ? true : tgt === 'invited' ? (!g.attendance || g.attendance === 'invited') : g.attendance === tgt
       ));
       return requirePhone ? list.filter(g => normalizeWaPhone(g.phone)) : list;
     }
@@ -1873,42 +1015,29 @@ Isabella and Tyler</textarea>
     function buildPersonalizedText(g) {
       let msg = buildText(g);
       if (!g) return msg;
-
       const firstName = String(g.first_name || '').trim();
       if (firstName && !msg.toLowerCase().includes(firstName.toLowerCase())) {
         msg = `Hi ${firstName},\n\n${msg}`;
       }
-
       const link = generatePersonalLink(g);
       if (link && !msg.includes(link)) {
         msg = `${msg}\n\nRSVP link:\n${link}`;
       }
-
       return tidyMessage(msg);
     }
 
     function sendQuickWA(key) {
       const person = findGuestByKey(key);
-      if (!person) {
-        alert('Could not find this guest.');
-        return;
-      }
-      if (!openGuestWhatsApp(person)) {
-        alert('No valid WhatsApp number for this guest.');
-      }
+      if (!person) { alert('Could not find this guest.'); return; }
+      if (!openGuestWhatsApp(person)) { alert('No valid WhatsApp number for this guest.'); }
     }
 
     async function deleteGuest(key) {
       const guest = findGuestByKey(key);
-      if (!guest) {
-        alert('Could not find this guest.');
-        return;
-      }
-
+      if (!guest) { alert('Could not find this guest.'); return; }
       const name = `${guest.first_name || ''} ${guest.last_name || ''}`.trim();
       const confirmed = confirm(`Delete ${name || 'this guest'}?\nThis will remove the guest and linked RSVPs.`);
       if (!confirmed) return;
-
       try {
         const guestId = guest._id || guest.id;
         const res = await fetch(`${CONVEX_HTTP_URL}/api/guest/delete`, {
@@ -1916,13 +1045,8 @@ Isabella and Tyler</textarea>
           headers: authHeaders({ 'Content-Type': 'application/json' }),
           body: JSON.stringify({ guestId })
         });
-
-        if (res.status === 401) {
-          await logout();
-          throw new Error('Session expired. Please log in again.');
-        }
+        if (res.status === 401) { await logout(); throw new Error('Session expired. Please log in again.'); }
         if (!res.ok) throw new Error(await res.text());
-
         await fetchGuests({ showLoading: false });
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
@@ -1956,12 +1080,8 @@ Isabella and Tyler</textarea>
     function buildText(g) {
       const tmpl = document.getElementById('wa-text').value;
       if (!g) return tidyMessage(tmpl);
-
       let greetName = g.first_name;
-      if (g.spouse_name) {
-        greetName += ` & ${g.spouse_name}`;
-      }
-
+      if (g.spouse_name) { greetName += ` & ${g.spouse_name}`; }
       return tidyMessage(tmpl
         .replace(/{{name}}/g, greetName)
         .replace(/{{type}}/g, formatGuestType(g.guest_type))
@@ -1990,15 +1110,12 @@ Isabella and Tyler</textarea>
           const phone = String(g.phone || '').toLowerCase();
           return name.includes(q) || phone.includes(q);
         });
-
       sel.innerHTML = people.length
         ? people.map((g) => `<option value="${getGuestKey(g)}">${g.first_name} ${g.last_name || ''} - ${g.phone}</option>`).join('')
         : '<option value="">No matching guests with WhatsApp number</option>';
-
       if (people.length && keepValue && people.some(g => getGuestKey(g) === keepValue)) {
         sel.value = keepValue;
       }
-
       showSelectedPersonMeta();
     }
 
@@ -2010,24 +1127,16 @@ Isabella and Tyler</textarea>
     function showSelectedPersonMeta() {
       const box = document.getElementById('wa-person-meta');
       const key = document.getElementById('wa-person').value;
-      if (!key) {
-        box.textContent = 'Select a person to view details.';
-        return;
-      }
+      if (!key) { box.textContent = 'Select a person to view details.'; return; }
       const person = findGuestByKey(key);
-      if (!person) {
-        box.textContent = 'Could not load selected guest details.';
-        return;
-      }
+      if (!person) { box.textContent = 'Could not load selected guest details.'; return; }
       const statusMap = { attending: 'Attending', declined: 'Declined', later: 'Ask Later', invited: 'Invited' };
       const status = statusMap[person.attendance || 'invited'] || 'Invited';
       const due = person.deadline ? new Date(person.deadline).toLocaleDateString() : 'Not set';
-      
       box.textContent = `${person.first_name} ${person.last_name || ''} | ${person.guest_type || 'single'} | ${status} | RSVP deadline: ${due}`;
-      
       const previewBox = document.getElementById('wa-preview');
       if(previewBox && previewBox.tagName === 'TEXTAREA') {
-          previewBox.value = buildPersonalizedText(person);
+        previewBox.value = buildPersonalizedText(person);
       }
     }
 
@@ -2036,7 +1145,6 @@ Isabella and Tyler</textarea>
       const invitedWithPhone = getGuestsForTarget('invited', true).length;
       const laterWithPhone = getGuestsForTarget('later', true).length;
       const attendingWithPhone = getGuestsForTarget('attending', true).length;
-
       document.getElementById('wa-kpi-phones').textContent = withPhone;
       document.getElementById('wa-kpi-invited').textContent = invitedWithPhone;
       document.getElementById('wa-kpi-later').textContent = laterWithPhone;
@@ -2048,13 +1156,9 @@ Isabella and Tyler</textarea>
       if (!sel || !sel.value) { alert('Select a guest first.'); return; }
       const person = findGuestByKey(sel.value);
       if (!person) { alert('Could not find selected guest.'); return; }
-      
       const previewBox = document.getElementById('wa-preview');
       const customText = previewBox ? previewBox.value : '';
-      
-      if (!openGuestWhatsApp(person, customText)) {
-        alert('No valid WhatsApp number for selected guest.');
-      }
+      if (!openGuestWhatsApp(person, customText)) { alert('No valid WhatsApp number for selected guest.'); }
     }
 
     function insertVar(v) {
@@ -2074,14 +1178,12 @@ Isabella and Tyler</textarea>
       const list = getGuestsForTarget(tgt, true);
       if (!list.length) { alert('No guests with phones match this filter.'); return; }
       if (!confirm(`Deploy WhatsApp msg to ${list.length} guest(s)?`)) return;
-
       list.forEach((g, i) => {
         setTimeout(() => { openGuestWhatsApp(g); }, i * 800);
       });
     }
 
-    window.__PREASSIGNED_TABLES = [{"guestName":"Ivana DePaz","guestId":"j971wzcxajdvrayrgg81wr8ws182pe6s","tableNum":"1"},{"guestName":"Joaquin DePaz","guestId":"j97bn3q7ap3myf1xeag011pds182ppvj","tableNum":"1"},{"guestName":"Diana","guestId":"j979s035s6zgj88fdt403e27xx867ej7","tableNum":"1"},{"guestName":"Vana","guestId":"j97a67wxycmvv0fcsanpn09wfx866msf","tableNum":"1"},{"guestName":"Yasmini Matus","guestId":"j975fr1n1g0m6rf2f7pnm93gbx82p3f8","tableNum":"1"},{"guestName":"Jean Harrison","guestId":"j979zc0cgddthkax8r4svs7dk98804qq","tableNum":"1"},{"guestName":"Sian DePaz","guestId":"j970rzr4hjcr4e5gkb4n03zhvh82p25p","tableNum":"2"},{"guestName":"Mathew Preston","guestId":"j974a42bkvtsgkb3xfprx33tm187mc8r","tableNum":"2"},{"guestName":"Josue","guestId":"j978k6wxfzj068k2t29bv4684h87nw0s","tableNum":"2"},{"guestName":"Maleek","guestId":"j973nssdwp0jk8kc676d39r3d183jd03","tableNum":"2"},{"guestName":"Devin Peyrefitte","guestId":"j9728weej33q8w9z4drq3zt4wh82ps9d","tableNum":"2"},{"guestName":"Yojalma Moleterno","guestId":"j970q38r7drywmfak3w78q4rkn83k0xt","tableNum":"2"},{"guestName":"Carlitos Guest","guestId":"j974eyfw4nd20tsb6y98sdwsnh83nb5y","tableNum":"2"},{"guestName":"Jose DePaz","guestId":"j9779nj6rm2evfk2mshprdmbxx82qsmd","tableNum":"3"},{"guestName":"Mr. Mike Gonzalez","guestId":"j976r18cn1d4spx64nxefwdaq983k46s","tableNum":"3"},{"guestName":"Ingrid Gonzalez","guestId":"j975ts0zvb15sp3hfjat223zt983k5c3","tableNum":"3"},{"guestName":"Aldo DePaz","guestId":"j97aj0dy6h9p02672ba7bxk3qs82qtz5","tableNum":"3"},{"guestName":"Keisha Dwyer","guestId":"j9748he50px1603j46x3yk5yxh83j2zr","tableNum":"3"},{"guestName":"Ms. Marie DePaz","guestId":"j978xes1ygrzmsgyjny5akpb8x82pbq9","tableNum":"3"},{"guestName":"Lily Lane","guestId":"j972v6mnprgccewr4hwpfn5adn82p58b","tableNum":"3"},{"guestName":"Lucille Valladarez","guestId":"j97a2dx1b52gc2vbjg1smjzejh82qv64","tableNum":"4"},{"guestName":"Norberto DePaz","guestId":"j973n8avtrmnksns4fv09rzssh86511r","tableNum":"4"},{"guestName":"David DePaz","guestId":"j97b76d4grx1pdca3k5av8jj5n865m4v","tableNum":"4"},{"guestName":"Vanessa Cuellar","guestId":"j978qmqz95pqmwy47vancj5n2583n973","tableNum":"4"},{"guestName":"Javier DePaz","guestId":"j977htyadsppdp6vvk53t692vx83d126","tableNum":"4"},{"guestName":"Miguel DePaz","guestId":"j975kk313252vwfpjr5ff8m12x83jxqz","tableNum":"4"},{"guestName":"Andre & Adrian DePaz","guestId":"j971qsnrvkm7kzc8ewrkjyca7x83c10j","tableNum":"4"},{"guestName":"Olga Mendoza","guestId":"j97avdn0db3xmfcwsvfh6hw5vn83ddkx","tableNum":"5"},{"guestName":"Xenia","guestId":"j978tqxrywv38d1h81m3k53t9h83m3xb","tableNum":"5"},{"guestName":"Sandino Mendoza","guestId":"j97df8pdsjtygy2w650whv3ns982pgza","tableNum":"5"},{"guestName":"Stephanie Hernandes","guestId":"j974f17byz2whz0c8a4s6wa1md82pm29","tableNum":"6"},{"guestName":"Jahan Guerra","guestId":"j9758ts6ne5tgxas32zhf9bnf182pv7c","tableNum":"6"},{"guestName":"Anthony Joseph","guestId":"j975ybqvr13196w84dwayhpy8s88wdyr","tableNum":"6"},{"guestName":"Ceasar Quiroz","guestId":"j97byy0e2tq8f3pzyejphkwt0988w9pp","tableNum":"6"},{"guestName":"Zane Oliver","guestId":"j97dr8vspqmdzzfzed9v24me1x83n07r","tableNum":"6"},{"guestName":"The Paniagua Family","guestId":"j970wpkgxg5xgkk1p9rpqr9xk183j0rr","tableNum":"6"},{"guestName":"Sonia Harris","guestId":"j97079jaxwafcexhwwndzg7d9182p623","tableNum":"7"},{"guestName":"Floyd Haylock","guestId":"j974ttd8bgyj0w1gsqgsmm0hgd82pfq4","tableNum":"7"},{"guestName":"Carol Joiner","guestId":"j97az3083f8ad4t1wqtq8hfag583j3sy","tableNum":"7"},{"guestName":"Garry Flowers","guestId":"j978pm1tej93gyn9wqzw321sgs83kjvn","tableNum":"7"},{"guestName":"Mirianne Martinez","guestId":"j978xg5z4p9zgkfsgb5fy85t7x83nmf3","tableNum":"7"},{"guestName":"Cindy Lisbey","guestId":"j97a6580w8xtv0c4st6wtevbks83mqer","tableNum":"7"},{"guestName":"Oscar Lisbey","guestId":"j97a1xsa1n669hbazajeq66ddh83mwa0","tableNum":"7"},{"guestName":"Macarena","guestId":"j9707tftdce93875nry1ks807x898vjg","tableNum":"7"},{"guestName":"Brian Silver","guestId":"j97d0hfre9w8dm6hqrdb68nbs582q6g6","tableNum":"8"},{"guestName":"Justin Mendoza","guestId":"j97327yapettbmz065edyvwf7d83kt2y","tableNum":"8"},{"guestName":"Dave Dacak","guestId":"j97718yx8sp7r00n3nt3mz918983jhy8","tableNum":"8"},{"guestName":"Shonda Matinez","guestId":"j978kp4d1g5hj8qs54m9p4xd1s83cpdx","tableNum":"8"},{"guestName":"Marlon Andrews","guestId":"j97av8es3xz2g33svtycf1nmw583jnh3","tableNum":"8"},{"guestName":"Maria Estella Recinos","guestId":"j971fvhtdwejyr4j8s2t8dy2xs86k6xz","tableNum":"9"},{"guestName":"karl Recinos","guestId":"j97ew0avwt97k8e8zp0z46tx4x84gays","tableNum":"9"},{"guestName":"Calos Dito Vega","guestId":"j9725yjs1rsgws5ph6rskec2vn866q0c","tableNum":"9"},{"guestName":"Emma Romero","guestId":"j979nh8rtsc0p3xqtn8nfyb00n82qb49","tableNum":"9"},{"guestName":"Destiny Wagner","guestId":"j97a61krgsehdw74kcnkt4m4zn82qqxb","tableNum":"9"},{"guestName":"Vaneen Juan","guestId":"j97fybrkqn1sr7faba85pn8hkh883q5y","tableNum":"9"},{"guestName":"Krista Cruz","guestId":"j976wnb229brp7v0ysgs2s30g582p85n","tableNum":"9"},{"guestName":"Earlyn Hutchinson","guestId":"j97ag7bbaenynsjc40c2a1j2a182q6pq","tableNum":"9"},{"guestName":"Emil Pinelo","guestId":"j973k5ssahd6pgnghrfdtnhpeh82qy7f","tableNum":"10"},{"guestName":"Grandpa Pinelo","guestId":"j972vvpyhsjeh8vrdd89zr9kqx85s9vr","tableNum":"10"},{"guestName":"Adrian Miller","guestId":"j97ax2tkwbc6yswj76q83v0nb583kpfc","tableNum":"10"},{"guestName":"Maria Elena Heredia","guestId":"j97bebrr3ab51bjs8yrrd3vvds83js5q","tableNum":"10"},{"guestName":"Luby Clemans","guestId":"j97f3x5ajr9q3wbkqzsb4ecyn583jp8q","tableNum":"10"},{"guestName":"Leticia","guestId":"j976szg4e12zpx3q63e7fcv5c182pqr4","tableNum":"11"},{"guestName":"Dijon McNab","guestId":"j97d6pf5rzh2c90wds5paf1rnd87c0rp","tableNum":"11"},{"guestName":"Hector Andrews","guestId":"j97dhwegfx27c2awr4qa68hdzn83mzr7","tableNum":"11"},{"guestName":"Richard Cordova","guestId":"j97fp3rmrxc2b3z8bw3dvv784d83mz3t","tableNum":"11"},{"guestName":"Brandon Guest","guestId":"j97fwqxrt82xph7nm3v5jtrng982pk0k","tableNum":"11"},{"guestName":"Natasha Stuart","guestId":"j9736crqfjwyvmw61m22fpxt2584ekdk","tableNum":"11"},{"guestName":"Britney and Camile Guy","guestId":"j976tmgby99phq60rnb9b34r6182pwgz","tableNum":"12"},{"guestName":"Shenny Boiton","guestId":"j97cknk1vq4yq7gf5fhcej9wk982q33h","tableNum":"12"},{"guestName":"Ryan Smith","guestId":"j97adnsrmwpk28gcz0a1fjxqms82q3jk","tableNum":"12"},{"guestName":"Joseph & Lorain Smith","guestId":"j97am0qb1aafp1vwx9zkj6t2r583kq5h","tableNum":"12"},{"guestName":"Carlos Habet","guestId":"j97an0gzmf59d8d8t26ragdzb983mfb7","tableNum":"12"},{"guestName":"David Morales","guestId":"j97dcpwezhjwjmm46ce3g9zqmn82ps7k","tableNum":"12"},{"guestName":"Angela kuylen","guestId":"j974nr19nx1bs683ssa9dqf33n82q36k","tableNum":"13"},{"guestName":"karina Farias","guestId":"j97909fkmqndz49npe299ejzzx84wf8h","tableNum":"13"},{"guestName":"Keidi Tejada","guestId":"j9728tmvr6h36zxw3rvghd6ad182q66t","tableNum":"13"},{"guestName":"Renee Pine","guestId":"j97231k9xztgn2evp6zb03df4n83nk2m","tableNum":"13"},{"guestName":"kylon Eiley","guestId":"j971wgg77zgmrfs5sxt2b8zr1d83nbz4","tableNum":"13"},{"guestName":"Michel Chebat","guestId":"j971hzqhfv3hmhm1jscphv0gd98836z9","tableNum":"1"},{"guestName":"Geoffrey Waight","guestId":"j97d491aeadetmjtxvf1dxps7s882scw","tableNum":"1"},{"guestName":"Lawrence Thompson","guestId":"j974jr4e9fkmj8ahh4r05eq069882q6c","tableNum":"1"},{"guestName":"Miron Ortega","guestId":"j97797jnbehfy506wmckga9d4s883r7z","tableNum":"1"},{"guestName":"Fabian Perez","guestId":"j975yapbatywz1ca8tqyewj2eh84xhrc","tableNum":"1"},{"guestName":"Wayne","guestId":"j970kft7yvv5rc19d81ae59dsn866s9f","tableNum":"1"},{"guestName":"Oscar Trujeque","guestId":"j976awqwyr4q0s4zrmwv3rpgvd83ntv3","tableNum":"8"},{"guestName":"Marcel Graniel","guestId":"j9759ekyrtnn66cxtegzg64pfs83m24h","tableNum":"8"},{"guestName":"karim Espat","guestId":"j97evedwdw3hwncj343j0fp63h8980d5","tableNum":"8"},{"guestName":"Elvis Usher","guestId":"j97drejyv188z5expjzje923cd899h8g","tableNum":"8"},{"guestName":"Fiona Rudon","guestId":"j97aekbrzh6vmhk3rj9hz07c65867fhq","tableNum":"8"},{"guestName":"Ayden DePaz","guestId":"j97d1mtc4tn0nvrv7p5fcbwcp583js8d","tableNum":"Teens"},{"guestName":"Lori","guestId":"j97c5fgdkzjmyjc3h82zkjx2nx82paxk","tableNum":"14"},{"guestName":"Karine Cisneros","guestId":"j9712tc9rsa8thj4w9zk4zswpx82q534","tableNum":"14"},{"guestName":"Norine Haylock","guestId":"j9759jj25nszn5rk0p642nj7kn82p2re","tableNum":"14"},{"guestName":"Mrs Veronica","guestId":"j97bd87z30cbzhm44gzq4qhccs83kf17","tableNum":"14"},{"guestName":"Estella Saucedo","guestId":"j977nqwbxhr32mdvqw6ykx1adh84gd1j","tableNum":"14"},{"guestName":"Dianne Haylock","guestId":"j978gjybqe0y85jsw8dp7d7ss583mvc1","tableNum":"14"},{"guestName":"Miss Gilda","guestId":"j977xzvazk3gfwp4zq7ehzppcn85sqt7","tableNum":"14"},{"guestName":"Mrs Almira August","guestId":"j976sfsk9jc8kmjmkghr902ked87c82w","tableNum":"14"}];
+    window.__PREASSIGNED_TABLES = [{"guestName":"Ivana DePaz","guestId":"j971wzcxajdvrayrgg81wr8ws182pe6s","tableNum":"1"},{"guestName":"Joaquin DePaz","guestId":"j97bn3q7ap3myf1xeag011pds182ppvj","tableNum":"1"},{"guestName":"Diana","guestId":"j979s035s6zgj88fdt403e27xx867ej7","tableNum":"1"},{"guestName":"Vana","guestId":"j97a67wxycmvv0fcsanpn09wfx866msf","tableNum":"1"},{"guestName":"Yasmini Matus","guestId":"j975fr1n1g0m6rf2f7pnm93gbx82p3f8","tableNum":"1"},{"guestName":"Jean Harrison","guestId":"j979zc0cgddthkax8r4svs7dk98804qq","tableNum":"1"},{"guestName":"Sian DePaz","guestId":"j970rzr4hjcr4e5gkb4n03zhvh82p25p","tableNum":"2"},{"guestName":"Mathew Preston","guestId":"j974a42bkvtsgkb3xfprx33tm187mc8r","tableNum":"2"},{"guestName":"Josue","guestId":"j978k6wxfzj068k2t29bv4684h87nw0s","tableNum":"2"},{"guestName":"Maleek","guestId":"j973nssdwp0jk8kc676d39r3d183jd03","tableNum":"2"},{"guestName":"Devin Peyrefitte","guestId":"j9728weej33q8w9z4drq3zt4wh82ps9d","tableNum":"2"},{"guestName":"Yojalma Moleterno","guestId":"j970q38r7drywmfak3w78q4rkn83k0xt","tableNum":"2"},{"guestName":"Carlitos Guest","guestId":"j974eyfw4nd20tsb6y98sdwsnh83nb5y","tableNum":"2"},{"guestName":"Jose DePaz","guestId":"j9779nj6rm2evfk2mshprdmbxx82qsmd","tableNum":"3"},{"guestName":"Mr. Mike Gonzalez","guestId":"j976r18cn1d4spx64nxefwdaq983k46s","tableNum":"3"},{"guestName":"Ingrid Gonzalez","guestId":"j975ts0zvb15sp3hfjat223zt983k5c3","tableNum":"3"},{"guestName":"Aldo DePaz","guestId":"j97aj0dy6h9p02672ba7bxk3qs82qtz5","tableNum":"3"},{"guestName":"Keisha Dwyer","guestId":"j9748he50px1603j46x3yk5yxh83j2zr","tableNum":"3"},{"guestName":"Ms. Marie DePaz","guestId":"j978xes1ygrzmsgyjny5akpb8x82pbq9","tableNum":"3"},{"guestName":"Lily Lane","guestId":"j972v6mnprgccewr4hwpfn5adn82p58b","tableNum":"3"},{"guestName":"Lucille Valladarez","guestId":"j97a2dx1b52gc2vbjg1smjzejh82qv64","tableNum":"4"},{"guestName":"Norberto DePaz","guestId":"j973n8avtrmnksns4fv09rzssh86511r","tableNum":"4"},{"guestNam... (line truncated to 2000 chars)
   </script>
 </body>
-
 </html>

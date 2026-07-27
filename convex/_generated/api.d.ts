@@ -10,6 +10,7 @@
 
 import type * as auth from "../auth.js";
 import type * as checkin from "../checkin.js";
+import type * as cors from "../cors.js";
 import type * as guests from "../guests.js";
 import type * as http from "../http.js";
 import type * as messages from "../messages.js";
@@ -25,6 +26,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   checkin: typeof checkin;
+  cors: typeof cors;
   guests: typeof guests;
   http: typeof http;
   messages: typeof messages;

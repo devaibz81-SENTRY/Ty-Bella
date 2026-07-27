@@ -1,6 +1,7 @@
 import { httpAction } from "./_generated/server";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { cors } from "./cors";
 
 export const listAllSeating = query({
   args: {},
@@ -23,20 +24,20 @@ export const upsertSeating = mutation({
 
 export const listAssigned = httpAction(async (ctx) => {
   const data = await ctx.runQuery("seating:listAllSeating");
-  return new Response(JSON.stringify(data), { status: 200 });
+  return cors(data);
 });
 
 export const assign = httpAction(async (ctx, request) => {
   const { guestId, tableNum } = await request.json();
   await ctx.runMutation("seating:upsertSeating", { guest_id: guestId, table_num: String(tableNum), updated_at: Date.now() });
-  return new Response(JSON.stringify({ ok: true }), { status: 200 });
+  return cors({ ok: true });
 });
 
 export const getByGuest = httpAction(async (ctx, request) => {
   const url = new URL(request.url);
   const guestId = url.searchParams.get("guestId");
-  if (!guestId) return new Response(JSON.stringify({ error: "Missing guestId" }), { status: 400 });
+  if (!guestId) return cors({ error: "Missing guestId" }, 400);
   const all = await ctx.runQuery("seating:listAllSeating");
   const seat = all.find((s: any) => s.guest_id === guestId);
-  return new Response(JSON.stringify(seat || { table_num: null }), { status: 200 });
+  return cors(seat || { table_num: null });
 });

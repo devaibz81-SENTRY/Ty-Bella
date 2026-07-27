@@ -1,6 +1,7 @@
 import { httpAction } from "./_generated/server";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { cors } from "./cors";
 
 export const listGuests = query({
   args: {},
@@ -37,7 +38,7 @@ export const deleteGuestMutation = mutation({
 
 export const list = httpAction(async (ctx) => {
   const guests = await ctx.runQuery("guests:listGuests");
-  return new Response(JSON.stringify(guests), { status: 200 });
+  return cors(guests);
 });
 
 export const addOrUpdate = httpAction(async (ctx, request) => {
@@ -55,9 +56,9 @@ export const addOrUpdate = httpAction(async (ctx, request) => {
           deadline: body.deadline || undefined, easy_mode: body.easy_mode || undefined,
         },
       });
-      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+      return cors({ ok: true });
     }
-    return new Response(JSON.stringify({ error: "Guest not found" }), { status: 404 });
+    return cors({ error: "Guest not found" }, 404);
   }
   const id = await ctx.runMutation("guests:insertGuest", {
     first_name: body.first_name, last_name: body.last_name,
@@ -66,7 +67,7 @@ export const addOrUpdate = httpAction(async (ctx, request) => {
     deadline: body.deadline || undefined, easy_mode: body.easy_mode || undefined,
     attendance: body.attendance || "invited", created_at: Date.now(),
   });
-  return new Response(JSON.stringify({ _id: id.toString(), ok: true }), { status: 200 });
+  return cors({ _id: id.toString(), ok: true });
 });
 
 export const deleteGuest = httpAction(async (ctx, request) => {
@@ -75,7 +76,7 @@ export const deleteGuest = httpAction(async (ctx, request) => {
   const guest = guests.find((g: any) => g._id.toString() === guestId);
   if (guest) {
     await ctx.runMutation("guests:deleteGuestMutation", { id: guest._id });
-    return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    return cors({ ok: true });
   }
-  return new Response(JSON.stringify({ error: "Guest not found" }), { status: 404 });
+  return cors({ error: "Guest not found" }, 404);
 });
