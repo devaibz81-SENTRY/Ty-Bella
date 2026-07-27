@@ -1,4 +1,5 @@
 import { httpRouter } from "convex/server";
+import { httpAction } from "./_generated/server";
 
 import { login, logout, me } from "./auth";
 import { list, addOrUpdate, deleteGuest } from "./guests";
@@ -7,7 +8,31 @@ import { listSongs, submitSong } from "./songs";
 import { listMessages, submitMessage } from "./messages";
 import { checkIn, lookup } from "./checkin";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Max-Age": "86400",
+};
+
+const preflight = httpAction(async () => {
+  return new Response(null, { status: 204, headers: corsHeaders });
+});
+
 const router = httpRouter();
+
+// CORS preflight for each POST path
+const postPaths = [
+  "/api/auth/login", "/api/auth/logout",
+  "/api/guest", "/api/guest/delete",
+  "/api/seating",
+  "/api/songs",
+  "/api/messages",
+  "/api/checkin", "/api/checkin/lookup",
+];
+for (const p of postPaths) {
+  router.route({ path: p, method: "OPTIONS", handler: preflight });
+}
 
 router.route({ path: "/api/auth/login", method: "POST", handler: login });
 router.route({ path: "/api/auth/logout", method: "POST", handler: logout });
