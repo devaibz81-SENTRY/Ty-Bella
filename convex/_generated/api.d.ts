@@ -17,6 +17,7 @@ import type * as messages from "../messages.js";
 import type * as rsvp from "../rsvp.js";
 import type * as seating from "../seating.js";
 import type * as songs from "../songs.js";
+import type * as tables from "../tables.js";
 
 import type {
   ApiFromModules,
@@ -34,6 +35,7 @@ declare const fullApi: ApiFromModules<{
   rsvp: typeof rsvp;
   seating: typeof seating;
   songs: typeof songs;
+  tables: typeof tables;
 }>;
 
 /**

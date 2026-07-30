@@ -110,6 +110,10 @@
         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"/></svg>
         <span>Seating</span>
       </button>
+      <button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors text-left border-l-2 border-transparent" data-view="tables" onclick="showView('tables', event); loadAdminTables()">
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Tables</span>
+      </button>
 
       <div class="text-[10px] text-zinc-600 tracking-[0.2em] uppercase px-3 pt-5 pb-1">Public Pages</div>
       <a href="index.html" target="_blank" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-100 hover:bg-surface-hover transition-colors">
@@ -388,6 +392,30 @@ Isabella and Tyler</textarea>
         </div>
       </div>
 
+      <!-- ===== TABLES VIEW (Country Themed) ===== -->
+      <div id="view-tables" class="hidden">
+        <div class="max-w-5xl mx-auto">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h2 class="font-serif text-xl text-gold">Country Tables</h2>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="seedCountryTables()" class="h-8 px-3 text-xs border border-gold/40 text-gold rounded-lg hover:bg-gold/10 transition-colors">Seed 77 Countries</button>
+              <button onclick="loadAdminTables()" class="h-8 px-3 text-xs text-zinc-400 border border-surface-border rounded-lg hover:bg-surface-hover hover:text-zinc-100 transition-colors">Refresh</button>
+            </div>
+          </div>
+          <p class="text-sm text-zinc-500 mb-4">77 tables named after countries the couple has explored. Assign guests to tables.</p>
+
+          <div class="flex gap-2 mb-5">
+            <input class="flex-1 h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm placeholder:text-zinc-600 focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none" id="admin-table-search" placeholder="Search by country or guest name..." oninput="filterAdminTables(this.value)"/>
+            <select class="h-9 px-3 bg-surface border border-surface-border rounded-lg text-zinc-100 text-sm focus:border-gold outline-none" id="admin-table-sort" onchange="filterAdminTables()">
+              <option value="number">Sort by Number</option>
+              <option value="name">Sort by Name</option>
+            </select>
+          </div>
+
+          <div id="admin-tables-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+      </div>
+
     </div><!-- /content -->
   </main>
 
@@ -577,10 +605,11 @@ Isabella and Tyler</textarea>
       document.getElementById('view-media').style.display = view === 'media' ? 'block' : 'none';
       document.getElementById('view-whatsapp').style.display = view === 'whatsapp' ? 'block' : 'none';
       document.getElementById('view-seating').style.display = view === 'seating' ? 'block' : 'none';
+      document.getElementById('view-tables').style.display = view === 'tables' ? 'block' : 'none';
       const addBtn = document.getElementById('add-guest-btn');
       if (addBtn) addBtn.style.display = view === 'guests' ? 'inline-flex' : 'none';
 
-      const titles = { guests: 'Guest Management', media: 'Songs & Messages', whatsapp: 'WhatsApp Inbox', seating: 'Seating' };
+      const titles = { guests: 'Guest Management', media: 'Songs & Messages', whatsapp: 'WhatsApp Inbox', seating: 'Seating', tables: 'Country Tables' };
       document.getElementById('view-title').textContent = titles[view] || 'Guest Management';
       if (view === 'media') renderMediaView();
       if (view === 'whatsapp') updateWaPreview();
@@ -737,7 +766,138 @@ Isabella and Tyler</textarea>
       renderSeatingByTable();
     }
 
-    function startLiveRefresh() {
+    // ====== COUNTRY TABLES ADMIN ======
+    let adminAllTables = [];
+    let adminAllGuests = [];
+
+    async function loadAdminTables() {
+      const grid = document.getElementById('admin-tables-grid');
+      if (!grid) return;
+      grid.innerHTML = '<div class="col-span-full text-center py-8 text-zinc-500 text-sm">Loading tables...</div>';
+      try {
+        const [tablesRes, guestsRes] = await Promise.all([
+          fetch(CONVEX_HTTP_URL + '/api/tables', { headers: authHeaders() }),
+          fetch(CONVEX_HTTP_URL + '/api/guests', { headers: authHeaders() }),
+        ]);
+        adminAllTables = await tablesRes.json();
+        adminAllGuests = await guestsRes.json();
+        renderAdminTables();
+      } catch (e) {
+        grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-400 text-sm">Failed to load tables.</div>';
+      }
+    }
+
+    function renderAdminTables() {
+      const grid = document.getElementById('admin-tables-grid');
+      const sort = document.getElementById('admin-table-sort').value;
+      const q = (document.getElementById('admin-table-search').value || '').toLowerCase().trim();
+
+      let tables = [...adminAllTables];
+      if (sort === 'name') tables.sort((a, b) => a.name.localeCompare(b.name));
+      else tables.sort((a, b) => a.table_number - b.table_number);
+
+      if (q) {
+        tables = tables.filter(t => {
+          const guestsAt = adminAllGuests.filter(g => g.table_id === t._id);
+          const nameMatch = t.name.toLowerCase().includes(q);
+          const guestMatch = guestsAt.some(g => (g.first_name + ' ' + g.last_name).toLowerCase().includes(q));
+          return nameMatch || guestMatch;
+        });
+      }
+
+      if (!tables.length) {
+        grid.innerHTML = '<div class="col-span-full text-center py-8 text-zinc-500 text-sm">No tables found.</div>';
+        return;
+      }
+
+      grid.innerHTML = tables.map(t => {
+        const guestsAt = adminAllGuests.filter(g => g.table_id === t._id);
+        return '<div class="bg-surface-card border border-surface-border rounded-xl overflow-hidden">' +
+          '<div class="flex flex-col sm:flex-row">' +
+            '<div class="sm:w-40 h-32 shrink-0 overflow-hidden relative">' +
+              '<img src="' + escapeHtml(t.photos?.[0] || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400') + '" alt="" class="w-full h-full object-cover"/>' +
+              '<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>' +
+              '<div class="absolute bottom-2 left-2 text-xs bg-black/60 px-2 py-0.5 rounded-full text-white/70">Table ' + t.table_number + '</div>' +
+            '</div>' +
+            '<div class="flex-1 p-4">' +
+              '<h3 class="text-base font-medium text-zinc-100">' + escapeHtml(t.name) + '</h3>' +
+              '<p class="text-xs text-zinc-500 mt-0.5">' + guestsAt.length + ' guest' + (guestsAt.length !== 1 ? 's' : '') + ' assigned</p>' +
+              '<div class="flex flex-wrap gap-1.5 mt-3">' +
+                (guestsAt.length ? guestsAt.map(g =>
+                  '<span class="text-xs bg-surface border border-surface-border px-2 py-0.5 rounded-full text-zinc-400 flex items-center gap-1">' +
+                    escapeHtml(g.first_name + ' ' + g.last_name) +
+                    '<span class="cursor-pointer text-zinc-600 hover:text-red-400 ml-0.5" onclick="removeFromTable(\'' + g._id + '\', \'' + t._id + '\')">&times;</span>' +
+                  '</span>'
+                ).join('') : '<span class="text-xs text-zinc-600 italic">No guests assigned</span>') +
+              '</div>' +
+              '<div class="mt-3 flex gap-1.5">' +
+                '<select class="text-xs bg-surface border border-surface-border rounded px-2 py-1 text-zinc-300 flex-1 min-w-0" id="assign-select-' + t._id + '">' +
+                  '<option value="">Assign a guest...</option>' +
+                  adminAllGuests.filter(g => !g.table_id).map(g =>
+                    '<option value="' + g._id + '">' + escapeHtml(g.first_name + ' ' + g.last_name) + '</option>'
+                  ).join('') +
+                '</select>' +
+                '<button class="text-xs bg-gold text-black px-2.5 py-1 rounded font-medium hover:brightness-110 transition-all" onclick="assignToTable(\'' + t._id + '\')">Add</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    async function assignToTable(tableId) {
+      const sel = document.getElementById('assign-select-' + tableId);
+      const guestId = sel.value;
+      if (!guestId) return;
+      try {
+        const res = await fetch(CONVEX_HTTP_URL + '/api/tables/assign', {
+          method: 'POST',
+          headers: authHeaders({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify({ guestId, tableId }),
+        });
+        if (res.ok) {
+          await loadAdminTables();
+        } else {
+          alert('Failed to assign guest to table.');
+        }
+      } catch (e) {
+        alert('Network error.');
+      }
+    }
+
+    async function removeFromTable(guestId, tableId) {
+      if (!confirm('Remove this guest from the table?')) return;
+      try {
+        const res = await fetch(CONVEX_HTTP_URL + '/api/tables/assign', {
+          method: 'POST',
+          headers: authHeaders({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify({ guestId, tableId: null }),
+        });
+        if (res.ok) {
+          await loadAdminTables();
+        } else {
+          alert('Failed to remove guest.');
+        }
+      } catch (e) {
+        alert('Network error.');
+      }
+    }
+
+    function filterAdminTables() {
+      renderAdminTables();
+    }
+
+    async function seedCountryTables() {
+      if (!confirm('Seed 77 country-themed tables? Only do this once.')) return;
+      try {
+        const res = await fetch(CONVEX_HTTP_URL + '/api/tables/seed', { method: 'POST', headers: authHeaders() });
+        const data = await res.json();
+        alert(data.message || 'Seeded ' + (data.count || 0) + ' tables.');
+        loadAdminTables();
+      } catch (e) {
+        alert('Failed to seed tables.');
+      }
+    }
       if (refreshTimer) clearInterval(refreshTimer);
       refreshTimer = setInterval(() => {
         if (document.hidden) return;

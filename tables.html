@@ -1,135 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Find Your Table - Isabella & Tyler</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #000; color: #fff; font-family: 'Montserrat', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-    .container { max-width: 500px; width: 100%; padding: 2rem 1.5rem; text-align: center; }
-    h1 { font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 6vw, 3rem); color: #d4af37; margin-bottom: 0.5rem; }
-    .subtitle { font-family: 'Cormorant Garamond', serif; font-style: italic; opacity: 0.7; margin-bottom: 2rem; }
-    .search-box { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
-    .search-box input { flex: 1; background: #222; border: 1px solid #d4af37; border-radius: 8px; padding: 1rem; color: #fff; font-family: 'Montserrat', sans-serif; font-size: 1rem; }
-    .search-box input::placeholder { color: #666; }
-    .search-box button { background: #d4af37; color: #000; border: none; padding: 1rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; }
-    .result { display: none; animation: fadeIn 0.3s ease; }
-    .result.show { display: block; }
-    .table-number { font-size: 4rem; font-weight: 700; color: #d4af37; margin: 1rem 0; }
-    .table-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: #888; }
-    .your-name { font-family: 'Great Vibes', cursive; font-size: 2rem; color: #fff; margin-bottom: 0.5rem; }
-    .section-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; color: #d4af37; margin: 2rem 0 1rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem; }
-    .guest-list { display: flex; flex-direction: column; gap: 0.5rem; }
-    .guest-item { background: #111; padding: 0.8rem 1rem; border-radius: 8px; border-left: 3px solid #d4af37; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; }
-    .guest-item.highlight { background: #1a1a0a; border-left-color: #fff; color: #d4af37; font-weight: 600; }
-    .loading { text-align: center; padding: 2rem; color: #888; }
-    .error { color: #e74c3c; text-align: center; padding: 1rem; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    nav { display: flex; justify-content: center; gap: 0.6rem; padding: 1rem; flex-wrap: wrap; }
-    nav a { color: #FFFFF0; text-decoration: none; opacity: 0.8; border: 1px solid rgba(255,255,240,0.2); border-radius: 999px; padding: 0.5rem 0.9rem; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; }
-    nav a:hover { opacity: 1; border-color: #d4af37; }
-  </style>
-  <script>
-    if(performance.navigation.type===1||performance.getEntriesByType("navigation")[0].type==="reload"){
-    window.location.href="index.html";
-    }
-  </script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Seating — Isabella & Tyler</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={theme:{extend:{colors:{gold:"#E1C16E",golddark:"#735b11",surface:"#0a0a0b",surface2:"#18181b"},fontFamily:{serif:["Cormorant Garamond","serif"],script:["Great Vibes","cursive"]}}}}
+</script>
+<style>
+body{min-height:100dvh;overflow-x:hidden;background:#0a0a0b;color:#fff;font-family:'Cormorant Garamond',serif}
+.glass-panel{background:rgba(255,255,255,.08);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 80px rgba(225,193,110,.06),inset 0 1px 0 rgba(255,255,255,.15)}
+.glass-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,transparent 100%);border-radius:32px 32px 0 0;pointer-events:none;z-index:0}
+.glass-input{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:1rem;padding:.875rem 1rem;color:#fff;font-family:'Cormorant Garamond',serif;font-size:1rem;transition:all .3s;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.glass-input:focus{outline:none;border-color:rgba(225,193,110,.5);background:rgba(255,255,255,.14);box-shadow:0 0 0 3px rgba(225,193,110,.12)}
+.glass-input::placeholder{color:rgba(255,255,255,.25)}
+.table-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:1.25rem;overflow:hidden;transition:all .3s;cursor:pointer}
+.table-card:hover{transform:translateY(-3px);border-color:rgba(225,193,110,.3);box-shadow:0 12px 40px rgba(225,193,110,.1)}
+.table-card .img-wrap{height:140px;overflow:hidden;position:relative}
+.table-card .img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.table-card:hover .img-wrap img{transform:scale(1.05)}
+.table-card .img-wrap .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),transparent 50%)}
+.table-card .img-wrap .table-badge{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);padding:.2rem .7rem;border-radius:999px;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.7)}
+.table-card .info{padding:1rem}
+.table-card .info .country-name{font-size:1.2rem;font-weight:500;color:#fff}
+.table-card .info .guest-count{font-size:.8rem;color:rgba(255,255,255,.4);margin-top:.2rem}
+.search-result-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:1rem 1.25rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:1rem}
+.search-result-item:hover{background:rgba(225,193,110,.1);border-color:rgba(225,193,110,.3)}
+.search-result-item .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,rgba(225,193,110,.3),rgba(225,193,110,.1));display:flex;align-items:center;justify-content:center;font-family:'Great Vibes',cursive;font-size:1.4rem;color:#E1C16E;border:1px solid rgba(225,193,110,.2);flex-shrink:0}
+.search-result-item .info{flex:1}
+.search-result-item .info .name{font-size:1.1rem;color:#fff}
+.search-result-item .info .table-num{font-size:.8rem;color:rgba(255,255,255,.4)}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fade-in{animation:fadeIn .5s ease forwards}
+.fade-in-up{animation:fadeInUp .5s ease forwards}
+.section-hidden{display:none}
+.table-detail-img{width:100%;height:250px;object-fit:cover;border-radius:1.25rem}
+.guest-at-table{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:.75rem;padding:.6rem 1rem;font-size:.95rem;display:flex;align-items:center;gap:.5rem}
+.guest-at-table .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);flex-shrink:0}
+</style>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Invitation</a>
-    <a href="rsvp.html">RSVP</a>
-    <a href="tables.html">Tables</a>
-    <a href="admin.html">Admin</a>
-  </nav>
-  <div class="container">
-    <h1>Find Your Table</h1>
-    <p class="subtitle">Search your name to find your table assignment</p>
-    
-    <div class="search-box">
-      <input type="text" id="search-name" placeholder="Your name..." onkeydown="if(event.key==='Enter') searchTable()" />
-      <button onclick="searchTable()">Find</button>
-    </div>
-    
-    <div class="result" id="result">
-      <div id="result-content"></div>
-    </div>
-  </div>
+<div class="min-h-screen flex flex-col">
+  <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-5 h-14 bg-[#0a0a0b]/80 backdrop-blur-2xl border-b border-white/10">
+    <a href="index.html" class="flex items-center gap-1.5 text-white/50 hover:text-white transition-colors no-underline">
+      <span class="material-symbols-outlined text-lg">arrow_back</span>
+      <span class="text-xs tracking-widest uppercase font-serif">Back</span>
+    </a>
+    <span class="font-script text-2xl text-gold italic">I & T</span>
+    <span class="w-16"></span>
+  </header>
 
-  <script>
-    const CONVEX_URL='https://adept-bat-233.convex.site';
-    let cachedData = null;
-    const FALLBACK_SEATING = [{"guestName":"Ivana DePaz","guestId":"j971wzcxajdvrayrgg81wr8ws182pe6s","tableNum":"1"},{"guestName":"Joaquin DePaz","guestId":"j97bn3q7ap3myf1xeag011pds182ppvj","tableNum":"1"},{"guestName":"Diana","guestId":"j979s035s6zgj88fdt403e27xx867ej7","tableNum":"1"},{"guestName":"Vana","guestId":"j97a67wxycmvv0fcsanpn09wfx866msf","tableNum":"1"},{"guestName":"Yasmini Matus","guestId":"j975fr1n1g0m6rf2f7pnm93gbx82p3f8","tableNum":"1"},{"guestName":"Jean Harrison","guestId":"j979zc0cgddthkax8r4svs7dk98804qq","tableNum":"1"},{"guestName":"Sian DePaz","guestId":"j970rzr4hjcr4e5gkb4n03zhvh82p25p","tableNum":"2"},{"guestName":"Mathew Preston","guestId":"j974a42bkvtsgkb3xfprx33tm187mc8r","tableNum":"2"},{"guestName":"Josue","guestId":"j978k6wxfzj068k2t29bv4684h87nw0s","tableNum":"2"},{"guestName":"Maleek","guestId":"j973nssdwp0jk8kc676d39r3d183jd03","tableNum":"2"},{"guestName":"Devin Peyrefitte","guestId":"j9728weej33q8w9z4drq3zt4wh82ps9d","tableNum":"2"},{"guestName":"Yojalma Moleterno","guestId":"j970q38r7drywmfak3w78q4rkn83k0xt","tableNum":"2"},{"guestName":"Carlitos Guest","guestId":"j974eyfw4nd20tsb6y98sdwsnh83nb5y","tableNum":"2"},{"guestName":"Jose DePaz","guestId":"j9779nj6rm2evfk2mshprdmbxx82qsmd","tableNum":"3"},{"guestName":"Mr. Mike Gonzalez","guestId":"j976r18cn1d4spx64nxefwdaq983k46s","tableNum":"3"},{"guestName":"Ingrid Gonzalez","guestId":"j975ts0zvb15sp3hfjat223zt983k5c3","tableNum":"3"},{"guestName":"Aldo DePaz","guestId":"j97aj0dy6h9p02672ba7bxk3qs82qtz5","tableNum":"3"},{"guestName":"Keisha Dwyer","guestId":"j9748he50px1603j46x3yk5yxh83j2zr","tableNum":"3"},{"guestName":"Ms. Marie DePaz","guestId":"j978xes1ygrzmsgyjny5akpb8x82pbq9","tableNum":"3"},{"guestName":"Lily Lane","guestId":"j972v6mnprgccewr4hwpfn5adn82p58b","tableNum":"3"},{"guestName":"Lucille Valladarez","guestId":"j97a2dx1b52gc2vbjg1smjzejh82qv64","tableNum":"4"},{"guestName":"Norberto DePaz","guestId":"j973n8avtrmnksns4fv09rzssh86511r","tableNum":"4"},{"guestName":"D... (line truncated to 2000 chars)
-    cachedData = FALLBACK_SEATING;
+  <main class="flex-1 pt-20 pb-20 px-5 max-w-2xl mx-auto w-full">
+    <!-- Browse Tables View -->
+    <section id="view-browse" class="fade-in">
+      <div class="text-center mb-8">
+        <p class="text-[10px] tracking-[0.35em] uppercase text-white/50 mb-3">Seating</p>
+        <h1 class="font-script text-5xl md:text-6xl text-white leading-tight">Find Your Table</h1>
+        <p class="text-lg text-white/50 italic mt-3">Each table is named after a country we've explored together</p>
+      </div>
 
-    async function searchTable() {
-      const query = document.getElementById('search-name').value.trim().toLowerCase();
-      const el = document.getElementById('result');
-      const content = document.getElementById('result-content');
-      if (!query) { content.innerHTML = '<div class="error">Please enter your name</div>'; el.classList.add('show'); return; }
-      if (!cachedData) await loadTableData();
-      const matches = cachedData.filter(s => {
-        const name = (s.guestName || s.name || '').toLowerCase();
-        return name.includes(query);
-      });
-      
-      if (!matches.length) {
-        content.innerHTML = '<div class="error">No table found for this name. Check spelling or try a different search.</div>';
-        el.classList.add('show');
-        return;
-      }
-      
-      const guest = matches[0];
-      const tableNum = guest.content || guest.tableNum || '';
-      const tableGuests = cachedData.filter(s => (s.content || s.tableNum) === tableNum && s.guestName !== guest.guestName);
-      const guestName = guest.guestName || guest.name || '';
-      
-      content.innerHTML = `
-        <div class="your-name">${escapeHtml(guestName)}</div>
-        <div class="table-label">Your Table</div>
-        <div class="table-number">${escapeHtml(tableNum)}</div>
-        ${tableGuests.length ? `
-          <div class="section-title">Seated at Your Table</div>
-          <div class="guest-list">
-            ${tableGuests.map(g => `<div class="guest-item">${escapeHtml(g.guestName || g.name || '')}</div>`).join('')}
+      <div class="glass-panel rounded-[2rem] p-6 md:p-8 relative overflow-hidden mb-6">
+        <div class="absolute top-0 left-0 w-1/3 h-[2px] bg-gradient-to-r from-gold to-transparent shadow-[0_0_20px_rgba(225,193,110,.5)]"></div>
+        <div class="relative z-10">
+          <div class="flex gap-2">
+            <input class="glass-input flex-1" id="search-name" placeholder="Search your name to find your table..." oninput="onNameSearch(this.value)" autocomplete="off"/>
+            <button class="bg-gold text-black px-5 rounded-2xl font-semibold text-sm tracking-widest uppercase hover:brightness-110 transition-all cursor-pointer border-0" onclick="onNameSearch(document.getElementById('search-name').value)">Find</button>
           </div>
-        ` : '<div style="margin-top:2rem;color:#888;">You\'re the only one at this table.</div>'}
-      `;
-      
-      el.classList.add('show');
-    }
+          <div id="name-results" class="mt-4 space-y-2"></div>
+          <div id="name-status" class="text-center text-sm text-white/40 mt-4"></div>
+        </div>
+      </div>
 
-    function escapeHtml(value) {
-      return String(value || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
+      <!-- Table Grid -->
+      <div class="text-center mb-6">
+        <p class="text-[10px] tracking-[0.35em] uppercase text-white/40">Browse all tables</p>
+      </div>
+      <div id="tables-grid" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+      <div id="tables-loading" class="text-center text-white/40 py-8">Loading tables...</div>
+    </section>
 
-    async function loadTableData() {
-      try {
-        const res = await fetch(CONVEX_URL+'/api/seating');
-        if (res.ok) {
-          const data = await res.json();
-          const guestsRes = await fetch(CONVEX_URL+'/api/guests');
-          if (guestsRes.ok) {
-            const guests = await guestsRes.json();
-            cachedData = data.map(s => {
-              const g = guests.find(x => x._id.toString() === s.guest_id);
-              return { guestId: s.guest_id, guestName: g ? `${g.first_name} ${g.last_name}`.trim() : 'Guest', tableNum: s.table_num };
-            });
-            return;
-          }
-        }
-      } catch {}
-      cachedData = FALLBACK_SEATING;
+    <!-- Table Detail View -->
+    <section id="view-detail" class="section-hidden">
+      <div class="text-center mb-6">
+        <button class="text-white/30 hover:text-white/60 text-sm transition-colors bg-transparent border-0 cursor-pointer flex items-center gap-1 mx-auto" onclick="backToBrowse()">
+          <span class="material-symbols-outlined text-base">arrow_back</span>
+          All Tables
+        </button>
+      </div>
+      <div id="table-detail-content"></div>
+    </section>
+  </main>
+
+  <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-[#0a0a0b]/90 backdrop-blur-2xl border-t border-white/10 rounded-t-2xl px-4">
+    <a href="index.html" class="flex flex-col items-center text-white/40 hover:text-gold transition-colors no-underline">
+      <span class="material-symbols-outlined">home</span>
+      <span class="font-serif text-[9px] uppercase tracking-tight">Home</span>
+    </a>
+    <a href="gallery.html" class="flex flex-col items-center text-white/40 hover:text-gold transition-colors no-underline">
+      <span class="material-symbols-outlined">photo_library</span>
+      <span class="font-serif text-[9px] uppercase tracking-tight">Gallery</span>
+    </a>
+    <a href="rsvp.html" class="flex flex-col items-center text-white/40 hover:text-gold transition-colors no-underline">
+      <span class="material-symbols-outlined">mail</span>
+      <span class="font-serif text-[9px] uppercase tracking-tight">RSVP</span>
+    </a>
+    <a href="tables.html" class="flex flex-col items-center text-gold scale-110 no-underline">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL'1">table_restaurant</span>
+      <span class="font-serif text-[9px] uppercase tracking-tight">Tables</span>
+    </a>
+  </nav>
+</div>
+
+<script>
+const CONVEX_HTTP_URL = 'https://adept-bat-233.convex.site';
+let allTables = [];
+let allGuests = [];
+let searchTimer = null;
+
+async function loadData() {
+  try {
+    const [tablesRes, guestsRes] = await Promise.all([
+      fetch(CONVEX_HTTP_URL + '/api/tables'),
+      fetch(CONVEX_HTTP_URL + '/api/guests'),
+    ]);
+    allTables = await tablesRes.json();
+    allGuests = await guestsRes.json();
+    document.getElementById('tables-loading').style.display = 'none';
+    renderTableGrid();
+  } catch (e) {
+    document.getElementById('tables-loading').innerHTML = 'Could not load tables. Please try again later.';
+  }
+}
+
+function renderTableGrid() {
+  const grid = document.getElementById('tables-grid');
+  const map = getTableGuestCounts();
+  grid.innerHTML = allTables.map(t => {
+    const guestList = map[t._id] || [];
+    return '<div class="table-card" onclick="showTableDetail(\'' + t._id + '\')">' +
+      '<div class="img-wrap">' +
+        '<img src="' + escapeHtml(t.photos?.[0] || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400') + '" alt="' + escapeHtml(t.name) + '" loading="lazy"/>' +
+        '<div class="overlay"></div>' +
+        '<div class="table-badge">Table ' + t.table_number + '</div>' +
+      '</div>' +
+      '<div class="info">' +
+        '<div class="country-name">' + escapeHtml(t.name) + '</div>' +
+        '<div class="guest-count">' + guestList.length + ' guest' + (guestList.length !== 1 ? 's' : '') + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function getTableGuestCounts() {
+  const map = {};
+  for (const g of allGuests) {
+    if (g.table_id) {
+      if (!map[g.table_id]) map[g.table_id] = [];
+      map[g.table_id].push(g);
     }
-    loadTableData();
-  </script>
+  }
+  return map;
+}
+
+function showTableDetail(tableId) {
+  const t = allTables.find(x => x._id === tableId);
+  if (!t) return;
+  document.getElementById('view-browse').classList.add('section-hidden');
+  document.getElementById('view-browse').classList.remove('fade-in');
+  document.getElementById('view-detail').classList.remove('section-hidden');
+  document.getElementById('view-detail').classList.add('fade-in-up');
+
+  const guestsAtTable = allGuests.filter(g => g.table_id === tableId);
+  const details = document.getElementById('table-detail-content');
+
+  details.innerHTML =
+    '<div class="glass-panel rounded-[2rem] p-6 md:p-8 relative overflow-hidden">' +
+      '<div class="absolute top-0 left-0 w-1/3 h-[2px] bg-gradient-to-r from-gold to-transparent shadow-[0_0_20px_rgba(225,193,110,.5)]"></div>' +
+      '<div class="relative z-10">' +
+        '<div class="text-center mb-6">' +
+          '<p class="text-[10px] tracking-[0.35em] uppercase text-white/40 mb-1">Table ' + t.table_number + '</p>' +
+          '<h2 class="font-script text-4xl text-gold">' + escapeHtml(t.name) + '</h2>' +
+        '</div>' +
+        (t.description ? '<p class="text-center text-white/50 italic mb-4">' + escapeHtml(t.description) + '</p>' : '') +
+        '<div class="space-y-3 mb-6">' +
+          (t.photos && t.photos.length > 0 ? t.photos.slice(0, 3).map(p =>
+            '<img src="' + escapeHtml(p) + '?w=800" alt="' + escapeHtml(t.name) + '" class="table-detail-img" loading="lazy"/>'
+          ).join('') : '') +
+        '</div>' +
+        '<div class="border-t border-white/10 pt-5">' +
+          '<p class="text-xs tracking-[.2em] uppercase text-white/40 mb-4 text-center">Seated at this table</p>' +
+          (guestsAtTable.length ?
+            '<div class="space-y-2">' + guestsAtTable.map(g =>
+              '<div class="guest-at-table"><span class="dot"></span>' + escapeHtml(g.first_name + ' ' + g.last_name) + '</div>'
+            ).join('') + '</div>' :
+            '<p class="text-center text-white/30 text-sm italic">No guests assigned yet</p>') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+}
+
+function backToBrowse() {
+  document.getElementById('view-detail').classList.add('section-hidden');
+  document.getElementById('view-detail').classList.remove('fade-in-up');
+  document.getElementById('view-browse').classList.remove('section-hidden');
+  document.getElementById('view-browse').classList.add('fade-in');
+}
+
+function onNameSearch(val) {
+  clearTimeout(searchTimer);
+  const status = document.getElementById('name-status');
+  const results = document.getElementById('name-results');
+  if (val.length < 2) {
+    results.innerHTML = '';
+    status.innerHTML = '';
+    return;
+  }
+  status.innerHTML = '<span>Searching...</span>';
+  searchTimer = setTimeout(() => doNameSearch(val), 300);
+}
+
+function doNameSearch(q) {
+  const status = document.getElementById('name-status');
+  const results = document.getElementById('name-results');
+  const query = q.toLowerCase();
+  const matches = allGuests.filter(g => {
+    const full = (g.first_name + ' ' + g.last_name).toLowerCase();
+    return full.includes(query);
+  });
+  if (!matches.length) {
+    results.innerHTML = '';
+    status.innerHTML = '<span class="text-white/40">No guests found.</span>';
+    return;
+  }
+  status.innerHTML = '';
+  const tableMap = {};
+  allTables.forEach(t => { tableMap[t._id] = t; });
+  results.innerHTML = matches.map(g => {
+    const t = g.table_id ? tableMap[g.table_id] : null;
+    const initial = (g.first_name || '')[0] + (g.last_name || '')[0];
+    return '<div class="search-result-item" onclick="' + (t ? 'showTableDetail(\'' + t._id + '\')' : '') + '">' +
+      '<div class="avatar">' + initial.toUpperCase() + '</div>' +
+      '<div class="info">' +
+        '<div class="name">' + escapeHtml(g.first_name + ' ' + g.last_name) + '</div>' +
+        '<div class="table-num">' + (t ? 'Table ' + t.table_number + ' &mdash; ' + escapeHtml(t.name) : 'Not assigned yet') + '</div>' +
+      '</div>' +
+      (t ? '<span class="material-symbols-outlined text-white/20">chevron_right</span>' : '') +
+    '</div>';
+  }).join('');
+}
+
+function escapeHtml(v) {
+  return String(v || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+loadData();
+</script>
 </body>
 </html>

@@ -7,253 +7,340 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 <script>
-tailwind.config={theme:{extend:{colors:{gold:'#E1C16E',golddark:'#735b11',surface:'#0a0a0b',surface2:'#18181b'},fontFamily:{serif:['Cormorant Garamond','serif'],script:['Great Vibes','cursive']}}}}
+tailwind.config={theme:{extend:{colors:{gold:"#E1C16E",golddark:"#735b11",surface:"#0a0a0b",surface2:"#18181b"},fontFamily:{serif:["Cormorant Garamond","serif"],script:["Great Vibes","cursive"]}}}}
 </script>
 <style>
-body{min-height:100dvh;overflow-x:hidden;background:#0a0a0b}
-.spline-bg{position:fixed;inset:0;z-index:0}
-.spline-bg spline-viewer{width:100%;height:100%}
-.glass-panel{background:rgba(255,255,255,.12);backdrop-filter:blur(40px) saturate(180%) brightness(1.1);-webkit-backdrop-filter:blur(40px) saturate(180%) brightness(1.1);border:1px solid rgba(255,255,255,.25);box-shadow:0 8px 80px rgba(225,193,110,.08),inset 0 1px 0 rgba(255,255,255,.4)}
-.glass-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,.02) 100%);border-radius:48px 48px 0 0;pointer-events:none;z-index:0}
-.glass-input{width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:1rem;padding:.875rem 1rem;color:#fff;font-family:'Cormorant Garamond',serif;font-size:.875rem;transition:all .3s;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 2px 8px rgba(0,0,0,.08)}
-.glass-input:focus{outline:none;border-color:rgba(225,193,110,.5);background:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 0 3px rgba(225,193,110,.15),0 4px 16px rgba(0,0,0,.1)}
+body{min-height:100dvh;overflow-x:hidden;background:#0a0a0b;color:#fff;font-family:'Cormorant Garamond',serif}
+.glass-panel{background:rgba(255,255,255,.08);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 80px rgba(225,193,110,.06),inset 0 1px 0 rgba(255,255,255,.15)}
+.glass-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,transparent 100%);border-radius:32px 32px 0 0;pointer-events:none;z-index:0}
+.glass-input{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:1rem;padding:.875rem 1rem;color:#fff;font-family:'Cormorant Garamond',serif;font-size:1rem;transition:all .3s;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.glass-input:focus{outline:none;border-color:rgba(225,193,110,.5);background:rgba(255,255,255,.14);box-shadow:0 0 0 3px rgba(225,193,110,.12)}
 .glass-input::placeholder{color:rgba(255,255,255,.25)}
-.glass-input option{background:#1a1c1a;color:#fff}
-.glass-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.7);font-weight:500;margin-bottom:.4rem;display:block;text-shadow:0 1px 4px rgba(0,0,0,.15)}
-.attendance-slider{position:relative;width:100%;max-width:320px;height:64px;margin:0 auto;border-radius:32px;overflow:hidden;cursor:pointer;user-select:none}
-.attendance-slider .slider-bg{position:absolute;inset:0;border-radius:32px;transition:all .5s cubic-bezier(.4,0,.2,1)}
-.attendance-slider .slider-bg.yes{background:linear-gradient(135deg,rgba(225,193,110,.85),rgba(200,169,90,.9));box-shadow:0 8px 32px rgba(225,193,110,.4),inset 0 1px 0 rgba(255,255,255,.3)}
-.attendance-slider .slider-bg.no{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
-.attendance-slider .slider-knob{position:absolute;top:4px;left:4px;width:56px;height:56px;border-radius:28px;background:rgba(255,255,255,.9);box-shadow:0 4px 20px rgba(0,0,0,.15),inset 0 1px 0 rgba(255,255,255,.9),0 0 0 1px rgba(255,255,255,.5);transition:all .5s cubic-bezier(.4,0,.2,1);z-index:2;display:flex;align-items:center;justify-content:center}
-.attendance-slider .slider-knob.active{left:calc(100% - 60px)}
-.attendance-slider .slider-labels{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;height:100%;padding:0 24px;font-size:.8rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase}
-.attendance-slider .slider-labels span{transition:color .35s}
-.attendance-slider.yes-state .slider-labels .label-no{color:rgba(255,255,255,.3)}
-.attendance-slider.yes-state .slider-labels .label-yes{color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.15)}
-.attendance-slider.no-state .slider-labels .label-no{color:rgba(255,255,255,.8);text-shadow:0 1px 4px rgba(0,0,0,.15)}
-.attendance-slider.no-state .slider-labels .label-yes{color:rgba(255,255,255,.25)}
-@keyframes missYouFadeIn{from{opacity:0;transform:translateY(16px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
-@keyframes pulseSoft{0%,100%{opacity:.5}50%{opacity:1}}
-.miss-you-anim{animation:missYouFadeIn .7s cubic-bezier(.4,0,.2,1) forwards}
-.heartbeat{animation:heartbeat 1.2s ease-in-out infinite}
-.pulse-soft{animation:pulseSoft 2s ease-in-out infinite}
+.search-result-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:1rem;padding:1rem 1.25rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:1rem}
+.search-result-item:hover{background:rgba(225,193,110,.1);border-color:rgba(225,193,110,.3);transform:translateY(-1px)}
+.search-result-item .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,rgba(225,193,110,.3),rgba(225,193,110,.1));display:flex;align-items:center;justify-content:center;font-family:'Great Vibes',cursive;font-size:1.4rem;color:#E1C16E;border:1px solid rgba(225,193,110,.2);flex-shrink:0}
+.search-result-item .name-info{flex:1}
+.search-result-item .name-info .name{font-size:1.1rem;color:#fff;font-weight:500}
+.search-result-item .name-info .detail{font-size:.8rem;color:rgba(255,255,255,.5);margin-top:2px}
+.search-result-item .rsvp-badge{padding:.25rem .75rem;border-radius:999px;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;font-weight:500}
+.rsvp-badge.done{background:rgba(225,193,110,.2);color:#E1C16E}
+.rsvp-badge.pending{background:rgba(255,255,255,.08);color:rgba(255,255,255,.4)}
+.attendance-toggle{display:inline-flex;align-items:center;gap:.75rem;background:rgba(255,255,255,.06);border-radius:999px;padding:.3rem;border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:all .3s;user-select:none}
+.attendance-toggle .opt{padding:.4rem 1.2rem;border-radius:999px;font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;font-weight:500;transition:all .3s;color:rgba(255,255,255,.3)}
+.attendance-toggle .opt.active{background:#E1C16E;color:#000;box-shadow:0 4px 16px rgba(225,193,110,.3)}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fade-in{animation:fadeIn .5s ease forwards}
+.fade-in-up{animation:fadeInUp .5s ease forwards}
+.section-hidden{display:none}
+.country-flag{font-size:2rem;margin-right:.5rem}
+.loading-dots::after{content:'';animation:dots 1.5s steps(4,end) infinite}
+@keyframes dots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}100%{content:''}}
 </style>
-<script>
-if(performance.navigation.type===1||performance.getEntriesByType("navigation")[0].type==="reload"){
-window.location.href="index.html";
-}
-</script>
 </head>
-<body class="font-serif">
-<div class="spline-bg">
-<spline-viewer url="https://my.spline.design/liquidglass-esHZYVnWLTAdnpdvu12cOG4v/"></spline-viewer>
-<div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0b]/40 via-transparent to-[#0a0a0b]/60 pointer-events-none"></div>
+<body>
+<div class="min-h-screen flex flex-col">
+  <!-- Top Bar -->
+  <header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-5 h-14 bg-[#0a0a0b]/80 backdrop-blur-2xl border-b border-white/10">
+    <a href="index.html" class="flex items-center gap-1.5 text-white/50 hover:text-white transition-colors no-underline">
+      <span class="material-symbols-outlined text-lg">arrow_back</span>
+      <span class="text-xs tracking-widest uppercase font-serif">Back</span>
+    </a>
+    <span class="font-script text-2xl text-gold italic">I & T</span>
+    <span class="w-16"></span>
+  </header>
+
+  <main class="flex-1 pt-20 pb-20 px-5 max-w-lg mx-auto w-full">
+    <!-- Step 1: Search -->
+    <section id="step-search" class="fade-in">
+      <div class="text-center mb-8">
+        <p class="text-[10px] tracking-[0.35em] uppercase text-white/50 mb-3">RSVP</p>
+        <h1 class="font-script text-5xl md:text-6xl text-white leading-tight">Find Your Name</h1>
+        <p class="text-lg text-white/50 italic mt-3">Search to RSVP for our celebration</p>
+      </div>
+
+      <div class="glass-panel rounded-[2rem] p-6 md:p-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-1/3 h-[2px] bg-gradient-to-r from-gold to-transparent shadow-[0_0_20px_rgba(225,193,110,.5)]"></div>
+        <div class="relative z-10">
+          <div class="flex gap-2">
+            <input class="glass-input flex-1" id="search-input" placeholder="Type your name..." oninput="onSearchInput(this.value)" autocomplete="off"/>
+            <button class="bg-gold text-black px-5 rounded-2xl font-semibold text-sm tracking-widest uppercase hover:brightness-110 transition-all cursor-pointer border-0" onclick="onSearchInput(document.getElementById('search-input').value)">Go</button>
+          </div>
+          <div id="search-results" class="mt-4 space-y-2"></div>
+          <div id="search-status" class="text-center text-sm text-white/40 mt-4"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 2: RSVP Form -->
+    <section id="step-rsvp" class="section-hidden">
+      <div class="text-center mb-8">
+        <p class="text-[10px] tracking-[0.35em] uppercase text-white/50 mb-3">Kindly Respond</p>
+        <h1 class="font-script text-4xl md:text-5xl text-white leading-tight">You're Invited!</h1>
+        <p class="text-base text-white/50 italic mt-3">Please RSVP by January 27th, 2027</p>
+      </div>
+
+      <div class="glass-panel rounded-[2rem] p-6 md:p-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-1/3 h-[2px] bg-gradient-to-r from-gold to-transparent shadow-[0_0_20px_rgba(225,193,110,.5)]"></div>
+        <div class="relative z-10 space-y-6" id="rsvp-form-container">
+          <!-- Guest info header -->
+          <div id="rsvp-guest-info" class="text-center pb-4 border-b border-white/10">
+            <div id="rsvp-avatar" class="w-16 h-16 rounded-full bg-gradient-to-br from-gold/30 to-gold/10 flex items-center justify-center mx-auto mb-3 font-script text-3xl text-gold border border-gold/20"></div>
+            <div id="rsvp-guest-name" class="text-2xl font-serif text-white"></div>
+            <div id="rsvp-guest-detail" class="text-sm text-white/50 mt-1"></div>
+          </div>
+
+          <!-- Primary guest attendance -->
+          <div>
+            <label class="text-[10px] tracking-[.2em] uppercase text-white/50 block mb-3 text-center">Will you be attending?</label>
+            <div class="flex justify-center">
+              <div class="attendance-toggle" id="toggle-primary" onclick="toggleAttendance('primary')">
+                <span class="opt" data-value="no">Decline</span>
+                <span class="opt active" data-value="yes">Accept</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spouse attendance (shown if couple) -->
+          <div id="spouse-section" class="section-hidden">
+            <div class="border-t border-white/10 pt-5">
+              <label class="text-[10px] tracking-[.2em] uppercase text-white/50 block mb-3 text-center">Will your spouse be attending?</label>
+              <div class="flex justify-center">
+                <div class="attendance-toggle" id="toggle-spouse" onclick="toggleAttendance('spouse')">
+                  <span class="opt" data-value="no">Decline</span>
+                  <span class="opt active" data-value="yes">Accept</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Song Request -->
+          <div>
+            <label class="text-[10px] tracking-[.2em] uppercase text-white/50 block mb-2">Song Request</label>
+            <input class="glass-input" id="song-input" placeholder="What song should we play?"/>
+          </div>
+
+          <!-- Message -->
+          <div>
+            <label class="text-[10px] tracking-[.2em] uppercase text-white/50 block mb-2">Message for the Couple</label>
+            <textarea class="glass-input resize-none" id="message-input" placeholder="Share something special..." rows="3"></textarea>
+          </div>
+
+          <!-- Dietary -->
+          <div>
+            <label class="text-[10px] tracking-[.2em] uppercase text-white/50 block mb-2">Dietary Preferences</label>
+            <textarea class="glass-input resize-none" id="diet-input" placeholder="Any dietary requirements?" rows="2"></textarea>
+          </div>
+
+          <button class="w-full py-3.5 rounded-2xl text-sm font-semibold tracking-[0.15em] uppercase bg-gradient-to-r from-gold to-[#c9a84c] text-black shadow-[0_8px_32px_rgba(225,193,110,.3)] hover:shadow-[0_12px_40px_rgba(225,193,110,.45)] hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer border-0" id="rsvp-submit-btn" onclick="submitRSVP()">Send RSVP</button>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <button class="text-white/30 hover:text-white/60 text-sm transition-colors bg-transparent border-0 cursor-pointer underline" onclick="resetToSearch()">Search a different name</button>
+      </div>
+    </section>
+
+    <!-- Step 3: Confirmation -->
+    <section id="step-confirm" class="section-hidden">
+      <div class="text-center">
+        <div class="glass-panel rounded-[2rem] p-8 md:p-10 relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-1/3 h-[2px] bg-gradient-to-r from-gold to-transparent shadow-[0_0_20px_rgba(225,193,110,.5)]"></div>
+          <div class="relative z-10">
+            <span class="material-symbols-outlined text-6xl block mb-4" style="color:#E1C16E;text-shadow:0 2px 12px rgba(225,193,110,.4)" id="confirm-icon">check_circle</span>
+            <h2 class="font-script text-4xl text-white mb-3" id="confirm-heading">Thank You!</h2>
+            <p class="text-lg text-white/60" id="confirm-message">Your RSVP has been received. We can't wait to see you!</p>
+            <div class="mt-8 flex justify-center gap-4">
+              <a href="index.html" class="glass-panel px-6 py-3 rounded-2xl text-sm tracking-widest uppercase text-white/70 hover:text-white no-underline transition-all">Home</a>
+              <a href="tables.html" class="glass-panel px-6 py-3 rounded-2xl text-sm tracking-widest uppercase text-white/70 hover:text-white no-underline transition-all">Find Your Table</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-[#0a0a0b]/90 backdrop-blur-2xl border-t border-white/10 rounded-t-2xl px-4">
+    <a href="index.html" class="flex flex-col items-center text-white/40 hover:text-gold transition-colors no-underline">
+      <span class="material-symbols-outlined">home</span>
+      <span class="font-serif text-[9px] uppercase tracking-tight">Home</span>
+    </a>
+    <a href="gallery.html" class="flex flex-col items-center text-white/40 hover:text-gold transition-colors no-underline">
+      <span class="material-symbols-outlined">photo_library</span>
+      <span class="font-serif text-[9px] uppercase tracking-tight">Gallery</span>
+    </a>
+    <a href="rsvp.html" class="flex flex-col items-center text-gold scale-110 no-underline">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL'1">mail</span>
+      <span class="font-serif text-[9px] uppercase tracking-tight">RSVP</span>
+    </a>
+    <a href="tables.html" class="flex flex-col items-center text-white/40 hover:text-gold transition-colors no-underline">
+      <span class="material-symbols-outlined">table_restaurant</span>
+      <span class="font-serif text-[9px] uppercase tracking-tight">Tables</span>
+    </a>
+  </nav>
 </div>
-
-<!-- Top Bar -->
-<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-5 h-14 bg-[#0a0a0b]/80 backdrop-blur-2xl border-b border-white/10">
-  <a href="index.html" class="flex items-center gap-1.5 text-white/50 hover:text-white transition-colors no-underline">
-    <span class="material-symbols-outlined text-lg">arrow_back</span>
-    <span class="text-xs tracking-widest uppercase font-serif">Back</span>
-  </a>
-  <span class="font-script text-2xl text-gold italic">I & T</span>
-  <span class="w-16"></span>
-</header>
-
-<main class="relative z-10 pt-20 pb-36 px-5 max-w-2xl mx-auto">
-  <!-- Hero -->
-  <section class="text-center mb-10">
-    <p class="text-[10px] tracking-[0.35em] uppercase text-white/50 mb-3">Save the Date</p>
-    <h1 class="font-script text-5xl md:text-6xl text-white leading-tight" style="text-shadow:0 2px 20px rgba(0,0,0,.3)">Isabella <span class="text-gold">&amp;</span> Tyler</h1>
-    <p class="text-lg text-white/60 italic mt-3 max-w-md mx-auto">Join us for an intimate celebration of love in Belize City.</p>
-    <div class="flex items-center justify-center gap-4 mt-5">
-      <span class="h-px w-12 bg-white/20"></span>
-      <span class="material-symbols-outlined text-white/40 text-sm">auto_awesome</span>
-      <span class="h-px w-12 bg-white/20"></span>
-    </div>
-  </section>
-
-  <!-- RSVP Card -->
-  <section id="rsvp-card">
-    <div class="glass-panel rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden">
-      <div class="absolute top-0 left-0 w-1/3 h-[2px] bg-gradient-to-r from-gold to-transparent shadow-[0_0_20px_rgba(225,193,110,.5)]"></div>
-      
-      <div class="text-center mb-7">
-        <span class="material-symbols-outlined text-4xl text-white/80 block mb-3" id="rsvp-icon">mail</span>
-        <h2 class="font-serif text-3xl text-white" id="rsvp-heading">Kindly Respond</h2>
-        <p class="text-sm text-white/60 mt-1" id="rsvp-subtitle">Please let us know by January 27th, 2027</p>
-      </div>
-
-      <!-- Attendance Slider -->
-      <div class="text-center mb-7">
-        <p class="text-[10px] tracking-[0.25em] uppercase text-white/60 mb-3">Will you be attending?</p>
-        <div class="attendance-slider no-state" id="attendanceSlider" onclick="toggleAttendance()">
-          <div class="slider-bg no" id="sliderBg"></div>
-          <div class="slider-knob" id="sliderKnob">
-            <span class="material-symbols-outlined text-golddark text-xl" id="sliderIcon">close</span>
-          </div>
-          <div class="slider-labels">
-            <span class="label-no">No</span>
-            <span class="label-yes">Yes, I'll be there!</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Form -->
-      <form onsubmit="event.preventDefault();handleSubmit(event)" class="space-y-5">
-        <div id="formFields" style="display:none;opacity:0;transition:opacity .5s">
-          <div>
-            <label class="glass-label">Full Name</label>
-            <input class="glass-input" id="name" placeholder="Your full name" type="text"/>
-          </div>
-          <div class="grid md:grid-cols-2 gap-5">
-            <div>
-              <label class="glass-label">Email</label>
-              <input class="glass-input" id="email" placeholder="your@email.com" type="email"/>
-            </div>
-            <div>
-              <label class="glass-label">Number of Guests</label>
-              <select class="glass-input appearance-none" id="guests">
-                <option value="1">1 Guest</option>
-                <option value="2">2 Guests</option>
-                <option value="3">3 Guests</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label class="glass-label">Dietary Preferences</label>
-            <textarea class="glass-input resize-none" id="diet" placeholder="Any dietary requirements?" rows="2"></textarea>
-          </div>
-          <div>
-            <label class="glass-label">Message for the Couple</label>
-            <textarea class="glass-input resize-none" id="message" placeholder="Share a special note..." rows="2"></textarea>
-          </div>
-          <button type="submit" class="w-full py-3.5 rounded-2xl text-sm font-semibold tracking-[0.15em] uppercase bg-gradient-to-r from-gold to-[#c9a84c] text-white shadow-[0_8px_32px_rgba(225,193,110,.3)] hover:shadow-[0_12px_40px_rgba(225,193,110,.45)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[.98] transition-all cursor-pointer border-0">Send RSVP</button>
-        </div>
-
-        <div id="declineMsg" class="text-center py-6 hidden" style="display:none;opacity:0">
-          <span class="material-symbols-outlined text-5xl block mb-3 heartbeat" style="color:#E1C16E;text-shadow:0 2px 12px rgba(225,193,110,.4)">favorite</span>
-          <p class="font-serif text-2xl text-white">We'll Miss You</p>
-          <p class="text-sm text-white/60 mt-1 pulse-soft">Thank you for letting us know. You'll be in our hearts!</p>
-        </div>
-      </form>
-    </div>
-  </section>
-</main>
-
-<!-- Footer -->
-<footer class="relative z-10 py-8 text-center border-t border-white/5 bg-[#0a0a0b]/80 backdrop-blur-sm">
-  <p class="font-script text-3xl text-gold/70">I & T</p>
-  <p class="font-serif text-[10px] tracking-[.2em] uppercase text-white/30 mt-1">2027</p>
-</footer>
-
-<!-- Bottom Nav -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-[#0a0a0b]/90 backdrop-blur-2xl border-t border-white/10 rounded-t-2xl px-4">
-  <a href="index.html" class="flex flex-col items-center text-white/40 hover:text-gold transition-colors no-underline">
-    <span class="material-symbols-outlined">home</span>
-    <span class="font-serif text-[9px] uppercase tracking-tight">Home</span>
-  </a>
-  <a href="gallery.html" class="flex flex-col items-center text-white/40 hover:text-gold transition-colors no-underline">
-    <span class="material-symbols-outlined">photo_library</span>
-    <span class="font-serif text-[9px] uppercase tracking-tight">Gallery</span>
-  </a>
-  <a href="rsvp.html" class="flex flex-col items-center text-gold scale-110 no-underline">
-    <span class="material-symbols-outlined" style="font-variation-settings:'FILL'1">mail</span>
-    <span class="font-serif text-[9px] uppercase tracking-tight">RSVP</span>
-  </a>
-</nav>
 
 <script>
 const CONVEX_HTTP_URL = 'https://adept-bat-233.convex.site';
 
-var attending=false;
-var wasAttending=false;
-var guestId = new URLSearchParams(window.location.search).get('id') || '';
+let selectedGuest = null;
+let attending = { primary: true, spouse: true };
+let searchTimer = null;
 
-window.addEventListener('DOMContentLoaded', function(){
-  var nameEl = document.getElementById('name');
-  var guestsEl = document.getElementById('guests');
-  var p = new URLSearchParams(window.location.search);
-  if(p.get('name')) nameEl.value = p.get('name');
-  if(p.get('max')) guestsEl.value = Math.min(parseInt(p.get('max'),10)||1, 3);
-  if(p.get('spouse')) nameEl.value = nameEl.value + ' & ' + p.get('spouse');
-});
+function toggleAttendance(who) {
+  attending[who] = !attending[who];
+  const el = document.getElementById('toggle-' + who);
+  const opts = el.querySelectorAll('.opt');
+  opts.forEach(o => {
+    o.classList.toggle('active', o.dataset.value === (attending[who] ? 'yes' : 'no'));
+  });
+}
 
-function toggleAttendance(){
-  wasAttending=attending;
-  attending=!attending;
-  var slider=document.getElementById('attendanceSlider');
-  var knob=document.getElementById('sliderKnob');
-  var bg=document.getElementById('sliderBg');
-  var icon=document.getElementById('sliderIcon');
-  var fields=document.getElementById('formFields');
-  var decline=document.getElementById('declineMsg');
-  if(attending){
-    slider.className='attendance-slider yes-state';
-    knob.classList.add('active');
-    bg.className='slider-bg yes';
-    icon.textContent='check';
-    fields.style.display='block';
-    decline.style.display='none';
-    decline.style.opacity='0';
-    decline.classList.remove('miss-you-anim');
-    setTimeout(function(){fields.style.opacity='1'},50);
-  }else{
-    slider.className='attendance-slider no-state';
-    knob.classList.remove('active');
-    bg.className='slider-bg no';
-    icon.textContent='close';
-    fields.style.opacity='0';
-    setTimeout(function(){fields.style.display='none'},300);
-    if(wasAttending){
-      setTimeout(function(){
-        decline.style.display='block';
-        decline.classList.add('miss-you-anim');
-        setTimeout(function(){decline.style.opacity='1'},50);
-      },350);
+function onSearchInput(val) {
+  clearTimeout(searchTimer);
+  const status = document.getElementById('search-status');
+  const results = document.getElementById('search-results');
+  if (val.length < 2) {
+    results.innerHTML = '';
+    status.innerHTML = '';
+    return;
+  }
+  status.innerHTML = '<span class="loading-dots">Searching</span>';
+  searchTimer = setTimeout(() => doSearch(val), 300);
+}
+
+async function doSearch(q) {
+  const status = document.getElementById('search-status');
+  const results = document.getElementById('search-results');
+  try {
+    const res = await fetch(CONVEX_HTTP_URL + '/api/rsvp/search?q=' + encodeURIComponent(q));
+    const data = await res.json();
+    if (!data || data.error || !data.length) {
+      results.innerHTML = '';
+      status.innerHTML = '<span class="text-white/40">No guests found. Try a different spelling.</span>';
+      return;
     }
-    if(guestId && !wasAttending){
-      setTimeout(function(){handleSubmit(null,true)},400);
-    }
+    status.innerHTML = '';
+    results.innerHTML = data.map(g => {
+      const initial = (g.first_name || '')[0] + (g.last_name || '')[0];
+      const hasRsvpd = !!g.attendance && g.attendance !== 'invited';
+      const isCouple = !!g.spouse_name;
+      const detail = isCouple ? 'Couple' : g.guest_type || 'Guest';
+      return '<div class="search-result-item" onclick="selectGuest(\'' + g._id + '\')">' +
+        '<div class="avatar">' + initial.toUpperCase() + '</div>' +
+        '<div class="name-info">' +
+          '<div class="name">' + escapeHtml(g.first_name + ' ' + g.last_name) + '</div>' +
+          '<div class="detail">' + escapeHtml(detail) + (isCouple ? ' &mdash; ' + escapeHtml(g.spouse_name) : '') + '</div>' +
+        '</div>' +
+        '<div class="rsvp-badge ' + (hasRsvpd ? 'done' : 'pending') + '">' + (hasRsvpd ? 'RSVP\'d' : 'Not Yet') + '</div>' +
+      '</div>';
+    }).join('');
+  } catch (e) {
+    results.innerHTML = '';
+    status.innerHTML = '<span class="text-red-400">Could not connect. Please try again.</span>';
   }
 }
-function handleSubmit(e, isDeclineAuto){
-  var btn = e ? e.target.querySelector('button[type="submit"]') : null;
-  if(btn){ var originalText = btn.textContent; btn.textContent = 'Sending...'; btn.disabled = true; }
 
-  var payload = {
-    guest_id: guestId,
-    attendance: attending ? 'attending' : 'declined',
-    guests_count: document.getElementById('guests').value,
-    dietary: document.getElementById('diet').value.trim(),
-    message: document.getElementById('message').value.trim(),
-    name: document.getElementById('name').value.trim(),
+function selectGuest(guestId) {
+  document.getElementById('step-search').classList.add('section-hidden');
+  document.getElementById('step-search').classList.remove('fade-in');
+  document.getElementById('step-rsvp').classList.remove('section-hidden');
+  document.getElementById('step-rsvp').classList.add('fade-in-up');
+
+  // Get full guest data from the search results
+  const lastSearch = document.getElementById('search-input').value;
+  fetch(CONVEX_HTTP_URL + '/api/guests').then(r => r.json()).then(guests => {
+    selectedGuest = guests.find(g => g._id === guestId);
+    if (!selectedGuest) return;
+    const initial = (selectedGuest.first_name || '')[0] + (selectedGuest.last_name || '')[0];
+    document.querySelector('#rsvp-avatar').textContent = initial.toUpperCase();
+    document.getElementById('rsvp-guest-name').textContent = selectedGuest.first_name + ' ' + selectedGuest.last_name;
+    const isCouple = !!selectedGuest.spouse_name;
+    const detail = isCouple ? 'Part of a couple &mdash; ' + escapeHtml(selectedGuest.spouse_name) : (selectedGuest.guest_type || 'Guest');
+    document.getElementById('rsvp-guest-detail').innerHTML = detail;
+    document.getElementById('spouse-section').style.display = isCouple ? 'block' : 'none';
+
+    // Pre-fill if already RSVP'd
+    if (selectedGuest.attendance && selectedGuest.attendance !== 'invited') {
+      attending.primary = selectedGuest.attendance === 'attending';
+      updateToggleUI('primary', attending.primary);
+      if (selectedGuest.spouse_attending !== undefined) {
+        attending.spouse = selectedGuest.spouse_attending;
+        updateToggleUI('spouse', attending.spouse);
+      }
+      if (selectedGuest.message) document.getElementById('message-input').value = selectedGuest.message;
+      if (selectedGuest.song_request) document.getElementById('song-input').value = selectedGuest.song_request;
+    }
+  });
+}
+
+function updateToggleUI(who, value) {
+  const el = document.getElementById('toggle-' + who);
+  const opts = el.querySelectorAll('.opt');
+  opts.forEach(o => {
+    o.classList.toggle('active', o.dataset.value === (value ? 'yes' : 'no'));
+  });
+}
+
+async function submitRSVP() {
+  const btn = document.getElementById('rsvp-submit-btn');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  const payload = {
+    guest_id: selectedGuest._id,
+    attendance: attending.primary ? 'attending' : 'declined',
+    spouse_attending: selectedGuest.spouse_name ? attending.spouse : undefined,
+    name: selectedGuest.first_name + ' ' + selectedGuest.last_name,
+    message: document.getElementById('message-input').value.trim(),
+    song_request: document.getElementById('song-input').value.trim(),
+    dietary: document.getElementById('diet-input').value.trim(),
   };
 
-  fetch(CONVEX_HTTP_URL + '/api/rsvp', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  }).then(function(r){ return r.json(); }).then(function(data){
-    if(data.ok){
-      document.getElementById('formFields').style.display = 'none';
-      document.getElementById('attendanceSlider').style.display = 'none';
-      document.getElementById('rsvp-icon').textContent = 'check_circle';
-      document.getElementById('rsvp-heading').textContent = attending ? "Can't Wait to See You!" : "You'll Be Missed";
-      document.getElementById('rsvp-subtitle').textContent = attending
-        ? 'Your RSVP has been received. We look forward to celebrating with you!'
-        : 'Thank you for letting us know. You will be in our hearts!';
+  try {
+    const res = await fetch(CONVEX_HTTP_URL + '/api/rsvp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('step-rsvp').classList.add('section-hidden');
+      document.getElementById('step-confirm').classList.remove('section-hidden');
+      document.getElementById('step-confirm').classList.add('fade-in-up');
+      if (!attending.primary && !(selectedGuest.spouse_name && attending.spouse)) {
+        document.getElementById('confirm-icon').textContent = 'favorite';
+        document.getElementById('confirm-heading').textContent = "We'll Miss You";
+        document.getElementById('confirm-message').textContent = 'Thank you for letting us know. You\'ll be in our hearts!';
+      }
     } else {
       alert('Something went wrong. Please try again.');
-      if(btn){ btn.textContent = originalText; btn.disabled = false; }
+      btn.textContent = 'Send RSVP';
+      btn.disabled = false;
     }
-  }).catch(function(){
-    alert('Network error. Please check your connection and try again.');
-    if(btn){ btn.textContent = originalText; btn.disabled = false; }
-  });
+  } catch (e) {
+    alert('Network error. Please check your connection.');
+    btn.textContent = 'Send RSVP';
+    btn.disabled = false;
+  }
+}
+
+function resetToSearch() {
+  document.getElementById('step-rsvp').classList.add('section-hidden');
+  document.getElementById('step-rsvp').classList.remove('fade-in-up');
+  document.getElementById('step-search').classList.remove('section-hidden');
+  document.getElementById('step-search').classList.add('fade-in');
+  selectedGuest = null;
+  attending = { primary: true, spouse: true };
+  document.getElementById('search-results').innerHTML = '';
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-input').focus();
+}
+
+function escapeHtml(v) {
+  return String(v || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>
 </body>

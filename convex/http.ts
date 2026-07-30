@@ -7,7 +7,8 @@ import { listAssigned, assign, getByGuest } from "./seating";
 import { listSongs, submitSong } from "./songs";
 import { listMessages, submitMessage } from "./messages";
 import { checkIn, lookup } from "./checkin";
-import { submit as rsvp } from "./rsvp";
+import { submit as rsvp, search as rsvpSearch } from "./rsvp";
+import { list as listTables, get as getTable, assignGuestToTable, seedTables } from "./tables";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -22,15 +23,14 @@ const preflight = httpAction(async () => {
 
 const router = httpRouter();
 
-// CORS preflight for ALL API paths
 const apiPaths = [
   "/api/auth/login", "/api/auth/logout", "/api/auth/me",
   "/api/guests", "/api/guest", "/api/guest/delete",
   "/api/seating", "/api/seating/guest",
-  "/api/songs",
-  "/api/messages",
+  "/api/songs", "/api/messages",
   "/api/checkin", "/api/checkin/lookup",
-  "/api/rsvp",
+  "/api/rsvp", "/api/rsvp/search",
+  "/api/tables", "/api/tables/get", "/api/tables/assign", "/api/tables/seed",
 ];
 for (const p of apiPaths) {
   router.route({ path: p, method: "OPTIONS", handler: preflight });
@@ -52,5 +52,10 @@ router.route({ path: "/api/messages", method: "POST", handler: submitMessage });
 router.route({ path: "/api/checkin", method: "POST", handler: checkIn });
 router.route({ path: "/api/checkin/lookup", method: "POST", handler: lookup });
 router.route({ path: "/api/rsvp", method: "POST", handler: rsvp });
+router.route({ path: "/api/rsvp/search", method: "GET", handler: rsvpSearch });
+router.route({ path: "/api/tables", method: "GET", handler: listTables });
+router.route({ path: "/api/tables/get", method: "GET", handler: getTable });
+router.route({ path: "/api/tables/assign", method: "POST", handler: assignGuestToTable });
+router.route({ path: "/api/tables/seed", method: "POST", handler: seedTables });
 
 export default router;
